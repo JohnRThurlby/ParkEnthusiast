@@ -1,0 +1,32 @@
+.logo {
+  height: 750px; 
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.logo::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* background: white; */
+}
+
+.logo * {
+  position: relative;
+  z-index: 2;
+}
+
+.logo h1, .hero h2 {
+  color: white;
+}
+
+.logo h1 {
+  font-size: 60px;
+  padding-top: 140px;
+  margin-top: 0;
+}
