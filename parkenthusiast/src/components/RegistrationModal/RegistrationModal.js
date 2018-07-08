@@ -1,15 +1,21 @@
-import React, { Component } from "react";
-//import Modal from 'react-responsive-modal';
+import React from 'react';
 
-import { Form, FormControl, Col, FormGroup, Button, ControlLabel } from 'react-bootstrap';
+import ModalWrapper from '../ModalWrapper';
+import { Form, FormControl, Col, FormGroup, ControlLabel } from 'react-bootstrap';
 
-////import sendEmail from 'mailer';
-//import nodeMailer from 'nodemailer';
+const RegistrationModal = props => {
+  const registrationModal = provider => {
+    props.hideModal();
+    props.registrationModal(provider);
+  };
 
-class Contact extends Component { 
-  render () {
-
-    return (
+  return (
+    <ModalWrapper
+      {...props}
+      title="Registration"
+      width={400}
+      showOk={false}
+    >
       <div>
         <h5>Contact Park Enthusiast</h5>
         <Form horizontal>
@@ -43,13 +49,14 @@ class Contact extends Component {
 
           <FormGroup>
             <Col smOffset={2} xs={9}>
-              <Button type="submit">Submit</Button>
+              <button onClick={() => registrationModal('Submit')}>Submit</button>
             </Col>
           </FormGroup>
         </Form>
         </div>
-      );
-  };
+
+    </ModalWrapper>
+  );
 };
 
-export default Contact;
+export default RegistrationModal;

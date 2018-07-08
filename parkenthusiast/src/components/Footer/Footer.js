@@ -1,30 +1,31 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Container from "../Container";
-import Row from "../Row";
-import Col from "../Col";
+import React, { Component } from "react";
 import "./Footer.css";
+import { Navbar, Nav, NavDropdown, MenuItem  } from 'react-bootstrap';
 
-const Footer = () => (
-  <footer className="footer">
-    <Container style={{ marginTop: 10 }}>
-     <Row>
-        <Col size="sm-4">
-          <div>
-            <Link to="/privacy">
-              Privacy
-            </Link>
-          </div>
-          <div>
-            <Link to="/terms">
-            Terms & Conditions
-            </Link>
-          </div>
-          <h6>Park Enthusiast 2018</h6>
-        </Col>
-      </Row>
-    </Container>
-  </footer>
-);
+class Footer extends Component { 
+  render () {
+
+    return (
+      <div className="Navibar">
+        <Navbar inverse collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="/home">Park Enthusiast 2018</a>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav>
+              <NavDropdown eventKey={3} title="Privacy & Terms" id="basic-nav-dropdown">
+                <MenuItem href="/privacy" eventKey={3.1}>Privacy</MenuItem>
+                <MenuItem href="/terms" eventKey={3.2}>Terms & Conditions</MenuItem>
+              </NavDropdown>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      </div>
+    );
+  };
+};
 
 export default Footer;

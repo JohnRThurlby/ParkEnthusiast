@@ -1,12 +1,23 @@
-import React, { Component } from "react";
-//import Modal from 'react-responsive-modal';
+import React from 'react';
 
-class Privacy extends Component { 
-  render() {
-      
-    return (
+import ModalWrapper from '../ModalWrapper';
+
+import { Col } from 'react-bootstrap';
+
+const PrivacyModal = props => {
+  const privacyModal = provider => {
+    props.hideModal();
+    props.privacyModal(provider);
+  };
+
+  return (
+    <ModalWrapper
+      {...props}
+      title="Privacy"
+      width={400}
+      showOk={false}
+    >
       <div className="example">
-        
         <h2>Park Enthusiast Privacy</h2>
         <h6>Privacy Policy</h6>
         <p>Last updated: 7/5/2018</p>    
@@ -33,9 +44,13 @@ class Privacy extends Component {
         <p>If we make any material changes to this Privacy Policy, we will notify you either through the email address you have provided us, or by placing a prominent notice on our website.</p>
         <h6>Contact Us</h6>
         <p>If you have any questions about this Privacy Policy, please contact us.</p>
+        <Col smOffset={2} xs={9}>
+              <button onClick={() => privacyModal('Close')}>Close</button>
+          </Col>
       </div>
-    );
-  };
+
+    </ModalWrapper>
+  );
 };
 
-export default Privacy;
+export default PrivacyModal;

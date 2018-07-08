@@ -1,6 +1,4 @@
-nav.navbar.navbar-default {
-  margin-bottom: 0;
-}
+
 
 .backdropStyle {
   position: "fixed";
@@ -20,7 +18,7 @@ nav.navbar.navbar-default {
   margin: '0 auto';
   padding: 30;
   position: "relative";
-  z-index: 99999;
+  
 }
 
 .footerStyle {
