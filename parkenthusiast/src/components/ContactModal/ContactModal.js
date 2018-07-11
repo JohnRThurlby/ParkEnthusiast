@@ -1,66 +1,34 @@
-import React from 'react';
+import React, { Component } from "react"
 
-import ModalWrapper from '../ModalWrapper';
+export default class ContactModal extends Component  {
 
-import { Form, FormControl, Col, FormGroup, ControlLabel } from 'react-bootstrap';
+  closeModal = (status, type) => {
+    this.setState ({modalStatus: status, modalType: type})
+  }  
+  
+  render () {
 
-////import sendEmail from 'mailer';
-//import nodeMailer from 'nodemailer';
-
-const ContactModal = props => {
-  const contactModal = provider => {
-    props.hideModal();
-    props.contactModal(provider);
-  };
-
-  return (
-    <ModalWrapper
-      {...props}
-      title="Contact In"
-      width={400}
-      showOk={false}
-    >
-      <div>
-        <h5>Contact Park Enthusiast</h5>
-        <Form horizontal>
-
-          <FormGroup controlId="formHorizontalEmail">
-          <Col componentClass={ControlLabel} sm={2}>
-              Name
-          </Col>
-          <Col xs={6}>
-              <FormControl type="text" placeholder="Name" />
-          </Col>
-          </FormGroup>
-
-          <FormGroup controlId="formHorizontalEmail">
-            <Col componentClass={ControlLabel} sm={2}>
-              Email
-            </Col>
-            <Col xs={6}>
-              <FormControl type="email" placeholder="Email" />
-            </Col>
-          </FormGroup>
-
-          <FormGroup controlId="formControlsTextarea">
-          <Col componentClass={ControlLabel} sm={2}>
-              Comment
-            </Col>
-            <Col xs={6}>
-              <FormControl type="textarea" placeholder="Comment" />
-            </Col>
-          </FormGroup>     
-
-          <FormGroup>
-            <Col smOffset={2} xs={9}>
-              <button onClick={() => contactModal('Submit')}>Submit</button>
-            </Col>
-          </FormGroup>
-        </Form>
+    return (
+      
+        <div className="example">
+        <form>
+            <p className="h4 text-center mb-4">Write to us</p>
+            <label htmlFor="defaultFormContactNameEx" className="grey-text">Your name</label>
+            <input type="text" id="defaultFormContactNameEx" className="form-control"/>
+            <br/>
+            <label htmlFor="defaultFormContactEmailEx" className="grey-text">Your email</label>
+            <input type="email" id="defaultFormContactEmailEx" className="form-control"/>
+            <br/>
+            <label htmlFor="defaultFormContactSubjectEx" className="grey-text">Subject</label>
+            <input type="text" id="defaultFormContactSubjectEx" className="form-control"/>
+            <br/>
+            <label htmlFor="defaultFormContactMessageEx" className="grey-text">Your message</label>
+            <textarea type="text" id="defaultFormContactMessageEx" className="form-control" rows="3"></textarea>
+            <div className="text-center mt-4">
+              <button className="btn btn-outline-warning" type="submit">Send<i className="fa fa-paper-plane-o ml-2"></i></button>
+            </div>
+          </form>
         </div>
-
-    </ModalWrapper>
-  );
-};
-
-export default ContactModal;
+    )
+  }
+}

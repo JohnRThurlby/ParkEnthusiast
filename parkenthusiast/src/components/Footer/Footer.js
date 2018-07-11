@@ -1,8 +1,21 @@
-import React, { Component } from "react";
-import "./Footer.css";
-import { Navbar, Nav, NavDropdown, MenuItem  } from 'react-bootstrap';
+import React, { Component } from "react"
 
-class Footer extends Component { 
+import ModalConductor from "../ModalConductor"
+
+import "./Footer.css"
+import { Navbar, Nav, NavDropdown, MenuItem  } from 'react-bootstrap'
+
+export default class Footer extends Component { 
+
+  state = { 
+    modalStatus: false,
+    modalType: ""
+  }
+
+  _handleModal = (status, type) => {
+  this.setState ({modalStatus: status, modalType: type})
+  }  
+
   render () {
 
     return (
@@ -17,15 +30,25 @@ class Footer extends Component {
           <Navbar.Collapse>
             <Nav>
               <NavDropdown eventKey={3} title="Privacy & Terms" id="basic-nav-dropdown">
-                <MenuItem href="/privacy" eventKey={3.1}>Privacy</MenuItem>
-                <MenuItem href="/terms" eventKey={3.2}>Terms & Conditions</MenuItem>
+                <MenuItem eventKey={3.1}>
+                  <button className="btn btn-action" onClick={() => this._handleModal(true, 'PRIVACY')}>
+                    Privacy
+                  </button>
+                </MenuItem>
+                <MenuItem eventKey={3.2}>
+                  <button className="btn btn-action" onClick={() => this._handleModal(true, 'TERMS')}>
+                    Terms & Conditions
+                  </button>
+                </MenuItem>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-      </div>
-    );
-  };
-};
 
-export default Footer;
+        <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
+
+      </div>
+
+    )
+  }
+}

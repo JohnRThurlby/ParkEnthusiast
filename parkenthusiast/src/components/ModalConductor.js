@@ -1,40 +1,60 @@
-import React from 'react';
-//import {connect} from 'react-redux';
-import AboutModal from './AboutModal';
-import LoginModal from './LoginModal';
-import HelpModal from './HelpModal';
-import ContactModal from './ContactModal';
-import PrivacyModal from './PrivacyModal';
-import TermCondModal from './TermCondModal';
-import RegistrationModal from './RegistrationModal';
-//import * as actions from './data/actions.js';
+import React, {Component} from 'react'
 
-const ModalConductor = props => {
-  switch (props.currentModal) {
-    case 'ABOUT':
-      return <AboutModal {...props}/>;
+import './ModalConductor.css'
 
-    case 'LOGIN':
-      return <LoginModal {...props}/>;
+import AboutModal from './AboutModal'
+import LoginModal from './LoginModal'
+import HelpModal from './HelpModal'
+import ContactModal from './ContactModal'
+import PrivacyModal from './PrivacyModal'
+import TermCondModal from './TermCondModal'
+import RegistrationModal from './RegistrationModal'
+import PriorRideModal from './PriorrideModal'
 
-    case 'HELP':
-      return <HelpModal {...props}/>;
 
-    case 'CONTACT':
-      return <ContactModal {...props}/>;
+export default class ModalConductor extends Component {
+  renderSwitch () {
+    switch (this.props.type) {
+      case 'ABOUT':
+        return <AboutModal handleModal={this.props.handleModal}/>;
+
+      case 'LOGIN':
+        return <LoginModal handleModal={this.props.handleModal}/>;
+
+      case 'HELP':
+        return <HelpModal/>;
+
+      case 'CONTACT':
+        return <ContactModal/>;
+          
+      case 'PRIVACY':
+        return <PrivacyModal/>;
+
+      case 'TERMS':
+        return <TermCondModal/>;
+
+      case 'REGISTRATION':
+        return <RegistrationModal/>;
+
+        case 'PRIORRIDE':
+        return <PriorRideModal/>;
       
-    case 'PRIVACY':
-      return <PrivacyModal {...props}/>;
+      default:
+        return null
 
-    case 'TERMS':
-      return <TermCondModal {...props}/>;
-
-    case 'REGISTRATION':
-     return <RegistrationModal {...props}/>;
-   
-    default:
-      return null;
+    }
   }
-};
 
-export default ModalConductor;
+  render() {
+
+    if(this.props.status === false) return null
+
+    return(
+
+      <div className="ModalConductor">
+         {this.renderSwitch()}
+      </div>
+
+     )
+  }
+}

@@ -1,12 +1,13 @@
 import React from "react";
 import "./Logo.css";
-import Background from '../../pages/theme.jpg';
+import Background from '../../pages/ridesel.jpg';
+//import Background from '../../pages/theme.jpg';
 
-const Logo = props => (
+const Logo = props => {
   
-  <div className="logo" style={{ backgroundImage: `url(${Background})` }}>
+  return (<div className="logo" style={{ backgroundImage: `url(${Background})` }}>
     {props.children}
-   </div>
-);
+  </div>)
+};
 
 export default Logo;

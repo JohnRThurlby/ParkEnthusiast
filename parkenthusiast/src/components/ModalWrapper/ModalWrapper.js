@@ -27,7 +27,7 @@ const ModalWrapper = props => {
       <header>
         <h1>{props.title}</h1>
 
-        <button onClick={props.hideModal}>Close</button>
+        <button onClick={() => props.handleModal(false, '')}>Close</button>
       </header>
 
       {props.children}
