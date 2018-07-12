@@ -1,2 +1,2 @@
-# TPE
-The Park Enthusiast
+# Park Enthusiast
+ Park Enthusiast
