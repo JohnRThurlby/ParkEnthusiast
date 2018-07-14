@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import Logo from "../components/Logo";
+import Logo from "../../components/Logo";
 //import { Link } from "react-router-dom";
 import Calendar from 'react-calendar'
 import StarRatingComponent from 'react-star-rating-component';
-import Container from "../components/Container"
-import Row from "../components/Row";
-import Col from "../components/Col";
+import Container from "../../components/Container"
+import Row from "../../components/Row";
+import Col from "../../components/Col";
 import { MenuItem, DropdownButton } from 'react-bootstrap';
 
 class RideNow extends Component {

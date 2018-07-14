@@ -1,43 +1,141 @@
-import React, { Component } from "react"
+import React, { Component } from "react";
+
+import { Row, Col } from 'react-bootstrap'
+import { Input, TextArea, FormBtn } from "../../components/Form";
+
+import ModalConductor from "../ModalConductor"
+
+require("dotenv").config()
+var ses = require('node-ses')
+  , client = ses.createClient({ key: "AKIAJY3KUB5OAVIHPW3Q", secret: "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" });
 
 export default class ContactModal extends Component {
+
   constructor(props) {
     super(props)
     this.state = { isModalOpen: true }
   }
 
+  state = {
+    name: "",
+    email: "",
+    subject: "",
+    comment: ""
+  };
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+    if (this.state.name && this.state.email && this.state.subject && this.state.comment) {
+      console.log("in email")
+      client.sendEmail({
+        to: "johnrthurlby@gmail.com"
+        , from: "enthusiastpark@gmail.com"
+        , subject: this.state.subject
+        , message: this.state.comment
+        , altText: this.state.name
+      }, function (err, data, res) {
+        console.log("in function")
+      });
+    }
+  };
+
   render() {
     return (
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
-          <form method="POST" action="/api/email">
-            <p className="h4 text-center mb-4">Write to us</p>
-            <label htmlFor="defaultFormContactNameEx" className="grey-text">Your name</label>
-            <input type="text" id="defaultFormContactNameEx" className="form-control"/>
-            
-            <br/>
-            <label htmlFor="defaultFormContactEmailEx" className="grey-text">Your email</label>
-            <input type="email" id="defaultFormContactEmailEx" className="form-control"/>
-            
-            <br/>
-            <label htmlFor="defaultFormContactSubjectEx" className="grey-text">Subject</label>
-            <input type="text" id="defaultFormContactSubjectEx" className="form-control"/>
-            
-            <br/>
-            <label htmlFor="defaultFormContactMessageEx" className="grey-text">Your message</label>
-            <textarea type="text" id="defaultFormContactMessageEx" className="form-control" rows="3"></textarea>
-            
-            <div className="text-center mt-4">
-              <button className="btn btn-outline-warning" type="submit">Send<i className="fa fa-paper-plane-o ml-2"></i></button>
-            </div>
+          <div>
+            <Row>
+              <Col xs={2}></Col>
+              <Col xs={8}>
+                <h3 className="h3 text-center mb-3">Write to us</h3>
+              </Col>
+            </Row>
+            <form>
+              <Row>
+                <Col xs={2}></Col>
+                <Col xs={8}>
 
-          </form>
-          <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
-        </Modal>
+                  <label className="grey-text">Your name</label>
+                  <Input
+                    autoComplete='name' 
+                    value={this.state.name}
+                    onChange={this.handleInputChange}
+                    name="name"
+                    placeholder="Name (required)"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={2}></Col>
+                <Col xs={8}>
+
+                  <label className="grey-text">Your Email</label>
+
+                  <Input
+                    autoComplete='email'
+                    value={this.state.email}
+                    onChange={this.handleInputChange}
+                    name="email"
+                    placeholder="Email (required)"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={2}></Col>
+                <Col xs={8}>
+
+                  <label className="grey-text">Subject</label>
+                  <Input
+                    value={this.state.subject}
+                    onChange={this.handleInputChange}
+                    name="subject"
+                    placeholder="Subject (required)"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={2}></Col>
+                <Col xs={8}>
+
+                  <TextArea
+                    value={this.state.comment}
+                    onChange={this.handleInputChange}
+                      name="comment"
+                    placeholder="Comment (required)"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={5}></Col>
+                <Col xs={5}>
+                  <FormBtn
+                    disabled={!(this.state.name && this.state.email && this.state.subject && this.state.comment)}
+                    onClick={this.handleFormSubmit}
+                  >
+                    Contact Us
+                  </FormBtn>
+                </Col>
+              </Row>
+            </form>
+
+            <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
+            
+            <Row>
+              <Col xs={10}></Col> 
+              <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
+            </Row>
+          </div>
+       </Modal>
       </div>
     )
   }
-
   openModal() {
     this.setState({ isModalOpen: true })
   }
@@ -112,43 +210,3 @@ class Modal extends React.Component {
     }
   }
 }
-
-
-
-
-
-
-// import React, { Component } from "react"
-
-// export default class ContactModal extends Component  {
-
-//   closeModal = (status, type) => {
-//     this.setState ({modalStatus: status, modalType: type})
-//   }  
-  
-//   render () {
-
-//     return (
-      
-//         <div className="example">
-//         <form>
-//             <p className="h4 text-center mb-4">Write to us</p>
-//             <label htmlFor="defaultFormContactNameEx" className="grey-text">Your name</label>
-//             <input type="text" id="defaultFormContactNameEx" className="form-control"/>
-//             <br/>
-//             <label htmlFor="defaultFormContactEmailEx" className="grey-text">Your email</label>
-//             <input type="email" id="defaultFormContactEmailEx" className="form-control"/>
-//             <br/>
-//             <label htmlFor="defaultFormContactSubjectEx" className="grey-text">Subject</label>
-//             <input type="text" id="defaultFormContactSubjectEx" className="form-control"/>
-//             <br/>
-//             <label htmlFor="defaultFormContactMessageEx" className="grey-text">Your message</label>
-//             <textarea type="text" id="defaultFormContactMessageEx" className="form-control" rows="3"></textarea>
-//             <div className="text-center mt-4">
-//               <button className="btn btn-outline-warning" type="submit">Send<i className="fa fa-paper-plane-o ml-2"></i></button>
-//             </div>
-//           </form>
-//         </div>
-//     )
-//   }
-// }

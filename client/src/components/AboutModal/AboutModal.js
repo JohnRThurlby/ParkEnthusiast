@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 
+import { Row, Col } from 'react-bootstrap'
+
 export default class AboutModal extends Component {
   constructor(props) {
     super(props)
@@ -10,13 +12,26 @@ export default class AboutModal extends Component {
     return (
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
-          <h2>About Park Enthusiast</h2>
-          <p>
-            Welcome to the Park Enthusiast. Keep track of your park visits, what rides you have been on and when. 
-            Make comments and rate your experiece. Track the actual time you waited in line. 
-            As you gather more data, see what your prior wait times have been like.  
-          </p> 
-          <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
+          <Row>
+            <Col xs={3}></Col>
+            <Col xs={8}>
+              <h3>About Park Enthusiast</h3>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={3}></Col>
+            <Col xs={6}>
+              <p>
+                Welcome to the Park Enthusiast. Keep track of your park visits, what rides you have been on and when. 
+                Make comments and rate your experiece. Track the actual time you waited in line. 
+                As you gather more data, see what your prior wait times have been like.  
+              </p> 
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={10}></Col>
+            <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
+          </Row>
         </Modal>
       </div>
     )

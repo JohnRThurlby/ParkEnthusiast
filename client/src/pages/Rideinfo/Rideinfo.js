@@ -1,9 +1,9 @@
 import React from "react";
-import Logo from "../components/Logo";
+import Logo from "../../components/Logo";
 import { Link } from "react-router-dom";
-import Container from "../components/Container"
-import Row from "../components/Row";
-import Col from "../components/Col";
+import Container from "../../components/Container"
+import Row from "../../components/Row";
+import Col from "../../components/Col";
 import { MenuItem, DropdownButton } from 'react-bootstrap';
 
 const Rideinfo = props => (

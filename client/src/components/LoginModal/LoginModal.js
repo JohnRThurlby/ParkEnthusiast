@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import ModalConductor from "../ModalConductor"
 
 import { Form, Row, Col } from 'react-bootstrap'
+import { Input, FormBtn } from "../../components/Form";
 
 export default class LoginModal extends Component {
   constructor(props) {
@@ -12,93 +13,131 @@ export default class LoginModal extends Component {
 
   state = { 
     modalStatus: false,
-    modalType: ""
+    modalType: "",
+    email: "",
+    password: ""
   }
     
   _handleModal = (status, type) => {
     this.setState ({modalStatus: status, modalType: type})
   }
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+    if (this.state.email && this.state.password) {
+      console.log("in email")
+   }
+  };
   
   render() {
     return (
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
-        <div>
-        <div className="container">
-          <Form action="Post">
+          <div>
+            <div className="container">
+              <Form action="Post">
+                <Row>
+                  <Col xs={12}>
+                    <h4 style={{ textAlign: "center" }}>Login with Social Media or Manually</h4>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={1}></Col>
+                  <Col xs={2}>
+                    <a href="/home" className="fb btn">
+                      <i className="fa fa-facebook fa-fw"></i>Facebook
+                    </a>
+                  </Col>
+                  <Col xs={2}></Col>
+                  <Col xs={2}>
+                    <a href="/home" className="twitter btn">
+                      <i className="fa fa-twitter fa-fw"></i>Twitter
+                    </a>
+                  </Col>
+                  <Col xs={2}></Col>
+                  <Col xs={2}>
+                    <a href="/home" className="google btn">
+                      <i className="fa fa-google fa-fw"></i>Google+
+                    </a>
+                  </Col>
+                </Row>
+                <Row></Row>
+                <Row>
+                  <Col xs={4}></Col>
+                  <Col xs={5}>
+                    <div className="hide-md-lg">
+                      <h6>Or sign in manually:</h6>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={3}></Col>
+                  <Col xs={6}>
+                    <div>
+                      <label className="grey-text">Email</label>
+                      <Input
+                        autoComplete='email' 
+                        value={this.state.email}
+                        onChange={this.handleInputChange}
+                        name="email"
+                        placeholder="Email (required)"
+                      />
+                      <label className="grey-text">Password</label>
+                      <Input
+                        autoComplete='password' 
+                        value={this.state.password}
+                        onChange={this.handleInputChange}
+                        name="password"
+                        placeholder="Password (required)"
+                      />
+
+                    </div>
+                  </Col> 
+                </Row>  
+                <Row>
+                  <Col xs={5}></Col>
+                  <Col xs={5}>
+                    <FormBtn
+                      disabled={!(this.state.email && this.state.password)}
+                      onClick={this.handleFormSubmit}
+                    >
+                      Login
+                    </FormBtn>
+                  </Col>
+                </Row>
+              </Form>
+            </div>
+            <div className="bottom-container">
+              <Row>
+                <Col xs={3}></Col>
+                <Col xs={3}>
+                  <button className="btn btn-action" onClick={() => this._handleModal(true, 'RESET')}>
+                    Reset Password
+                  </button> 
+                </Col>
+                <Col xs={1}></Col>
+                <Col xs={3}>
+                  <button className="btn btn-action" onClick={() => this._handleModal(true, 'FORGOT')}>
+                    Forgot password?
+                  </button>
+                </Col>
+              </Row>
+            </div>
+
+            <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
+          
             <Row>
-              <h2 style={{ textAlign: "center" }}>Login with Social Media or Manually</h2>
-              <Col sm="2">
-                <a href="/home" className="fb btn">
-                   <i className="fa fa-facebook fa-fw"></i>Facebook
-                </a>
-              </Col>
-              <Col sm="2"></Col>
-              <Col sm="2">
-                <a href="/home" className="twitter btn">
-                  <i className="fa fa-twitter fa-fw"></i>Twitter
-                </a>
-              </Col>
-              <Col sm="2"></Col>
-              <Col sm="2">
-                <a href="/home" className="google btn">
-                  <i className="fa fa-google fa-fw"></i>Google+
-                </a>
-              </Col>
-              <Row></Row>
-              <Row>
-                <Col sm="3">
-                </Col>
-                <Col sm="4">
-                  <div className="hide-md-lg">
-                    <p>Or sign in manually:</p>
-                  </div>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col sm="3"></Col>
-                <Col sm="6">
-                  <div>
-                    <input type="text" name="username" placeholder="Username" required/>
-                    <input type="password" name="password" placeholder="Password" required/>
-                  </div>
-                </Col> 
-              </Row>  
-              <Row>
-                <Col sm="5"></Col>
-                <Col sm="3">
-                  <div>
-                   <input type="submit" value="Login"/>
-                  </div>
-                </Col>
-              </Row>
-
+              <Col xs={10}></Col> 
+              <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
             </Row>
-          </Form>
-        </div>
-
-        <div className="bottom-container">
-          <Row>
-            <Col sm="3"></Col>
-            <Col sm="3">
-              <button className="btn btn-action" onClick={() => this._handleModal(true, 'REGISTRATION')}>
-                Sign Up
-              </button> 
-            </Col>
-            <Col sm="1"></Col>
-            <Col sm="3">
-              <button className="btn btn-action" onClick={() => this._handleModal(true, 'FORGOT')}>
-                Forgot password?
-              </button>
-            </Col>
-          </Row>
-        </div>
-
-        <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
-
-        </div>
-          <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
+          </div>
         </Modal>
       </div>
     )

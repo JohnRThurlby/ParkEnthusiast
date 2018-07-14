@@ -1,11 +1,11 @@
 import React, {Component} from "react";
-import Logo from "../components/Logo";
+import Logo from "../../components/Logo";
 
-import ModalConductor from "../components/ModalConductor";
+import ModalConductor from "../../components/ModalConductor";
 
-import Container from "../components/Container"
-import Row from "../components/Row";
-import Col from "../components/Col";
+import Container from "../../components/Container"
+import Row from "../../components/Row";
+import Col from "../../components/Col";
 
 export default class Home extends Component {
 
@@ -24,16 +24,19 @@ export default class Home extends Component {
       <div>
         <Logo backgroundImage="../../pages/theme.jpg">
           <Row></Row>
-          <Row></Row>
           <Row>  
-            <Col size="sm-4"></Col>
+            <Col size="sm-3"></Col>
             <Col size="sm-6">
               <h2>Park</h2>
             </Col>
-            <Col size="sm-6"></Col>
+          </Row>  
+          <Row>
+            <Col size="sm-3"></Col>
             <Col size="sm-6">
               <h2>Enthusiast</h2>
             </Col>
+          </Row>
+          <Row>
             <Col size="sm-3"></Col>
             <Col size="sm-6">
               <h5>
@@ -54,6 +57,16 @@ export default class Home extends Component {
               </div>
               </Col>
             </Row>
+            <Row>
+              <Col size="sm-5"></Col>
+              <Col size="sm-7">
+              <div>
+                <button className="btn btn-action" onClick={() => this._handleModal(true, 'REGISTRATION')}>
+                  Not a user?
+                </button>
+              </div>
+              </Col>
+            </Row>
           </Container>
         </Logo>
 
@@ -62,7 +75,3 @@ export default class Home extends Component {
     )
   }
 }
-
-
-
-

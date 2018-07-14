@@ -1,13 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Logo from "../components/Logo";
+import Logo from "../../components/Logo";
 import Iframe from 'react-iframe'
 import { MenuItem, DropdownButton } from 'react-bootstrap';
-//import { Link } from "react-router-dom";
-//import Btn from "../components/Btn";
-//import Container from "../components/Container"
-//import Row from "../components/Row";
-//import Col from "../components/Col";
 
 const Home = props => (
   <div>

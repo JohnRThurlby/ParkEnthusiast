@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 
+import { Row, Col } from 'react-bootstrap'
+
 export default class HelpModal extends Component {
   constructor(props) {
     super(props)
@@ -10,11 +12,24 @@ export default class HelpModal extends Component {
     return (
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
-            <h2>Help for Park Enthusiast</h2>
-            <p>
-               Welcome to the Park Enthusiast Help sometimes.   
-            </p>
-            <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
+          <Row>
+            <Col xs={3}></Col>
+            <Col xs={8}>
+              <h3>Help for Park Enthusiast</h3>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={3}></Col>
+            <Col xs={6}>
+              <p>
+                Welcome to the Park Enthusiast Help sometimes.   
+              </p>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={10}></Col>
+              <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
+          </Row>
         </Modal>
       </div>
     )

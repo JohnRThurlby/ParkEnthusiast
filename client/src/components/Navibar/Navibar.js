@@ -4,7 +4,6 @@ import ModalConductor from "../ModalConductor"
 
 import "./Navibar.css"
 import { Row,  Col, Nav, Navbar, NavDropdown, MenuItem} from 'react-bootstrap'
-import AdSense from 'react-adsense';
 
 export default class Navibar extends Component { 
   
@@ -23,19 +22,10 @@ export default class Navibar extends Component {
       <div className="Navibar">
         <Navbar inverse collapseOnSelect>   
         <Row>
-          <Col sm="2">
+          <Col xs={2}>
             <h6><a href="/home">Park Enthusiast</a></h6>
           </Col>
-          <Col sm="7">
-            <div>
-              <AdSense.Google
-                client='ca-pub-7292810486004926'
-                slot='7806394673'
-                style={{ width: 500, height: 100, float: 'left' }}
-                format=''
-                layout='in-article'
-              />
-            </div>
+          <Col xs={7}>
           </Col>
           <Navbar.Collapse>
             <Nav>
