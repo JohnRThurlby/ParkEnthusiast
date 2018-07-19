@@ -3,7 +3,7 @@ import React, { Component } from "react"
 import ModalConductor from "../ModalConductor"
 
 import "./Footer.css"
-import { Navbar, Nav, NavDropdown, MenuItem  } from 'react-bootstrap'
+import { Navbar, Row, Col } from 'react-bootstrap'
 
 export default class Footer extends Component { 
 
@@ -21,28 +21,25 @@ export default class Footer extends Component {
     return (
       <div className="Navibar">
         <Navbar inverse collapseOnSelect>
-          <Navbar.Header>
-            <Navbar.Brand>
-              <a href="/home">Park Enthusiast 2018</a>
-            </Navbar.Brand>
-            <Navbar.Toggle />
-          </Navbar.Header>
-          <Navbar.Collapse>
-            <Nav>
-              <NavDropdown eventKey={3} title="Privacy & Terms" id="basic-nav-dropdown">
-                <MenuItem eventKey={3.1}>
-                  <button className="btn btn-action" onClick={() => this._handleModal(true, 'PRIVACY')}>
-                    Privacy
-                  </button>
-                </MenuItem>
-                <MenuItem eventKey={3.2}>
-                  <button className="btn btn-action" onClick={() => this._handleModal(true, 'TERMS')}>
-                    Terms & Conditions
-                  </button>
-                </MenuItem>
-              </NavDropdown>
-            </Nav>
-          </Navbar.Collapse>
+          <Row>
+            <Col xs={4}>
+              <Navbar.Brand>
+                <a href="/home">Copyright Park Enthusiast 2018</a>
+              </Navbar.Brand>
+            </Col>
+            <Col xs={3}>
+            </Col>
+            <Col xs={2}>
+              <button className="btn btn-action button" onClick={() => this._handleModal(true, 'PRIVACY')}>
+                Privacy
+              </button>
+            </Col>
+            <Col xs={2}>
+              <button className="btn btn-action button" onClick={() => this._handleModal(true, 'TERMS')}>
+              Terms & Conditions
+              </button>
+            </Col>
+          </Row>
         </Navbar>
 
         <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>

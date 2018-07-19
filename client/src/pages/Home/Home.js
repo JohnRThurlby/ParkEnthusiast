@@ -3,7 +3,6 @@ import Logo from "../../components/Logo";
 
 import ModalConductor from "../../components/ModalConductor";
 
-import Container from "../../components/Container"
 import Row from "../../components/Row";
 import Col from "../../components/Col";
 
@@ -27,15 +26,9 @@ export default class Home extends Component {
           <Row>  
             <Col size="sm-3"></Col>
             <Col size="sm-6">
-              <h2>Park</h2>
+              <h2>Park Enthusiast</h2>
             </Col>
           </Row>  
-          <Row>
-            <Col size="sm-3"></Col>
-            <Col size="sm-6">
-              <h2>Enthusiast</h2>
-            </Col>
-          </Row>
           <Row>
             <Col size="sm-3"></Col>
             <Col size="sm-6">
@@ -44,33 +37,22 @@ export default class Home extends Component {
                 Make comments and rate your experiece. Track the actual time you waited in line. 
                 As you gather more data, see what your prior wait times have been like.  
               </h5>
+              <h4>Now it is time to sign up and get riding!</h4>
+
             </Col>
           </Row>
-          <Container>
-            <Row>
-              <Col size="sm-5"></Col>
-              <Col size="sm-7">
-              <div>
-                <button className="btn btn-action" onClick={() => this._handleModal(true, 'LOGIN')}>
-                  Enter
-                </button>
-              </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col size="sm-5"></Col>
-              <Col size="sm-7">
-              <div>
-                <button className="btn btn-action" onClick={() => this._handleModal(true, 'REGISTRATION')}>
-                  Not a user?
-                </button>
-              </div>
-              </Col>
-            </Row>
-          </Container>
+          <Row>
+            <Col size="sm-3"></Col>
+            <Col size="sm-7">
+            <div>
+              <h4><a href="#" onClick={() => this._handleModal(true, 'REGISTRATION')}>Not a User</a></h4>
+            </div>
+            </Col>
+          </Row>
+          
         </Logo>
 
-        <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
+        <ModalConductor history={this.props.history} handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
       </div>
     )
   }

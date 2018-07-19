@@ -1,77 +1,208 @@
-import React from "react";
+import React, { Component } from "react"
 import { Link } from "react-router-dom";
-import Container from "../../components/Container"
-import Row from "../../components/Row";
-import Col from "../../components/Col";
-import Logo from "../../components/Logo";
-import { MenuItem, DropdownButton } from 'react-bootstrap';
 
-const RideSelection = props => (
-  <div>
-    <Logo backgroundImage="../../pages/ridesel.jpg'">
-    <Container> 
-        <Row>
-            <Col size="md-12">     
-                <div id="parkname" className="text-center">
-                    <h6><span>Adventure Landing</span></h6>
-                </div>
-                        
-                <div id="parkaddr" className="text-center ">
-                    <h6><span>1944 Beach Blvd</span></h6><h6><span>Jacksonville Beach, FL 32250</span></h6>
-                </div>
-                    
-                <div id="parkphone" className="text-center ">
-                    <h6><span>(904) 246-4386</span></h6>
-                </div>
-                
-                <div id="ticketprices" className="text-center">
-                     <DropdownButton
-                        bsSize="medium"
-                        title="Ticket Prices"
-                        id="dropdown-size-medium"
-                        >
-                        <MenuItem eventKey="1">Full Day Admission 42″ &amp; Above – $32.99</MenuItem>
-                        <MenuItem eventKey="2">Full Day Admission Below 42″ – $24.99</MenuItem>
-                        <MenuItem eventKey="3">Full Day Spectator Pass – $32.99</MenuItem>
-                        <MenuItem eventKey="4">3 and under – FREE</MenuItem>
+import API from "../../utils/API";
 
-                    </DropdownButton>
-                </div>
-                             
-                <div id="parkhrlist" className="text-center">
-                    <DropdownButton
-                        bsSize="medium"
-                        title="Park Hours"
-                        id="dropdown-size-medium"
-                        >
-                        <MenuItem eventKey="1">Sunday – Thursday – 10am – 11pm</MenuItem>
-                        <MenuItem eventKey="2">Friday &amp; Saturday – 10am – 12am</MenuItem>
-                        
-                    </DropdownButton>
-                </div>
-                
-                <div className="googleMap text-center">
-                        <a href="//maps.google.com/?q={{this.likelocation}}" target="_blank" rel="noopener noreferrer" data-ga-label="Full Map Link" itemprop="map">
-                        <img src="//maps.googleapis.com/maps/api/staticmap?zoom=13&amp;size=314x300&amp;maptype=roadmap&amp;markers=color:red%7Ccolor:red%7C{{this.likelocation}}&amp;key=AIzaSyBZyI2NwL198_2YM1ZBlZ3FdDb6JcOnUPI&amp;sensor=false" alt="{{venue_address}} {{city_name}} {{region_abbr}} {{postal_code}}"/>
-                        <p>Full Map and Directions</p></a>
-                    </div>
+import { Row, Col } from 'react-bootstrap'
 
-                <div className="text-center">
-                    <button className="btn btn-action text-center">
-                
-                        <div>
-                            <Link to="/rideinfo">
-                            </Link>
-                        </div>
-                        Select this Park
-                    </button>
-                </div>
-            </Col>
+import ReactGoogleMapLoader from "react-google-maps-loader"
+import ReactGoogleMap from "react-google-map"
+
+import Dropdown from 'react-dropdown'
+import 'react-dropdown/style.css'
+
+let parkhours = []
+let defaultHours = "Select from list"
+let parkprices = []
+let defaultPrices = "Select from list"
+let userLat = 0
+let userLon = 0
+
+export default class Rideselection extends Component {
+  
+  state = { 
+    park: {}
+  }
+
+  componentDidMount() {
+
+    this.getPark()
+
+    this.getHours()
+
+    this.getTickets()
+
+  }
+
+  getPark = () => {
+    API.getPark({id: 59})
+
+      .then(res => {
+          console.log(res.data);
+          this.setState({ park: res.data });
+          userLat = parseFloat(this.state.park.parklat)
+          userLon = parseFloat(this.state.park.parklon)
+          console.log(userLat);
+          console.log(userLon);
+        }) 
+      .catch(err => console.log(err))
+  };
+
+  getHours = () => {
+    API.getHours( {parkid: 59}
+
+    //  {parkid: this.state.parkid }
+    )
+
+    .then(res => {
+      console.log(res.data);
+      this.setState({ hours: res.data });
+      parkhours[0] = "Monday" + res.data.parkmon
+      parkhours[1] = "tuesday " + res.data.parktue
+      parkhours[2] = "Wednesday " + res.data.parkwed
+      parkhours[3] = "Thursday " + res.data.parkthu
+      parkhours[4] = "Friday " + res.data.parkfri
+      parkhours[5] = "Saturday " + res.data.parksat
+      parkhours[6] = "Sunday " + res.data.parksun
+      
+      console.log(parkhours);
+      defaultHours = parkhours[0]
+
+    })
+      .catch(err => console.log(err))
+  };
+
+  getTickets = () => {
+    API.getTickets( {parkid: 61}
+
+    //  {parkid: this.state.parkid }
+    )
+    .then(res => {
+      console.log(res.data);
+      this.setState({ hours: res.data });
+      parkprices[0] = res.data.parkline1
+      parkprices[1] = res.data.parkline2
+            
+      console.log(parkprices);
+      defaultPrices = parkprices[0]
+
+    })
+      .catch(err => console.log(err))
+  };
+  
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
+  handleFormSubmit = event => {
+    event.preventDefault();
+      
+      API.getPark({
+        parkid: this.state.parkid,
+       
+      })
+        .then(<Link to="/parkselection"></Link>)
+        .catch(err => console.log(err));
+  };
+  
+  render() {
+    return (
+      
+      <div>
+        <Row> 
+          <Col size="sm-4"> </Col>
+          <Col size="sm-2">
+            <h3 style={{ textAlign: "center" }}>{this.state.park.parkname}</h3>
+          </Col>
         </Row>
-    </Container> 
-    </Logo>  
-  </div>
-   
-);
+        <Row>
+          <div id="u47_text" className="text-center">
+            <Col size="sm-4"> </Col>
+            <Col size="sm-2">
+              <h5>Address</h5>
+            </Col>
+            <Col size="sm-2">
+              <h6>{this.state.park.parkaddress1 + ", " + this.state.park.parkcity + ", " + this.state.park.parkstate + ", " + this.state.park.parkzip}</h6>
+            </Col>
+          </div>
+        </Row>
+      
+        <Row>
+          <div id="u48_text" className="text-center">
+            <Col size="sm-4"> </Col>
+            <Col size="sm-2">
+              <h5>Phone Number</h5>
+            </Col>
+            <Col size="sm-2">
+              <h6>{this.state.park.parkphone}</h6>
+            </Col>
+          </div>
+        </Row>
 
-export default RideSelection;
+        <Row>
+          <div id="u45_text" className="text-center">
+            <Col size="sm-4"> </Col>
+            <Col size="sm-2">
+                <h4 style={{ textAlign: "center" }}>Park Hours</h4>
+            </Col>
+          </div>
+        </Row>
+
+        <Row>
+          <div id="u45_text" className="text-center">
+            <Col size="sm-4"> </Col>
+            <Col size="sm-2">
+                <Dropdown options={parkhours} value={defaultHours} />
+            </Col>
+          </div>
+        </Row>
+
+        <Row>
+          <div id="u45_text" className="text-center">
+            <Col size="sm-4"> </Col>
+            <Col size="sm-2">
+                <h4 style={{ textAlign: "center" }}>Ticket Prices</h4>
+            </Col>
+          </div>
+        </Row>
+
+        <Row>
+          <div id="u45_text" className="text-center">
+            <Col size="sm-4"> </Col>
+            <Col size="sm-2">
+              <Dropdown options={parkprices} value={defaultPrices} />
+            </Col>
+          </div>
+        </Row>
+
+        <Row>
+            <Col size="sm-4"></Col>
+            <Col size="sm-6">
+            
+              <ReactGoogleMapLoader
+                params={{
+                    key: "AIzaSyDg-vYzGC3fEWIUt7dhItwHdmq8uCe7yGQ",
+                    libraries: "places,geometry",
+                }}
+                render={googleMaps =>
+                    googleMaps && (
+                    <div style={{height: "400px", width: "400px"}}>
+                      <ReactGoogleMap
+                        googleMaps={googleMaps}
+                        center={{lat: userLat, lng: -userLon}}
+                        zoom={10}
+                      />
+                   </div>
+                  )}
+               />
+            </Col>
+          </Row>
+    
+      </div>
+    )
+  }
+}

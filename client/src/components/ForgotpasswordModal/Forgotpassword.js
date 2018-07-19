@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { Row, Col } from 'react-bootstrap'
-import { Input, TextArea } from "../../components/Form";
+import { Input } from "../../components/Form";
 
 import ModalConductor from "../ModalConductor"
 
@@ -9,7 +9,7 @@ require("dotenv").config()
 var ses = require('node-ses')
   , client = ses.createClient({ key: "AKIAJY3KUB5OAVIHPW3Q", secret: "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" });
 
-export default class ContactModal extends Component {
+export default class ForgotpasswordModal extends Component {
 
   constructor(props) {
     super(props)
@@ -17,9 +17,7 @@ export default class ContactModal extends Component {
   }
 
   state = {
-    name: "",
     email: "",
-    comment: ""
   };
 
   handleInputChange = event => {
@@ -31,13 +29,12 @@ export default class ContactModal extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.name && this.state.email && this.state.comment) {
+    if (this.state.email) {
       console.log("in email")
       client.sendEmail({
         to: "johnrthurlby@gmail.com"
         , from: "enthusiastpark@gmail.com"
-        , message: this.state.comment
-        , altText: this.state.name
+        , altText: "Forgot password"
       }, function (err, data, res) {
         console.log("in function")
       });
@@ -58,22 +55,15 @@ export default class ContactModal extends Component {
               <Col xs={2}></Col>
               <Col xs={8}>
                 
-                <h3 className="darken-4 text-center">Write to us</h3>
+                <h3 className="darken-4 text-center">Forgot Password</h3>
 
               </Col>
             </Row>
             <form>
               <Row>
                 <Col xs={2}></Col>
-                <Col xs={8}>
-
-                  <Input
-                    autoComplete='name' 
-                    value={this.state.name}
-                    onChange={this.handleInputChange}
-                    name="name"
-                    placeholder="Name"
-                  />
+                <Col xs={6}>
+                  <h5 className="darken-4 text-center">Enter email address to get password</h5>
                 </Col>
               </Row>
               <Row>
@@ -89,31 +79,17 @@ export default class ContactModal extends Component {
                   />
                 </Col>
               </Row>
-              
-              <Row>
-                <Col xs={2}></Col>
-                <Col xs={8}>
-
-                  <TextArea
-                    value={this.state.comment}
-                    onChange={this.handleInputChange}
-                      name="comment"
-                    placeholder="Comment"
-                  />
-                </Col>
-              </Row>
               <Row>
                 <Col xs={5}></Col>
                 <Col xs={5}>
                   <button className="btn btn-action button"
-                      onClick={this.handleFormSubmit}
-                    >
-                    Contact Us
+                    onClick={this.handleFormSubmit}
+                  >
+                    Submit
                   </button>
                 </Col>
               </Row>
             </form>
-
             <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
           </div>
        </Modal>

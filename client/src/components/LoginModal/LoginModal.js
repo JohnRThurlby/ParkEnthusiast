@@ -2,8 +2,12 @@ import React, { Component } from "react"
 
 import ModalConductor from "../ModalConductor"
 
+import API from "../../utils/API";
+
 import { Form, Row, Col } from 'react-bootstrap'
-import { Input, FormBtn } from "../../components/Form";
+import { Input } from "../../components/Form";
+
+import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 
 export default class LoginModal extends Component {
   constructor(props) {
@@ -32,7 +36,12 @@ export default class LoginModal extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     if (this.state.email && this.state.password) {
-      console.log("in email")
+      API.getUser({
+        email: this.state.email,
+        userpassword: this.state.password
+      })
+        .then(()=> {this.props.history.replace("/parkselection")})
+        .catch(err => console.log(err));
    }
   };
   
@@ -40,35 +49,44 @@ export default class LoginModal extends Component {
     return (
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
+          <button type="button" className="close" onClick={() => this.closeModal()} aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
           <div>
             <div className="container">
               <Form action="Post">
                 <Row>
-                  <Col xs={12}>
+                  <Col xs={1}></Col>
+                  <Col xs={11}>
                     <h4 style={{ textAlign: "center" }}>Login with Social Media or Manually</h4>
                   </Col>
                 </Row>
+               
                 <Row>
                   <Col xs={1}></Col>
-                  <Col xs={2}>
-                    <a href="/home" className="fb btn">
-                      <i className="fa fa-facebook fa-fw"></i>Facebook
-                    </a>
+                  <Col xs={3}>
+                    <FacebookLoginButton onClick={() => alert("Hello")}>
+                      <span>Login</span>
+                    </FacebookLoginButton>
                   </Col>
-                  <Col xs={2}></Col>
-                  <Col xs={2}>
-                    <a href="/home" className="twitter btn">
-                      <i className="fa fa-twitter fa-fw"></i>Twitter
-                    </a>
+                  <Col xs={1}></Col>
+                  <Col xs={3}>
+                    <TwitterLoginButton onClick={() => alert("Hello")}>
+                      <span>Login</span>
+                    </TwitterLoginButton>
                   </Col>
-                  <Col xs={2}></Col>
-                  <Col xs={2}>
-                    <a href="/home" className="google btn">
-                      <i className="fa fa-google fa-fw"></i>Google+
-                    </a>
+                  <Col xs={1}></Col>
+                  <Col xs={3}>
+                    <GoogleLoginButton onClick={() => alert("Hello")}>
+                      <span>Login</span>
+                    </GoogleLoginButton>
                   </Col>
                 </Row>
-                <Row></Row>
+                <Row>
+                  <Col xs={12}>               
+                    <hr className="someClass"/>
+                  </Col>
+                </Row>
                 <Row>
                   <Col xs={4}></Col>
                   <Col xs={5}>
@@ -81,62 +99,48 @@ export default class LoginModal extends Component {
                   <Col xs={3}></Col>
                   <Col xs={6}>
                     <div>
-                      <label className="grey-text">Email</label>
                       <Input
+                        type='email'
                         autoComplete='email' 
                         value={this.state.email}
                         onChange={this.handleInputChange}
                         name="email"
-                        placeholder="Email (required)"
+                        placeholder="Email"
                       />
-                      <label className="grey-text">Password</label>
                       <Input
+                        type='password'
                         autoComplete='password' 
                         value={this.state.password}
                         onChange={this.handleInputChange}
                         name="password"
-                        placeholder="Password (required)"
+                        placeholder="Password"
                       />
 
                     </div>
                   </Col> 
                 </Row>  
                 <Row>
+                  <Col xs={3}></Col>
+                  <Col xs={6}>
+                    <div>
+                     <h6><a href="#" onClick={() => this._handleModal(true, 'FORGOT')}>Forgot Password?</a></h6>
+                    </div>
+                  </Col> 
+                </Row>  
+                <Row>
                   <Col xs={5}></Col>
                   <Col xs={5}>
-                    <FormBtn
-                      disabled={!(this.state.email && this.state.password)}
+                    <button className="btn btn-action button"
                       onClick={this.handleFormSubmit}
                     >
                       Login
-                    </FormBtn>
+                    </button>
                   </Col>
                 </Row>
               </Form>
             </div>
-            <div className="bottom-container">
-              <Row>
-                <Col xs={3}></Col>
-                <Col xs={3}>
-                  <button className="btn btn-action" onClick={() => this._handleModal(true, 'RESET')}>
-                    Reset Password
-                  </button> 
-                </Col>
-                <Col xs={1}></Col>
-                <Col xs={3}>
-                  <button className="btn btn-action" onClick={() => this._handleModal(true, 'FORGOT')}>
-                    Forgot password?
-                  </button>
-                </Col>
-              </Row>
-            </div>
-
             <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
-          
-            <Row>
-              <Col xs={10}></Col> 
-              <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
-            </Row>
+            
           </div>
         </Modal>
       </div>
@@ -164,7 +168,7 @@ class Modal extends React.Component {
       width: '60%',
       transform: 'translate(-50%, -50%)',
       zIndex: '9999',
-      background: 'rgba(255,255,255, 0.7)'
+      background: 'rgba(255,255,255, 1)'
     }
 
     if (this.props.width && this.props.height) {
@@ -188,7 +192,7 @@ class Modal extends React.Component {
       top: '0px',
       left: '0px',
       zIndex: '9998',
-      background: 'rgba(255, 255, 255, 0.5)'
+      background: 'rgba(255, 255, 255, 0.2)'
     }
 
     if (this.props.backdropStyle) {

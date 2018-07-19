@@ -3,35 +3,38 @@ console.log("made it in here, parksController")
 // Defining methods for the parksController
 module.exports = {
   findAll: function(req, res) {
+    console.log("in findAll")
     db.Parks
-      .find(req.query)
-      .sort({ date: -1 })
+      .findAll({ where: {parkstate: "FL"}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
+    console.log("in findbyid " + req.params.id )
     db.Parks
-      .findById(req.params.id)
+      .findById("59")
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  create: function(req, res) {
-    db.Users
-      .create(req.body)
+  findHoursbyid: function(req, res) {
+    console.log("in findHoursbyid " + req.params.id )
+    db.Parkhours
+      .findOne({where: {parkid: "59"}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  update: function(req, res) {
-    db.Parks
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
+  findTicketsbyid: function(req, res) {
+    console.log("in findTicketsbyid " + req.params.id )
+    db.Parktickets
+      .findOne({ where: {parkid: "59"}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  remove: function(req, res) {
-    db.Parks
-      .findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
+  findRidebyid: function(req, res) {
+    db.Parkrides
+      .findById({ where: {parkid: 59, rideid: 1}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }
+  
 };

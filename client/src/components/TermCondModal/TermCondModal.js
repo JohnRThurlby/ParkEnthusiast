@@ -12,6 +12,9 @@ export default class TermCondModal extends Component {
     return (
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
+          <button type="button" className="close" onClick={() => this.closeModal()} aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
           <Row>
           <Col xs={1}></Col>
             <Col xs={11}>
@@ -178,10 +181,6 @@ export default class TermCondModal extends Component {
               <p>Questions about the Terms of Service should be sent to us at enthusiastpark@gmail.com.</p>  
               </Col>
           </Row>
-          <Row>
-            <Col xs={10}></Col>
-            <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
-          </Row>
         </Modal>
       </div>
     )
@@ -207,7 +206,7 @@ class Modal extends React.Component {
       left: '50%',
       transform: 'translate(-50%, -50%)',
       zIndex: '9999',
-      background: 'rgba(255,255,255, 0.7)',
+      background: 'rgba(255,255,255, 1)',
       maxHeight: "100%",
       overflow: "auto"
     }
@@ -233,7 +232,7 @@ class Modal extends React.Component {
       top: '0px',
       left: '0px',
       zIndex: '9998',
-      background: 'rgba(255, 255, 255, 0.5)'
+      background: 'rgba(255, 255, 255, 0.2)'
     }
 
     if (this.props.backdropStyle) {

@@ -1,12 +1,13 @@
 import React, { Component } from "react"
+import { Link } from "react-router-dom";
+
 
 import ModalConductor from "../ModalConductor"
 
 import API from "../../utils/API";
 
-import { Row, Col, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 import { Input, FormBtn } from "../../components/Form";
-
 
 export default class RegistrationModal extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ export default class RegistrationModal extends Component {
     modalStatus: false,
     modalType: "",
     nickname: "",
+    zipcode: "",
     email: "",
     repemail: "",
     password: "",
@@ -37,15 +39,17 @@ export default class RegistrationModal extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.nickname && this.state.email && this.state.password) {
+    
+    if (this.state.nickname && this.state.email && this.state.password && this.state.zipcode) {
       console.log("in API call")
+      
       API.saveUser({
         nickname: this.state.nickname,
-        state: "FL", 
+        zipcode: this.state.zipcode, 
         email: this.state.email,
-        password: this.state.password
+        userpassword: this.state.password
       })
-        .then(res => this.loadBooks())
+        .then(<Link to="/parkselection"></Link>)
         .catch(err => console.log(err));
     }
   };
@@ -55,6 +59,9 @@ export default class RegistrationModal extends Component {
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
           <div>
+          <button type="button" className="close" onClick={() => this.closeModal()} aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
             <Row> 
               <Col xs={10}>
                 <h4 style={{ textAlign: "center" }}>Register for Park Enthusiast</h4>
@@ -65,90 +72,38 @@ export default class RegistrationModal extends Component {
                 <Col xs={2}></Col>
                 <Col xs={8}>
 
-                  <label className="grey-text">Nick Name</label>
                   <Input
-                    autoComplete='nickname' 
                     value={this.state.nickname}
                     onChange={this.handleInputChange}
                     name="nickname"
-                    placeholder="Nick Name (required)"
+                    placeholder="Nick Name"
                   />
                 </Col>
               </Row>
               <Row>
-                <FormGroup controlId="formControlsState">
-                  <Col componentClass={ControlLabel} sm={2}>
-                    <h6>State</h6>
-                  </Col>
-                  <Col xs={4}>
-                    <FormControl componentClass="select">
-                        <option value="AL">Alabama</option>
-                        <option value="AK">Alaska</option>
-                        <option value="AZ">Arizona</option>
-                        <option value="AR">Arkansas</option>
-                        <option value="CA">California</option>
-                        <option value="CO">Colorado</option>
-                        <option value="CT">Connecticut</option>
-                        <option value="DE">Delaware</option>
-                        <option value="DC">District of Columbia</option>
-                        <option value="FL">Florida</option>
-                        <option value="GA">Georgia</option>
-                        <option value="HI">Hawaii</option>
-                        <option value="ID">Idaho</option>
-                        <option value="IL">Illinois</option>
-                        <option value="IN">Indiana</option>
-                        <option value="IA">Iowa</option>
-                        <option value="KS">Kansas</option>
-                        <option value="KY">Kentucky</option>
-                        <option value="LA">Louisiana</option>
-                        <option value="ME">Maine</option>
-                        <option value="MD">Maryland</option>
-                        <option value="MA">Massachusetts</option>
-                        <option value="MI">Michigan</option>
-                        <option value="MN">Minnesota</option>
-                        <option value="MS">Mississippi</option>
-                        <option value="MO">Missouri</option>
-                        <option value="MT">Montana</option>
-                        <option value="NE">Nebraska</option>
-                        <option value="NV">Nevada</option>
-                        <option value="NH">New Hampshire</option>
-                        <option value="NJ">New Jersey</option>
-                        <option value="NM">New Mexico</option>
-                        <option value="NY">New York</option>
-                        <option value="NC">North Carolina</option>
-                        <option value="ND">North Dakota</option>
-                        <option value="OH">Ohio</option>
-                        <option value="OK">Oklahoma</option>
-                        <option value="OR">Oregon</option>
-                        <option value="PA">Pennsylvania</option>
-                        <option value="RI">Rhode Island</option>
-                        <option value="SC">South Carolina</option>
-                        <option value="SD">South Dakota</option>
-                        <option value="TN">Tennessee</option>
-                        <option value="TX">Texas</option>
-                        <option value="UT">Utah</option>
-                        <option value="VT">Vermont</option>
-                        <option value="VA">Virginia</option>
-                        <option value="WA">Washington</option>
-                        <option value="WV">West Virginia</option>
-                        <option value="WI">Wisconsin</option>
-                        <option value="WY">Wyoming</option>
-                        <option value="other">Other...</option>
-                    </FormControl>
-                  </Col>
-                </FormGroup>
+              <Col xs={2}></Col>
+                <Col xs={8}>
+
+                  <Input
+                    autoComplete='zipcode' 
+                    value={this.state.zipcode}
+                    onChange={this.handleInputChange}
+                    name="zipcode"
+                    placeholder="Zipcode"
+                  />
+                </Col>
               </Row>
               <Row>
                 <Col xs={2}></Col>
                 <Col xs={8}>
 
-                  <label className="grey-text">Email</label>
                   <Input
+                    type='email'
                     autoComplete='email' 
                     value={this.state.email}
                     onChange={this.handleInputChange}
                     name="email"
-                    placeholder="Email (required)"
+                    placeholder="Email"
                   />
                 </Col>
               </Row>
@@ -156,13 +111,13 @@ export default class RegistrationModal extends Component {
                 <Col xs={2}></Col>
                 <Col xs={8}>
 
-                  <label className="grey-text">Repeat Email</label>
                   <Input
-                    autoComplete='repemail' 
+                    type='email'
+                    autoComplete='email' 
                     value={this.state.repemail}
                     onChange={this.handleInputChange}
                     name="repemail"
-                    placeholder="Repeat Email (required)"
+                    placeholder="Confirm Email"
                   />
                 </Col>
               </Row>
@@ -170,13 +125,12 @@ export default class RegistrationModal extends Component {
                 <Col xs={2}></Col>
                 <Col xs={8}>
 
-                  <label className="grey-text">Password</label>
                   <Input
-                    autoComplete='password' 
+                    type='password'
                     value={this.state.password}
                     onChange={this.handleInputChange}
                     name="password"
-                    placeholder="Password (required)"
+                    placeholder="Password"
                   />
                 </Col>
               </Row>
@@ -184,34 +138,28 @@ export default class RegistrationModal extends Component {
                 <Col xs={2}></Col>
                 <Col xs={8}>
 
-                  <label className="grey-text">Repeat Password</label>
                   <Input
-                    autoComplete='reppassword' 
+                    type='password'
                     value={this.state.reppassword}
                     onChange={this.handleInputChange}
                     name="reppassword"
-                    placeholder="Repeat Password (required)"
+                    placeholder="Confirm Password"
                   />
                 </Col>
               </Row>
               <Row>
                 <Col xs={4}></Col>
                 <Col xs={5}>
-                  <FormBtn
-                    disabled={!(this.state.nickname && this.state.email && this.state.repemail && this.state.password && this.state.reppassword)}
+                  <button className="btn btn-action button"
                     onClick={this.handleFormSubmit}
                   >
                     Register
-                  </FormBtn>
+                  </button>
                 </Col>
               </Row>                 
             </form>
             <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
           </div>
-          <Row>
-            <Col xs={9}></Col> 
-            <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
-          </Row>
         </Modal>
       </div>
     )
@@ -238,7 +186,7 @@ class Modal extends React.Component {
       width: '40%',
       transform: 'translate(-50%, -50%)',
       zIndex: '9999',
-      background: 'rgba(255,255,255, 0.7)',
+      background: 'rgba(255,255,255, 1)',
       maxHeight: "100%",
       overflow: "auto"
     }
@@ -264,7 +212,7 @@ class Modal extends React.Component {
       top: '0px',
       left: '0px',
       zIndex: '9998',
-      background: 'rgba(255, 255, 255, 0.5)'
+      background: 'rgba(255, 255, 255, 0.2)'
     }
 
     if (this.props.backdropStyle) {
@@ -293,209 +241,3 @@ class Modal extends React.Component {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { Component } from "react"
-
-// import ModalConductor from "../ModalConductor"
-
-
-// import { Form, FormControl, Col, FormGroup, ControlLabel } from 'react-bootstrap';
-
-
-// export default class RegistrationModal extends Component  {
-
-//     state = { 
-//       modalStatus: false,
-//       modalType: ""
-//     }
-  
-//     _handleModal = (status, type) => {
-//     this.setState ({modalStatus: status, modalType: type})
-//     }
-  
-//     closeModal = (status, type) => {
-//       this.setState ({modalStatus: status, modalType: type})
-//     }  
-    
-//     render () {
-  
-//       return (
-    
-//       <div>
-//         <h5>Reigster for Park Enthusiast</h5>
-//         <Form horizontal>
-
-//           <FormGroup controlId="formHorizontalFirst">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               First Name
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="text" placeholder="Enter First Name" />
-//           </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalMI">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               MI
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="text" placeholder="Enter MI" />
-//           </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalLast">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               Last Name
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="text" placeholder="Enter Last Name" />
-//           </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalAddr">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               Address
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="text" placeholder="Enter Address" />
-//           </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalCity">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               City
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="text" placeholder="Enter City" />
-//           </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formControlsState">
-//             <ControlLabel>State</ControlLabel>
-//             <FormControl componentClass="select" placeholder="Select State">
-//               <option value="AL">Alabama</option>
-//               <option value="AK">Alaska</option>
-//               <option value="AZ">Arizona</option>
-//               <option value="AR">Arkansas</option>
-//               <option value="CA">California</option>
-//               <option value="CO">Colorado</option>
-//               <option value="CT">Connecticut</option>
-//               <option value="DE">Delaware</option>
-//               <option value="DC">District of Columbia</option>
-//               <option value="FL">Florida</option>
-//               <option value="GA">Georgia</option>
-//               <option value="HI">Hawaii</option>
-//               <option value="ID">Idaho</option>
-//               <option value="IL">Illinois</option>
-//               <option value="IN">Indiana</option>
-//               <option value="IA">Iowa</option>
-//               <option value="KS">Kansas</option>
-//               <option value="KY">Kentucky</option>
-//               <option value="LA">Louisiana</option>
-//               <option value="ME">Maine</option>
-//               <option value="MD">Maryland</option>
-//               <option value="MA">Massachusetts</option>
-//               <option value="MI">Michigan</option>
-//               <option value="MN">Minnesota</option>
-//               <option value="MS">Mississippi</option>
-//               <option value="MO">Missouri</option>
-//               <option value="MT">Montana</option>
-//               <option value="NE">Nebraska</option>
-//               <option value="NV">Nevada</option>
-//               <option value="NH">New Hampshire</option>
-//               <option value="NJ">New Jersey</option>
-//               <option value="NM">New Mexico</option>
-//               <option value="NY">New York</option>
-//               <option value="NC">North Carolina</option>
-//               <option value="ND">North Dakota</option>
-//               <option value="OH">Ohio</option>
-//               <option value="OK">Oklahoma</option>
-//               <option value="OR">Oregon</option>
-//               <option value="PA">Pennsylvania</option>
-//               <option value="RI">Rhode Island</option>
-//               <option value="SC">South Carolina</option>
-//               <option value="SD">South Dakota</option>
-//               <option value="TN">Tennessee</option>
-//               <option value="TX">Texas</option>
-//               <option value="UT">Utah</option>
-//               <option value="VT">Vermont</option>
-//               <option value="VA">Virginia</option>
-//               <option value="WA">Washington</option>
-//               <option value="WV">West Virginia</option>
-//               <option value="WI">Wisconsin</option>
-//               <option value="WY">Wyoming</option>
-//               <option value="other">...</option>
-//             </FormControl>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalZip">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               Zip
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="text" placeholder="Enter Zip" />
-//           </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalEmail">
-//             <Col componentClass={ControlLabel} sm={2}>
-//               Email
-//             </Col>
-//             <Col xs={6}>
-//               <FormControl type="email" placeholder="Enter Email" />
-//             </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalUserId1">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               UserId
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="text" placeholder="Enter UserId" />
-//           </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalUserId2">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               Repeat UserId
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="text" placeholder="Repeat UserId" />
-//           </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalPassword1">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               Password
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="password" placeholder="Enter Password" />
-//           </Col>
-//           </FormGroup>
-//           <FormGroup controlId="formHorizontalPassword2">
-//           <Col componentClass={ControlLabel} sm={2}>
-//               Repeat Password
-//           </Col>
-//           <Col xs={6}>
-//               <FormControl type="password" placeholder="Repeat Password" />
-//           </Col>
-//           </FormGroup>
-
-//           <FormGroup>
-//             <Col smOffset={2} xs={9}>
-//             <button className="btn btn-action" onClick={() => this._handleModal(true, 'REGISTER')}>
-//                 Register
-//               </button>
-//             </Col>
-//           </FormGroup>
-//         </Form>
-
-//         <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
-
-//         </div>
-
-//     )
-//   }
-// }

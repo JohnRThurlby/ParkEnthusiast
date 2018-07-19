@@ -8,7 +8,7 @@ import Row from "../../components/Row";
 import Col from "../../components/Col";
 import { MenuItem, DropdownButton } from 'react-bootstrap';
 
-class RideNow extends Component {
+export default class RideNow extends Component {
 
   constructor() {
     super();
@@ -141,10 +141,7 @@ class RideNow extends Component {
             id="dropdown-size-medium"
             >
             <MenuItem eventKey="1">5/24/2012</MenuItem>
-            <MenuItem eventKey="2">7/1/2014</MenuItem>
-            <MenuItem eventKey="3">9/15/2015</MenuItem>
-            <MenuItem eventKey="4">4/24/2017</MenuItem>
-            <MenuItem eventKey="5">1/4/2018</MenuItem>
+            
 
           </DropdownButton>
         </div>
@@ -154,6 +151,4 @@ class RideNow extends Component {
   </div>
 );
 }
-}
-
-export default RideNow;
+} 
