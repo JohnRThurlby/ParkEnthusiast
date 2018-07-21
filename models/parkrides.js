@@ -8,8 +8,6 @@ module.exports = function(sequelize, DataTypes) {
   parkhgtreq:    DataTypes.STRING,
   parkduration:  DataTypes.STRING,
   parkmaxhgt:    DataTypes.STRING,
-  parkwaittime:  DataTypes.STRING,
-  parkavgwait:   DataTypes.STRING,
   parkopened:    DataTypes.STRING,
   parkspeed:     DataTypes.STRING,
   parklevel:     DataTypes.STRING,
