@@ -620,6 +620,10 @@ email-existence@^0.1.6:
   dependencies:
     async "^2.0.0-rc.6"
 
+email-validator@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/email-validator/-/email-validator-2.0.4.tgz#b8dfaa5d0dae28f1b03c95881d904d4e40bfe7ed"
+
 encodeurl@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/encodeurl/-/encodeurl-1.0.2.tgz#ad3ff4c86ec2d029322f5a02c3a9a606c95b3f59"
@@ -1880,6 +1884,10 @@ posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
 
+postcode-validator@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/postcode-validator/-/postcode-validator-1.2.0.tgz#017acba5860309ea54e1384acc4a40dfc250b06e"
+
 prepend-http@^1.0.1:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
@@ -2680,6 +2688,10 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validate-password@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/validate-password/-/validate-password-1.0.4.tgz#fb14da153cb57e885f29324a291c297e1a98c54f"
 
 validator@^10.4.0:
   version "10.4.0"

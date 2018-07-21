@@ -11,6 +11,8 @@ import TermCondModal from './TermCondModal'
 import RegistrationModal from './RegistrationModal'
 import ForgotpasswordModal from './ForgotpasswordModal'
 import PriorRideModal from './PriorrideModal'
+import RideselectionModal from './RideselectionModal'
+
 
 
 export default class ModalConductor extends Component {
@@ -40,7 +42,10 @@ export default class ModalConductor extends Component {
       case 'REGISTRATION':
         return <RegistrationModal history={this.props.history} handleModal={this.props.handleModal}/>;
 
-        case 'PRIORRIDE':
+      case 'RIDESELECTION':
+        return <RideselectionModal history={this.props.history} handleModal={this.props.handleModal}/>;
+
+      case 'PRIORRIDE':
         return <PriorRideModal/>;
       
       default:

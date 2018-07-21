@@ -1,13 +1,19 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom";
-
 
 import ModalConductor from "../ModalConductor"
 
 import API from "../../utils/API";
 
 import { Row, Col } from 'react-bootstrap'
-import { Input, FormBtn } from "../../components/Form";
+import { Input } from "../../components/Form";
+
+const ValidatePassword = require('validate-password'),
+      validPass        = new ValidatePassword(),
+      postcode         = require('postcode-validator'),
+      validator        = require("email-validator");
+
+let userValid = true
+let error     = " "
 
 export default class RegistrationModal extends Component {
   constructor(props) {
@@ -23,7 +29,8 @@ export default class RegistrationModal extends Component {
     email: "",
     repemail: "",
     password: "",
-    reppassword: ""
+    reppassword: "",
+    userValid: true
   }
   
   handleInputChange = event => {
@@ -39,6 +46,22 @@ export default class RegistrationModal extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
+
+    if (!validator.validate(this.state.email)) {
+      error = 'Invalid email, please enter a correcty formatted email'
+      userValid = false
+    } 
+
+    let passwordData = validPass.checkPassword(this.state.password);
+    if (!passwordData.isValid) {
+      error = passwordData.validationMessage
+      userValid = false
+    }
+
+    if (!postcode.validate(this.state.zipcode, 'US')) {
+      error = 'Zip Code is invalid'
+      userValid = false 
+}
     
     if (this.state.nickname && this.state.email && this.state.password && this.state.zipcode) {
       console.log("in API call")
@@ -49,7 +72,7 @@ export default class RegistrationModal extends Component {
         email: this.state.email,
         userpassword: this.state.password
       })
-        .then(<Link to="/parkselection"></Link>)
+        .then(()=> {window.location="/parkselection"})
         .catch(err => console.log(err));
     }
   };
@@ -59,7 +82,7 @@ export default class RegistrationModal extends Component {
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
           <div>
-          <button type="button" className="close" onClick={() => this.closeModal()} aria-label="Close">
+          <button type="button" className="fontx close" onClick={() => this.closeModal()} aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
             <Row> 

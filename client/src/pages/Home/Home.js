@@ -26,32 +26,30 @@ export default class Home extends Component {
           <Row>  
             <Col size="sm-3"></Col>
             <Col size="sm-6">
-              <h2>Park Enthusiast</h2>
+              <h2 style={{color: "white"}}>Park Enthusiast</h2>
             </Col>
           </Row>  
           <Row>
             <Col size="sm-3"></Col>
             <Col size="sm-6">
-              <h5>
+              <h5 style={{color: "white"}}>
                 Welcome to the Park Enthusiast. Keep track of your park visits, what rides you have been on and when. 
                 Make comments and rate your experiece. Track the actual time you waited in line. 
                 As you gather more data, see what your prior wait times have been like.  
               </h5>
-              <h4>Now it is time to sign up and get riding!</h4>
+              <h4 style={{color: "white"}}>Now it is time to sign up and get riding!</h4>
 
             </Col>
           </Row>
           <Row>
             <Col size="sm-3"></Col>
             <Col size="sm-7">
-            <div>
-              <h4><a href="#" onClick={() => this._handleModal(true, 'REGISTRATION')}>Not a User</a></h4>
-            </div>
+              <button className="btn btn-action signbutton" onClick={() => this._handleModal(true, 'REGISTRATION')}>
+                Sign up
+              </button>
             </Col>
           </Row>
-          
         </Logo>
-
         <ModalConductor history={this.props.history} handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
       </div>
     )

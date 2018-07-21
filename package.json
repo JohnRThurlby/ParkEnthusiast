@@ -23,6 +23,7 @@
     "cookie-parser": "^1.4.3",
     "dotenv": "^6.0.0",
     "email-existence": "^0.1.6",
+    "email-validator": "^2.0.4",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
     "fs": "^0.0.1-security",
@@ -35,6 +36,7 @@
     "node-ses": "^2.1.0",
     "nodemon": "^1.18.1",
     "path": "^0.12.7",
+    "postcode-validator": "^1.2.0",
     "prop-types": "^15.6.2",
     "react-addons": "^0.9.1-deprecated",
     "react-dropdown": "^1.5.0",
@@ -43,6 +45,7 @@
     "react-pure-render": "^1.0.2",
     "react-tabs": "^2.2.2",
     "sequelize": "^4.38.0",
+    "validate-password": "^1.0.4",
     "zipcodes": "^6.0.1"
   },
   "repository": {

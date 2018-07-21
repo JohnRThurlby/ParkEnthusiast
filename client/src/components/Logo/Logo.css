@@ -18,7 +18,7 @@
 
 .logo * {
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 .logo h1, .hero h2 {

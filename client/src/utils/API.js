@@ -42,10 +42,23 @@ export default {
     return axios.get("/api/parks/tickets/:id", userData);
   },
 
-  // Get park data based on State code
-  getRides: function(userData) {
-    console.log("in API.js, axios.getRides")
+  // Get ride data based on Park code
+  getAllrides: function(userData) {
+    console.log("in API.js, axios.getAllRides")
     console.log(userData)
-    return axios.get("/api/parks/rides", userData);
+    return axios.get("/api/parks/rides/:id", userData);
+  },
+
+  // Get ride data based on Park code
+  getRides: function(userData) {
+    console.log("in API.js, axios.getParkRides")
+    console.log(userData)
+    return axios.get("/api/parks/rideinfo/:id", userData);
+  },
+  // Get ride data based on Park code
+  getComments: function(userData) {
+    console.log("in API.js, axios.getComments")
+    console.log(userData)
+    return axios.get("/api/parks/comments", userData);
   }
 };

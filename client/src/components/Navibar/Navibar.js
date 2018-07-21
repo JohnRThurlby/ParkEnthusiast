@@ -23,23 +23,23 @@ export default class Navibar extends Component {
         <Navbar inverse collapseOnSelect>   
           <Row>
             <Col xs={2}>
-              <h6><a href="/home">Park Enthusiast</a></h6>
+              <h6 style={{padding: 10}}><a href="/home">Park Enthusiast</a></h6>
             </Col>
-            <Col xs={5}>
-            </Col>
-            <Col xs={1}>
-              <button className="btn btn-action button" onClick={() => this._handleModal(true, 'LOGIN')}>
-                Login
-              </button>
+            <Col xs={6}>
             </Col>
             <Col xs={1}>
               <button className="btn btn-action button" onClick={() => this._handleModal(true, 'ABOUT')}>
                 About
               </button>
             </Col>
-            <Col xs={1}>
+            <Col xs={2}>
               <button className="btn btn-action button" onClick={() => this._handleModal(true, 'CONTACT')}>
                 Contact
+              </button>
+            </Col>
+            <Col xs={1}>
+              <button className="btn btn-action button" onClick={() => this._handleModal(true, 'LOGIN')}>
+                Login
               </button>
             </Col>
           </Row>

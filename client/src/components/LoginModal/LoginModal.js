@@ -35,21 +35,22 @@ export default class LoginModal extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    if (this.state.email && this.state.password) {
+   // if (this.state.email && this.state.password) {
       API.getUser({
         email: this.state.email,
         userpassword: this.state.password
       })
-        .then(()=> {this.props.history.replace("/parkselection")})
+        .then(res => { 
+        localStorage.setItem('zipcode', '32835')
+        window.location="/parkselection"})
         .catch(err => console.log(err));
-   }
   };
   
   render() {
     return (
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
-          <button type="button" className="close" onClick={() => this.closeModal()} aria-label="Close">
+          <button type="button" className="fontx close" onClick={() => this.closeModal()} aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
           <div>
@@ -61,9 +62,9 @@ export default class LoginModal extends Component {
                     <h4 style={{ textAlign: "center" }}>Login with Social Media or Manually</h4>
                   </Col>
                 </Row>
-               
                 <Row>
-                  <Col xs={1}></Col>
+                <Col xs={1}></Col>
+
                   <Col xs={3}>
                     <FacebookLoginButton onClick={() => alert("Hello")}>
                       <span>Login</span>
@@ -83,7 +84,7 @@ export default class LoginModal extends Component {
                   </Col>
                 </Row>
                 <Row>
-                  <Col xs={12}>               
+                  <Col xs={12}> 
                     <hr className="someClass"/>
                   </Col>
                 </Row>
@@ -115,16 +116,16 @@ export default class LoginModal extends Component {
                         name="password"
                         placeholder="Password"
                       />
-
                     </div>
                   </Col> 
                 </Row>  
                 <Row>
                   <Col xs={3}></Col>
-                  <Col xs={6}>
-                    <div>
-                     <h6><a href="#" onClick={() => this._handleModal(true, 'FORGOT')}>Forgot Password?</a></h6>
-                    </div>
+                  <Col xs={4}>
+                    <p style={{margin: 0}}><a href="#" onClick={() => this._handleModal(true, 'FORGOT')}>Forgot Password?</a></p>
+                  </Col> 
+                  <Col xs={3}>
+                    <p><a href="#" onClick={() => this._handleModal(true, 'REGISTRATION')}>Not a User?</a></p>
                   </Col> 
                 </Row>  
                 <Row>
@@ -137,6 +138,7 @@ export default class LoginModal extends Component {
                     </button>
                   </Col>
                 </Row>
+                <br/>
               </Form>
             </div>
             <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
@@ -163,7 +165,7 @@ class Modal extends React.Component {
 
     let modalStyle = {
       position: 'absolute',
-      top: '50%',
+      top: '47%',
       left: '50%',
       width: '60%',
       transform: 'translate(-50%, -50%)',
@@ -221,112 +223,3 @@ class Modal extends React.Component {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { Component } from "react"
-
-// import ModalConductor from "../ModalConductor"
-
-// import { Form, Row, Col } from 'react-bootstrap'
-// import { Button, Fa } from 'mdbreact';
-
-
-// export default class LoginModal extends Component  {
-
-//   state = { 
-//     modalStatus: false,
-//     modalType: ""
-//   }
-
-//   _handleModal = (status, type) => {
-//   this.setState ({modalStatus: status, modalType: type})
-//   }
-
-//   closeModal = (status, type) => {
-//     this.setState ({modalStatus: status, modalType: type})
-//   }  
-  
-//   render () {
-
-//     return (
-//       <div>
-//         <div className="container">
-//           <Form action="Post">
-//             <Row>
-//               <h2 style={{ textAlign: "center" }}>Login with Social Media or Manually</h2>
-              
-//               <Col sm="4">
-//                 <a href="/home" className="fb btn">
-//                   <i className="fa fa-facebook fa-fw"></i> Login with Facebook
-//                 </a>
-//               </Col>
-//               <Col sm="4">
-//                <Button social="tw"><Fa icon="twitter"/></Button>
-//               </Col>
-//               <Col sm="4">
-//                 <a href="/home" className="google btn">
-//                   <i className="fa fa-google fa-fw"></i> Login with Google+
-//                 </a>
-//               </Col>
-//               <Row></Row>
-//               <Row>
-//                 <Col sm="4">
-//                 </Col>
-//                 <Col sm="2">
-//                   <div className="hide-md-lg">
-//                   <p>Or sign in manually:</p>
-//                   </div>
-//                 </Col>
-//               </Row>
-
-//               <Row>
-//                 <Col sm="3"></Col>
-//                 <Col sm="5">
-//                   <div>
-//                     <input type="text" name="username" placeholder="Username" required/>
-//                     <input type="password" name="password" placeholder="Password" required/>
-//                     <input type="submit" value="Login"/>
-//                   </div>
-//                 </Col>
-//               </Row>
-
-//             </Row>
-//           </Form>
-//         </div>
-
-//         <div className="bottom-container">
-//           <Row>
-//             <Col sm="4"></Col>
-//             <Col sm="2">
-//               <button className="btn btn-action" onClick={() => this._handleModal(true, 'REGISTRATION')}>
-//                 Sign Up
-//               </button>
-//             </Col>
-//             <Col sm="2">
-//               <button className="btn btn-action" onClick={() => this._handleModal(true, 'FORGOT')}>
-//                 Forgot password?
-//               </button>
-//             </Col>
-//           </Row>
-//         </div>
-
-//         <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
-
-//       </div>
-//     )
-//   }
-// }

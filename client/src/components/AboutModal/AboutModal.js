@@ -13,7 +13,7 @@ export default class AboutModal extends Component {
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
          
-          <button type="button" className="close" onClick={() => this.closeModal()} aria-label="Close">
+          <button type="button" className="fontx close" onClick={() => this.closeModal()} aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
          

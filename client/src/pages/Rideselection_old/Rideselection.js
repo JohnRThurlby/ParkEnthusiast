@@ -5,11 +5,14 @@ import API from "../../utils/API";
 
 import { Row, Col } from 'react-bootstrap'
 
-import ReactGoogleMapLoader from "react-google-maps-loader"
-import ReactGoogleMap from "react-google-map"
 
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
+import Logo from "../../components/Logo";
+
+import ReactGoogleMapLoader from "react-google-maps-loader"
+import ReactGoogleMap from "react-google-map"
+
 
 let parkhours = []
 let defaultHours = "Select from list"
@@ -51,7 +54,6 @@ export default class Rideselection extends Component {
   getHours = () => {
     API.getHours( {parkid: 59}
 
-    //  {parkid: this.state.parkid }
     )
 
     .then(res => {
@@ -66,7 +68,6 @@ export default class Rideselection extends Component {
       parkhours[6] = "Sunday " + res.data.parksun
       
       console.log(parkhours);
-      defaultHours = parkhours[0]
 
     })
       .catch(err => console.log(err))
@@ -84,7 +85,6 @@ export default class Rideselection extends Component {
       parkprices[1] = res.data.parkline2
             
       console.log(parkprices);
-      defaultPrices = parkprices[0]
 
     })
       .catch(err => console.log(err))
@@ -111,78 +111,49 @@ export default class Rideselection extends Component {
   
   render() {
     return (
-      
       <div>
-        <Row> 
-          <Col size="sm-4"> </Col>
-          <Col size="sm-2">
-            <h3 style={{ textAlign: "center" }}>{this.state.park.parkname}</h3>
-          </Col>
-        </Row>
-        <Row>
-          <div id="u47_text" className="text-center">
-            <Col size="sm-4"> </Col>
-            <Col size="sm-2">
-              <h5>Address</h5>
+        <Logo backgroundImage="../../pages/theme.jpg">
+          <Row> 
+            <Col xs={4}> </Col>
+            <Col xs={2}>
+              <h3 style={{ textAlign: "center" }}>{this.state.park.parkname}</h3>
             </Col>
-            <Col size="sm-2">
+          </Row>
+          <Row>
+            <Col xs={2}></Col>
+            <Col xs={2}>
+              <h6 style={{color: "white"}}>Address</h6>
+            </Col>
+            <Col xs={2}>
               <h6>{this.state.park.parkaddress1 + ", " + this.state.park.parkcity + ", " + this.state.park.parkstate + ", " + this.state.park.parkzip}</h6>
             </Col>
-          </div>
-        </Row>
-      
-        <Row>
-          <div id="u48_text" className="text-center">
-            <Col size="sm-4"> </Col>
-            <Col size="sm-2">
-              <h5>Phone Number</h5>
+            <Col xs={1}></Col>
+            <Col xs={2}>
+              <h6 style={{color: "white"}}>Phone Number</h6>
             </Col>
-            <Col size="sm-2">
+            <Col xs={2}>
               <h6>{this.state.park.parkphone}</h6>
             </Col>
-          </div>
-        </Row>
-
-        <Row>
-          <div id="u45_text" className="text-center">
-            <Col size="sm-4"> </Col>
-            <Col size="sm-2">
-                <h4 style={{ textAlign: "center" }}>Park Hours</h4>
+          </Row>
+          <Row>
+            <Col xs={2}></Col>
+            <Col xs={2}>
+                <h6 style={{color: "white" }}>Park Hours</h6>
             </Col>
-          </div>
-        </Row>
-
-        <Row>
-          <div id="u45_text" className="text-center">
-            <Col size="sm-4"> </Col>
-            <Col size="sm-2">
+            <Col xs={2}>
                 <Dropdown options={parkhours} value={defaultHours} />
             </Col>
-          </div>
-        </Row>
-
-        <Row>
-          <div id="u45_text" className="text-center">
-            <Col size="sm-4"> </Col>
-            <Col size="sm-2">
-                <h4 style={{ textAlign: "center" }}>Ticket Prices</h4>
+            <Col xs={1}> </Col>
+            <Col xs={2}>
+                <h6 style={{color: "white" }}>Ticket Prices</h6>
             </Col>
-          </div>
-        </Row>
-
-        <Row>
-          <div id="u45_text" className="text-center">
-            <Col size="sm-4"> </Col>
-            <Col size="sm-2">
+            <Col xs={2}>
               <Dropdown options={parkprices} value={defaultPrices} />
             </Col>
-          </div>
         </Row>
-
         <Row>
-            <Col size="sm-4"></Col>
-            <Col size="sm-6">
-            
+            <Col xs={4}></Col>
+            <Col xs={6}>
               <ReactGoogleMapLoader
                 params={{
                     key: "AIzaSyDg-vYzGC3fEWIUt7dhItwHdmq8uCe7yGQ",
@@ -201,7 +172,7 @@ export default class Rideselection extends Component {
                />
             </Col>
           </Row>
-    
+          </Logo>
       </div>
     )
   }

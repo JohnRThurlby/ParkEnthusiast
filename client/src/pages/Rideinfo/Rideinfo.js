@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom";
 
 import Logo from "../../components/Logo";
 
@@ -10,28 +9,72 @@ import API from "../../utils/API";
 
 import { Row, Col } from 'react-bootstrap'
 
+let ridercomments = []
+let parkRidename  = " "
+let parkArea      = " "
+let parkHgtreq    = " "
+let parkDuration  = " " 
+let parkMaxhgt    = " "
+let parkOpened    = " "
+let parkAvgwait   = " "
+let parkSpeed     = " "
+let parkLevel     = " "
+let parkLength    = " "
+let parkType      = " "
+let parkUrl       = " "
+
+
 export default class Rideinfo extends Component {
   
   state = { 
-    rides: {}
+    park: {},
+    comments: {}
   }
 
   componentDidMount() {
 
-    this.loadRides();
+    this.getRides();
+    this.getComments();
 
   }
 
-  loadRides = () => {
-    API.getRides(
-      {parkid: 59, rideid: 1 }
+  getRides = () => {
+    API.getRides( {parkid: 75, rideid: 8 }
 
     //  {parkid: this.state.parkid, rideid: this.state.rideid }
     )
 
-      .then(res =>
-        this.setState({ })
-      )
+      .then(res => {
+        console.log("in get ride return")
+        console.log(res.data)
+        this.setState({ park: res.data });
+        parkRidename = res.data[0].parkridename 
+        parkArea     = res.data[0].parkarea
+        parkHgtreq   = res.data[0].parkhgtreq
+        parkDuration = res.data[0].parkduration
+        parkMaxhgt   = res.data[0].parkmaxhgt
+        parkOpened   = res.data[0].parkopened
+        parkAvgwait  = res.data[0].parkavgwait
+        parkSpeed    = res.data[0].parkspeed
+        parkLevel    = res.data[0].parklevel 
+        parkLength   = res.data[0].parklength
+        parkType     = res.data[0].parktype 
+        parkUrl      = res.data[0].parkurl
+      })
+      
+      .catch(err => console.log(err))
+  };
+
+  getComments = () => {
+    API.getComments()
+      .then(res => {
+        console.log("in get comments return")
+        console.log(res.data)
+        this.setState({ comments: res.data });
+        for (let i = 0; i < res.data.length; i++){
+          ridercomments[i] = res.data[i].comment 
+        }
+      })
       .catch(err => console.log(err))
   };
   
@@ -40,18 +83,6 @@ export default class Rideinfo extends Component {
     this.setState({
       [name]: value
     });
-  };
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-      
-      API.getRides({
-        parkid: this.state.parkid,
-        rideid: this.state.rideid
-       
-      })
-        .then(<Link to="/parkselection"></Link>)
-        .catch(err => console.log(err));
   };
   
   render() {
@@ -62,108 +93,98 @@ export default class Rideinfo extends Component {
         <Tabs >
           <TabList>
             
-              <Tab><h5>Ride Information</h5></Tab>
+              <Tab><h5 style={{color: "black"}}>Ride Information</h5></Tab>
              
-              <Tab><h5>Ride Analysis</h5></Tab>
+              <Tab><h5 style={{color: "black"}}>Ride Analysis</h5></Tab>
 
-              <Tab><h5>Rider's Comments</h5></Tab>
+              <Tab><h5 style={{color: "black"}}>Rider's Comments</h5></Tab>
               
           </TabList>
  
           <TabPanel>
             <Row> 
               <Col xs={10}>
-                <h4 style={{ textAlign: "center" }}>{this.state.rides.parkridename}</h4>
+                <h4 style={{ textAlign: "center", color: "white" }}>{parkRidename}</h4>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <h5>Area of Park</h5>
+                <h5 className="textColour">Area of Park</h5>
               </Col>
               <Col xs={3}>
-                <h5>Height Requirements</h5>
+                <h5 className="textColour">Height Requirements</h5>
               </Col>
               <Col xs={3}> 
-                <h5>Duration</h5>
+                <h5 className="textColour">Duration</h5>
+              </Col>
+              <Col xs={2}>
+                <h5 className="textColour">Max height</h5>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <p>{this.state.rides.parkarea}</p>
+                <p className="textColour">{parkArea}</p>
               </Col>
               <Col xs={3}>
-                <p>{this.state.rides.parkhgtreq}</p>
+                <p className="textColour">{parkHgtreq}</p>
               </Col>
               <Col xs={3}> 
-                <p>{this.state.rides.parkduration}</p>
+                <p className="textColour">{parkDuration}</p>
+              </Col>
+              <Col xs={2}>
+                <p className="textColour">{parkMaxhgt}</p>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <h5>Max height</h5>
+                <h5 className="textColour">Opened</h5>
               </Col>
               <Col xs={3}> 
-                <h5>Wait Time</h5>
+                <h5 className="textColour">Average wait</h5>
               </Col>
               <Col xs={3}>
-                <h5>Average wait</h5>
+                <h5 className="textColour">Speed</h5>
               </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={2}>
-                <p>{this.state.rides.parkmaxhgt}</p>
-              </Col>
-              <Col xs={3}> 
-                <p>{this.state.rides.parkwaittime}</p>
-              </Col>
-              <Col xs={3}>
-                <p>{this.state.rides.parkavgwait}</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
               <Col xs={2}> 
-                <h5>Opened</h5>
-              </Col>
-              <Col xs={3}>
-                <h5>Speed</h5>
-              </Col>
-              <Col xs={3}> 
-                <h5>Level</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={2}> 
-                <p>{this.state.rides.parkopened}</p>
-              </Col>
-              <Col xs={3}>
-                <p>{this.state.rides.parkspeed}</p>
-              </Col>
-              <Col xs={3}> 
-                <p>{this.state.rides.parklevel}</p>
+                <h5 className="textColour">Level</h5>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <h5>Length</h5>
+                <p className="textColour">{parkOpened}</p>
+              </Col>
+              <Col xs={3}>
+                <p className="textColour">{parkAvgwait}</p>
               </Col>
               <Col xs={3}> 
-                <h5>Type</h5>
+                <p className="textColour">{parkSpeed}</p>
+              </Col>
+              <Col xs={2}>
+                <p className="textColour">{parkLevel}</p>
+              </Col>
+            </Row>
+            
+            
+            <Row>
+              <Col xs={2}></Col>
+              <Col xs={2}>
+                <h5 className="textColour">Length</h5>
+              </Col>
+              <Col xs={3}> 
+                <h5 className="textColour">Type</h5>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <p>{this.state.rides.parklength}</p>
+                <p className="textColour">{parkLength}</p>
               </Col>
               <Col xs={3}>
-                <p>{this.state.rides.parktype}</p>
+                <p className="textColour">{parkType}</p>
               </Col>
             </Row>
           </TabPanel>
@@ -171,82 +192,82 @@ export default class Rideinfo extends Component {
             <Row>
               <Col xs={2}></Col>
               <Col xs={3}> 
-                <h5>Average User Wait Time</h5>
+                <h5 style={{color: "white"}}>Average User Wait Time</h5>
               </Col>
               <Col xs={3}>
-                <h5>Average user rating</h5>
+                <h5 style={{color: "white"}}>Average user rating</h5>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={3}> 
-                <p>{this.state.rides.avguserwaittime}</p>
+                <p>{parkArea}</p>
               </Col>
               <Col xs={3}>
-                <p>{this.state.rides.avguserrating}</p>
+                <p>{parkArea}</p>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={3}> 
-                <h5>Times ridden by all users</h5>
+                <h5 style={{color: "white"}}>Times ridden by all users</h5>
               </Col>
               <Col xs={3}>
-                <h5>Number of repeat riders</h5>
+                <h5 style={{color: "white"}}>Number of repeat riders</h5>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={3}> 
-                <p>{this.state.rides.totalriders}</p>
+                <p>{parkArea}</p>
               </Col>
               <Col xs={3}>
-                <p>{this.state.rides.repeatriders}</p>
+                <p>{parkArea}</p>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={3}>
-                  <h5>Shortest known wait</h5>
+                  <h5 style={{color: "white"}}>Shortest known wait</h5>
               </Col>
               <Col xs={3}>
-                 <h5>Longest known wait</h5>
+                 <h5 style={{color: "white"}}>Longest known wait</h5>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={3}>
-                  <h5>Longest known wait</h5>
+                 <h5 style={{color: "white"}}>Longest known wait</h5>
               </Col>
               <Col xs={3}>
-                 <h5>Date of longest wait</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}> 
-                <p>{this.state.rides.longestwait}</p>
-              </Col>
-              <Col xs={3}>
-                <p>{this.state.rides.datelongest}</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}>
-                  <h5>Shortest known wait</h5>
-              </Col>
-              <Col xs={3}>
-                 <h5>Date of shortest wait</h5>
+                 <h5 style={{color: "white"}}>Date of longest wait</h5>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={3}> 
-                <p>{this.state.rides.shortestwait}</p>
+                <p>{parkArea}</p>
               </Col>
               <Col xs={3}>
-                <p>{this.state.rides.dateshortest}</p>
+                <p>{parkArea}</p>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={2}></Col>
+              <Col xs={3}>
+                  <h5 style={{color: "white"}}>Shortest known wait</h5>
+              </Col>
+              <Col xs={3}>
+                 <h5 style={{color: "white"}}>Date of shortest wait</h5>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={2}></Col>
+              <Col xs={3}> 
+                <p>{parkArea}</p>
+              </Col>
+              <Col xs={3}>
+                <p>{parkArea}</p>
               </Col>
             </Row>
           </TabPanel>
@@ -254,13 +275,21 @@ export default class Rideinfo extends Component {
             <Row>
               <Col xs={2}></Col>
               <Col xs={3}> 
-                <h5>Comments</h5>
+                <h5 style={{color: "white"}}>Comments</h5>
+              </Col>
+              <Col xs={2}></Col>
+              <Col xs={3}>
+                 <h5 style={{color: "white"}}>Ride Photo</h5>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={3}> 
-                <p>{this.state.rides.comments}</p>
+                <p style={{color: "white"}}>{ridercomments}</p>
+              </Col>
+              <Col xs={2}></Col>
+              <Col xs={3}>
+                 <h5 style={{color: "white"}}>{parkUrl}</h5>
               </Col>
             </Row>
           </TabPanel>

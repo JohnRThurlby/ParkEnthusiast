@@ -47,7 +47,7 @@ export default class ForgotpasswordModal extends Component {
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
           <div>
             
-            <button type="button" className="close" onClick={() => this.closeModal()} aria-label="Close">
+            <button type="button" className="fontx close" onClick={() => this.closeModal()} aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
             

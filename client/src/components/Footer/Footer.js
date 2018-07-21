@@ -24,26 +24,20 @@ export default class Footer extends Component {
           <Row>
             <Col xs={4}>
               <Navbar.Brand>
-                <a href="/home">Copyright Park Enthusiast 2018</a>
+                <a style={{color: "white"}} href="/home">© Park Enthusiast 2018</a>
               </Navbar.Brand>
             </Col>
             <Col xs={3}>
             </Col>
             <Col xs={2}>
-              <button className="btn btn-action button" onClick={() => this._handleModal(true, 'PRIVACY')}>
-                Privacy
-              </button>
+              <h6 style={{padding: 10}}><a href="#"onClick={() => this._handleModal(true, 'PRIVACY')}>Privacy</a></h6>
             </Col>
-            <Col xs={2}>
-              <button className="btn btn-action button" onClick={() => this._handleModal(true, 'TERMS')}>
-              Terms & Conditions
-              </button>
+            <Col xs={3}>
+              <h6 style={{padding: 10}}><a href="#"onClick={() => this._handleModal(true, 'TERMS')}>Terms & Conditions</a></h6>
             </Col>
           </Row>
         </Navbar>
-
         <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
-
       </div>
 
     )

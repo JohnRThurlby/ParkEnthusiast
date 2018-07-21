@@ -1,13 +1,12 @@
 import React, { Component} from "react";
-import { Link } from "react-router-dom";
-
 
 import API from "../../utils/API";
+import { Row, Col } from 'react-bootstrap'
+
+import ModalConductor from "../../components/ModalConductor";
 
 import Frame from 'react-frame-component';
 
-import Row  from "../../components/Row";
-import Col  from "../../components/Col";
 import Logo from "../../components/Logo";
 
 import Dropdown from 'react-dropdown'
@@ -17,28 +16,46 @@ var zipcodes = require('zipcodes');
 
 let userLat = " "
 let userLon = " "
+let userState = " "
+
 let markerLen = " "
 let googlemarkerData = " "
 let parkslist = []
 let defaultParks = "Select from list"
+let selectValue = false
 
 export default class Parkselection extends Component {
 
+  state = { 
+    selectValue: false,
+    modalStatus: false,
+    modalType: ""
+  }
+
+  _handleModal = (status, type) => {
+    this.setState ({modalStatus: status, modalType: type})
+  }
+
   componentDidMount() {
 
-    let userZip = zipcodes.lookup(32835);
-    console.log(userZip)
+    let userzipStor = localStorage.getItem('zipcode');
+
+    let userZip = zipcodes.lookup(userzipStor)
+
+    console.log("userZip " + userZip)
     userLat = parseFloat(userZip.latitude)
     userLon = parseFloat(userZip.longitude)
-    this.setState({userLat: userLat, userLon: userLon})
-    console.log(userLat)
-    console.log(userLon)
-    this.loadParks();
+    userState = userZip.state
 
+    
+    this.setState({userLat: userLat, userLon: userLon})
+    this.loadParks();
   }
 
   loadParks = () => {
-    API.getParks({state: "FL"})
+    API.getParks(
+      {state: userState}
+    )
 
       .then(res => {
         console.log(res.data)
@@ -49,19 +66,20 @@ export default class Parkselection extends Component {
           };
 
          console.log("marker " + markerLen)
-         googlemarkerData = "https://maps.googleapis.com/maps/embed?center=userLat,userLon&zoom=11&size=600x650&maptype=roadmap" + markerLen +
+         googlemarkerData = "https://maps.googleapis.com/maps/embed?center=userLat,userLon&zoom=9&size=600x650&maptype=roadmap" + markerLen +
          "&key=AIzaSyAyfaMye_A67QxILzhCbsGEm4RFWBlYZmg"
          console.log("google " + googlemarkerData)
       })
       .catch(err => console.log(err))
   };
 
-  _onSelect = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
+  _onSelect = (selectValue) => {
+    console.log("in onselect")
+    console.log(selectValue)
+    if (selectValue) {
+      console.log("default " + parkslist)
+     // window.location="/rideselection"
+    }};
 
   render() {
 
@@ -69,21 +87,19 @@ export default class Parkselection extends Component {
       <div>
         <Logo backgroundImage="../../pages/theme.jpg">
           <Row>
-            <Col size="sm-4">
+            <Col xs={4}>
                 <Row>
-                  <Col size="sm-12">
-                    <h5>Select a park from the list</h5>
+                  <Col xs={12}>
+                    <h5 style={{color: "white" }}>Select a park from the list</h5>
                   </Col>
                 </Row>  
                 <Row>
-                  <Col size="sm-12">
-                      name="title"
-
-                      <Dropdown name="park" options={parkslist} onChange={this._onSelect} value={defaultParks} />
+                  <Col xs={12}>                                  
+                      <Dropdown name="park" options={parkslist} onChange={() => this._handleModal(true, 'RIDESELECTION')} value={defaultParks} />
                   </Col>
                 </Row>
             </Col>
-            <Col size="sm-8">
+            <Col xs={8}>
               <div>
                 <Frame height="550" width="650"> 
                   <div>
@@ -93,8 +109,8 @@ export default class Parkselection extends Component {
               </div>        
             </Col>
           </Row> 
-          
         </Logo>
+        <ModalConductor history={this.props.history} handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
       </div>
     )
   }

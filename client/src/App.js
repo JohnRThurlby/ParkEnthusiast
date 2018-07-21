@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 
 import Home          from "./pages/Home"
 import ParkSelection from "./pages/Parkselection"
-import RideSelection from "./pages/Rideselection"
+//import RideSelection from "./pages/Rideselection"
 import RideInfo      from "./pages/Rideinfo"
 import RideNow       from "./pages/Ridenow"
 import NoMatch       from "./pages/NoMatch"
@@ -18,7 +18,6 @@ const App = () => (
         <Route exact path="/"              component={Home} />
         <Route exact path="/home"          component={Home} />
         <Route exact path="/parkselection" component={ParkSelection} />
-        <Route exact path="/rideselection" component={RideSelection} />
         <Route exact path="/rideinfo"      component={RideInfo} />
         <Route exact path="/ridenow"       component={RideNow} />
         <Route component={NoMatch} />

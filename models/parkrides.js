@@ -3,7 +3,6 @@
 module.exports = function(sequelize, DataTypes) {
   var Parkrides = sequelize.define("Parkrides", {
   parkid:        DataTypes.STRING,
-  rideid:        DataTypes.STRING,
   parkridename:  DataTypes.STRING,
   parkarea:      DataTypes.STRING,
   parkhgtreq:    DataTypes.STRING,
@@ -15,8 +14,8 @@ module.exports = function(sequelize, DataTypes) {
   parkspeed:     DataTypes.STRING,
   parklevel:     DataTypes.STRING,
   parklength:    DataTypes.STRING,
-  parktype:      DataTypes.STRING
-
+  parktype:      DataTypes.STRING,
+  parkurl:       DataTypes.STRING
   });
   return Parkrides;
 };

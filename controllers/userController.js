@@ -3,19 +3,13 @@ console.log("made it in here, userController")
 // Defining methods for the userController
 
 module.exports = {
-
-  findOne: function(req, res) {
-    console.log("in findOne")
-    console.log("req body " + req.body.email)
-    db.User
-      .findOne({ where: {email: req.body.email, userpassword: req.body.password}} )
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
   findById: function(req, res) {
     console.log("in findById")
+    console.log("req body " + req.params.id)
+    let useremail = 'johnrthurlby@gmail.com'
+    let userpass = 'Robt01'
     db.User
-      .findById(req.params.id)
+      .findOne({ where: {email: useremail, userpassword: userpass}} )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }, 

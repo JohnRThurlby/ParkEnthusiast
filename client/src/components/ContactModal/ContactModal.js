@@ -6,8 +6,8 @@ import { Input, TextArea } from "../../components/Form";
 import ModalConductor from "../ModalConductor"
 
 require("dotenv").config()
-var ses = require('node-ses')
-  , client = ses.createClient({ key: "AKIAJY3KUB5OAVIHPW3Q", secret: "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" });
+//var ses = require('node-ses')
+//  , client = ses.createClient({ key: "AKIAJY3KUB5OAVIHPW3Q", secret: "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" });
 
 export default class ContactModal extends Component {
 
@@ -33,14 +33,14 @@ export default class ContactModal extends Component {
     event.preventDefault();
     if (this.state.name && this.state.email && this.state.comment) {
       console.log("in email")
-      client.sendEmail({
-        to: "johnrthurlby@gmail.com"
-        , from: "enthusiastpark@gmail.com"
-        , message: this.state.comment
-        , altText: this.state.name
-      }, function (err, data, res) {
-        console.log("in function")
-      });
+      //client.sendEmail({
+      //  to: "johnrthurlby@gmail.com"
+       // , from: "enthusiastpark@gmail.com"
+       // , message: this.state.comment
+       // , altText: this.state.name
+      //}, function (err, data, res) {
+       // console.log("in function")
+      //});
     }
   };
 
@@ -50,7 +50,7 @@ export default class ContactModal extends Component {
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
           <div>
             
-            <button type="button" className="close" onClick={() => this.closeModal()} aria-label="Close">
+            <button type="button" className="fontx close" onClick={() => this.closeModal()} aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
             
