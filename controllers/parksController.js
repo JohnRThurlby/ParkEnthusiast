@@ -32,7 +32,7 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   findAllrides: function(req, res) {
-    console.log("in findAllrides " + req.params.id )
+    console.log("in findAllrides ")
 
     db.Parkrides
       .findAll({ where: {parkid: "75"}})
@@ -43,7 +43,7 @@ module.exports = {
     console.log("in findRides " + req.params.id )
 
     db.Parkrides
-      .findAll({ where: {parkid: "75", id: "10"}})
+      .findOne({ where: {parkid: "75", id: "10"}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -51,6 +51,59 @@ module.exports = {
     console.log("in findComments ")
     db.Ridercomments
       .findAll()
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findAvgwait: function(req, res) {
+    console.log("in findAvgwait ")
+    db.Rideuserinfo
+      .findOne({ where: {userid: "1", parkid: "75", id: "10"}}
+    
+    )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findAvgrating: function(req, res) {
+    console.log("in findAvgwait ")
+    db.Rideuserinfo
+      .findOne({ where: {userid: "1", parkid: "75", id: "10"}}
+    )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findMaxwait: function(req, res) {
+    console.log("in findMaxwait ")
+    db.Rideuserinfo
+      .findOne({ where: {parkid: "75", id: "10"}}
+    
+    )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findMinwait: function(req, res) {
+    console.log("in findMinxwait ")
+    db.Rideuserinfo
+      .findOne({ where: {parkid: "75", id: "10"}}
+    
+    )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findTotalcount: function(req, res) {
+    console.log("in findTotalcount ")
+    db.Rideuserinfo
+      .count({ where: {parkid: "75", rideid: "10"}}
+    
+    )
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findDupcount: function(req, res) {
+    console.log("in findTotalcount ")
+    db.Rideuserinfo
+      .count({ where: {parkid: "75", rideid: "10"}}
+    
+    )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }

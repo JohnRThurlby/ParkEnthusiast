@@ -30,7 +30,10 @@ export default class RideselectionModal extends Component {
   state = { 
     modalStatus: false,
     modalType: "",
-    park: {}
+    park:   {},
+    parks:  {},
+    hours:  {},
+    prices: {}
     
   }
     
@@ -74,6 +77,7 @@ export default class RideselectionModal extends Component {
     .then(res => {
       console.log(res.data);
       this.setState({ hours: res.data });
+      defaultHours = "Monday " + res.data.parkmon
       parkhours[0] = "Monday " + res.data.parkmon
       parkhours[1] = "Tuesday " + res.data.parktue
       parkhours[2] = "Wednesday " + res.data.parkwed
@@ -95,13 +99,14 @@ export default class RideselectionModal extends Component {
     )
     .then(res => {
       console.log(res.data);
-      this.setState({ hours: res.data });
+      this.setState({ prices: res.data });
       parkprices[0] = res.data.parkline1
       parkprices[1] = res.data.parkline2
       parkprices[2] = res.data.parkline3
-      //parkprices[3] = res.data.parkline4
-     //parkprices[4] = res.data.parkline5
-      console.log(parkrides);
+      parkprices[3] = res.data.parkline4
+      parkprices[4] = res.data.parkline5
+      defaultPrices = res.data.parkline1
+      console.log(parkprices);
       this.getRides()
     })
       .catch(err => console.log(err))
@@ -114,7 +119,7 @@ export default class RideselectionModal extends Component {
     )
     .then(res => {
       console.log(res.data);
-      this.setState({ hours: res.data });
+      this.setState({ parks: res.data });
       for (let i = 0; i < res.data.length; i++){
         parkrides[i] = res.data[i].parkridename
       }

@@ -26,18 +26,18 @@ export default class Home extends Component {
           <Row>  
             <Col size="sm-3"></Col>
             <Col size="sm-6">
-              <h2 style={{color: "white"}}>Park Enthusiast</h2>
+              <h2 className="textColour">Park Enthusiast</h2>
             </Col>
           </Row>  
           <Row>
             <Col size="sm-3"></Col>
             <Col size="sm-6">
-              <h5 style={{color: "white"}}>
+              <h5 className="textColour">
                 Welcome to the Park Enthusiast. Keep track of your park visits, what rides you have been on and when. 
                 Make comments and rate your experiece. Track the actual time you waited in line. 
                 As you gather more data, see what your prior wait times have been like.  
               </h5>
-              <h4 style={{color: "white"}}>Now it is time to sign up and get riding!</h4>
+              <h4 className="textColour">Now it is time to sign up and get riding!</h4>
 
             </Col>
           </Row>

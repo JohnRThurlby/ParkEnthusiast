@@ -22,19 +22,24 @@ let parkLevel     = " "
 let parkLength    = " "
 let parkType      = " "
 let parkUrl       = " "
+let totalCount    = " "
+let dupCount      = " "
 
 
 export default class Rideinfo extends Component {
   
   state = { 
     park: {},
-    comments: {}
+    comments: {},
+    avgwait: {},
+    totalcount: {},
+    dupcount: {}
   }
 
   componentDidMount() {
 
     this.getRides();
-    this.getComments();
+    
 
   }
 
@@ -48,18 +53,19 @@ export default class Rideinfo extends Component {
         console.log("in get ride return")
         console.log(res.data)
         this.setState({ park: res.data });
-        parkRidename = res.data[0].parkridename 
-        parkArea     = res.data[0].parkarea
-        parkHgtreq   = res.data[0].parkhgtreq
-        parkDuration = res.data[0].parkduration
-        parkMaxhgt   = res.data[0].parkmaxhgt
-        parkOpened   = res.data[0].parkopened
-        parkAvgwait  = res.data[0].parkavgwait
-        parkSpeed    = res.data[0].parkspeed
-        parkLevel    = res.data[0].parklevel 
-        parkLength   = res.data[0].parklength
-        parkType     = res.data[0].parktype 
-        parkUrl      = res.data[0].parkurl
+        parkRidename = res.data.parkridename 
+        parkArea     = res.data.parkarea
+        parkHgtreq   = res.data.parkhgtreq
+        parkDuration = res.data.parkduration
+        parkMaxhgt   = res.data.parkmaxhgt
+        parkOpened   = res.data.parkopened
+        parkAvgwait  = res.data.parkavgwait
+        parkSpeed    = res.data.parkspeed
+        parkLevel    = res.data.parklevel 
+        parkLength   = res.data.parklength
+        parkType     = res.data.parktype 
+        parkUrl      = res.data.rideurl
+        this.getComments();
       })
       
       .catch(err => console.log(err))
@@ -74,6 +80,32 @@ export default class Rideinfo extends Component {
         for (let i = 0; i < res.data.length; i++){
           ridercomments[i] = res.data[i].comment 
         }
+        this.getRideanalysis()
+      })
+      .catch(err => console.log(err))
+  };
+  
+  getRideanalysis = () => {
+    API.gettotalCount()
+      .then(res => {
+        console.log("in get total count")
+        console.log(res.data)
+        this.setState({ totalcount: res.data });
+        totalCount = res.data;
+        console.log("total count" + totalCount)
+        this.getDupcount()
+      })
+      .catch(err => console.log(err))
+  };
+
+  getDupcount = () => {
+    API.getdupCount()
+      .then(res => {
+        console.log("in get dup count")
+        console.log(res.data)
+        this.setState({ dupcount: res.data });
+        dupCount = res.data;
+        console.log("dup count " + dupCount)
       })
       .catch(err => console.log(err))
   };
@@ -83,6 +115,11 @@ export default class Rideinfo extends Component {
     this.setState({
       [name]: value
     });
+  };
+
+  _onRideSelect = event => {
+    event.preventDefault();
+    window.location="/ridenow"
   };
   
   render() {
@@ -103,193 +140,208 @@ export default class Rideinfo extends Component {
  
           <TabPanel>
             <Row> 
-              <Col xs={10}>
-                <h4 style={{ textAlign: "center", color: "white" }}>{parkRidename}</h4>
+              <Col xs={12}>
+                <h4 style={{ textAlign: "center", color: "red" }}>{parkRidename}</h4>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={8}>
+                <Row>
+                  <Col xs={2}></Col>
+                  <Col xs={2}>
+                    <h5 className="textColour">Area of Park</h5>
+                  </Col>
+                  <Col xs={2}> 
+                    <h5 className="textColour">Duration</h5>
+                  </Col>
+                  <Col xs={2}>
+                    <h5 className="textColour">Max height</h5>
+                  </Col>
+                  <Col xs={2}>
+                    <h5 className="textColour">Speed</h5>
+                  </Col>
+                  <Col xs={2}>
+                    <h5 className="textColour">Opened</h5>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={2}></Col>
+                  <Col xs={2}>
+                    <h6 className="textColour2">{parkArea}</h6>
+                  </Col>
+                  <Col xs={2}> 
+                    <h6 className="textColour2">{parkDuration}</h6>
+                  </Col>
+                  <Col xs={2}>
+                    <h6 className="textColour2">{parkMaxhgt}</h6>
+                  </Col>
+                  <Col xs={2}> 
+                    <p className="textColour2">{parkSpeed}</p>
+                  </Col>
+                  <Col xs={2}>
+                    <p className="textColour2">{parkOpened}</p>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={2}></Col>
+                  <Col xs={2}> 
+                    <h5 className="textColour">Level</h5>
+                  </Col>
+                  <Col xs={2}>
+                    <h5 className="textColour">Length</h5>
+                  </Col>
+                  <Col xs={2}> 
+                    <h5 className="textColour">Type</h5>
+                  </Col>
+                  <Col xs={2}>
+                    <h5 className="textColour">Height restriction</h5>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={2}></Col>
+                  <Col xs={2}>
+                    <p className="textColour2">{parkLevel}</p>
+                  </Col>
+                  <Col xs={2}>
+                    <p className="textColour2">{parkLength}</p>
+                  </Col>
+                  <Col xs={2}>
+                    <p className="textColour2">{parkType}</p>
+                  </Col>
+                  <Col xs={3}>
+                    <p className="textColour2">{parkHgtreq}</p>
+                  </Col>
+                </Row>
+              </Col>
+              <Col xs={4}>
+                <Row>
+                  <Col xs={12}>
+                    <h5 className="textColour">Ride Photo</h5>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <h5><img src={parkUrl} alt="" width="200" height="200"/></h5>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={5}></Col>
+              <Col xs={4}>
+                <button className="btn btn-action button"
+                  onClick={this.onRideSelect}
+                  >
+                    Select this ride?
+                </button>
+              </Col>
+            </Row>
+          </TabPanel>
+          <TabPanel>
+            <Row> 
+              <Col xs={12}>
+                <h4 style={{ textAlign: "center", color: "red" }}>{parkRidename}</h4>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <h5 className="textColour">Area of Park</h5>
-              </Col>
-              <Col xs={3}>
-                <h5 className="textColour">Height Requirements</h5>
-              </Col>
-              <Col xs={3}> 
-                <h5 className="textColour">Duration</h5>
-              </Col>
-              <Col xs={2}>
-                <h5 className="textColour">Max height</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={2}>
-                <p className="textColour">{parkArea}</p>
-              </Col>
-              <Col xs={3}>
-                <p className="textColour">{parkHgtreq}</p>
-              </Col>
-              <Col xs={3}> 
-                <p className="textColour">{parkDuration}</p>
-              </Col>
-              <Col xs={2}>
-                <p className="textColour">{parkMaxhgt}</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={2}>
-                <h5 className="textColour">Opened</h5>
-              </Col>
-              <Col xs={3}> 
-                <h5 className="textColour">Average wait</h5>
-              </Col>
-              <Col xs={3}>
-                <h5 className="textColour">Speed</h5>
+                <h5 className="textColour">Average Wait Time</h5>
               </Col>
               <Col xs={2}> 
-                <h5 className="textColour">Level</h5>
+                <h5 className="textColour">Average rating</h5>
+              </Col>
+              <Col xs={2}>
+                <h5 className="textColour">Times ridden by users</h5>
+              </Col>
+              <Col xs={2}>
+                <h5 className="textColour">Number of repeat riders</h5>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <p className="textColour">{parkOpened}</p>
-              </Col>
-              <Col xs={3}>
-                <p className="textColour">{parkAvgwait}</p>
-              </Col>
-              <Col xs={3}> 
-                <p className="textColour">{parkSpeed}</p>
+                <p className="textColour2">{parkLevel}</p>
               </Col>
               <Col xs={2}>
-                <p className="textColour">{parkLevel}</p>
+                <p className="textColour2">{parkLength}</p>
               </Col>
-            </Row>
-            
-            
-            <Row>
-              <Col xs={2}></Col>
               <Col xs={2}>
-                <h5 className="textColour">Length</h5>
+                <p className="textColour2">{totalCount}</p>
               </Col>
-              <Col xs={3}> 
-                <h5 className="textColour">Type</h5>
+              <Col xs={2}>
+                <p className="textColour2">{dupCount}</p>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <p className="textColour">{parkLength}</p>
+                 <h5 className="textColour">Longest known wait</h5>
               </Col>
-              <Col xs={3}>
-                <p className="textColour">{parkType}</p>
+              <Col xs={2}>
+                 <h5 className="textColour">Date of longest wait</h5>
+              </Col>
+              <Col xs={2}>
+                  <h5 className="textColour">Shortest known wait</h5>
+              </Col>
+              <Col xs={2}>
+                 <h5 className="textColour">Date of shortest wait</h5>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={2}></Col>
+              <Col xs={2}>
+                <p className="textColour2">{parkLevel}</p>
+              </Col>
+              <Col xs={2}>
+                <p className="textColour2">{parkLength}</p>
+              </Col>
+              <Col xs={2}>
+                <p className="textColour2">{parkType}</p>
+              </Col>
+              <Col xs={2}>
+                <p className="textColour2">{parkType}</p>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={5}></Col>
+              <Col xs={4}>
+                <button className="btn btn-action button"
+                  onClick={this._onRideSelect}
+                  >
+                    Select this ride?
+                </button>
               </Col>
             </Row>
           </TabPanel>
           <TabPanel>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}> 
-                <h5 style={{color: "white"}}>Average User Wait Time</h5>
-              </Col>
-              <Col xs={3}>
-                <h5 style={{color: "white"}}>Average user rating</h5>
+            <Row> 
+              <Col xs={12}>
+                <h4 style={{ textAlign: "center", color: "red" }}>{parkRidename}</h4>
               </Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
-              <Col xs={3}> 
-                <p>{parkArea}</p>
+              <Col xs={8}> 
+                <h5 style={{textAlign: "center", color: "white"}}>Comments</h5>
               </Col>
-              <Col xs={3}>
-                <p>{parkArea}</p>
-              </Col>
+              <Col xs={2}></Col>
             </Row>
             <Row>
               <Col xs={2}></Col>
-              <Col xs={3}> 
-                <h5 style={{color: "white"}}>Times ridden by all users</h5>
+              <Col xs={8}> 
+                <p className="textColour2">{ridercomments}</p>
               </Col>
-              <Col xs={3}>
-                <h5 style={{color: "white"}}>Number of repeat riders</h5>
-              </Col>
+              <Col xs={2}></Col>
             </Row>
             <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}> 
-                <p>{parkArea}</p>
-              </Col>
-              <Col xs={3}>
-                <p>{parkArea}</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}>
-                  <h5 style={{color: "white"}}>Shortest known wait</h5>
-              </Col>
-              <Col xs={3}>
-                 <h5 style={{color: "white"}}>Longest known wait</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}>
-                 <h5 style={{color: "white"}}>Longest known wait</h5>
-              </Col>
-              <Col xs={3}>
-                 <h5 style={{color: "white"}}>Date of longest wait</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}> 
-                <p>{parkArea}</p>
-              </Col>
-              <Col xs={3}>
-                <p>{parkArea}</p>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}>
-                  <h5 style={{color: "white"}}>Shortest known wait</h5>
-              </Col>
-              <Col xs={3}>
-                 <h5 style={{color: "white"}}>Date of shortest wait</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}> 
-                <p>{parkArea}</p>
-              </Col>
-              <Col xs={3}>
-                <p>{parkArea}</p>
-              </Col>
-            </Row>
-          </TabPanel>
-          <TabPanel>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}> 
-                <h5 style={{color: "white"}}>Comments</h5>
-              </Col>
-              <Col xs={2}></Col>
-              <Col xs={3}>
-                 <h5 style={{color: "white"}}>Ride Photo</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={3}> 
-                <p style={{color: "white"}}>{ridercomments}</p>
-              </Col>
-              <Col xs={2}></Col>
-              <Col xs={3}>
-                 <h5 style={{color: "white"}}>{parkUrl}</h5>
+              <Col xs={5}></Col>
+              <Col xs={4}>
+                <button className="btn btn-action button"
+                  onClick={this.onRideSelect}
+                  >
+                    Select this ride?
+                </button>
               </Col>
             </Row>
           </TabPanel>

@@ -46,7 +46,7 @@ export default {
   getAllrides: function(userData) {
     console.log("in API.js, axios.getAllRides")
     console.log(userData)
-    return axios.get("/api/parks/rides/:id", userData);
+    return axios.get("/api/parks/allrides", userData);
   },
 
   // Get ride data based on Park code
@@ -60,5 +60,41 @@ export default {
     console.log("in API.js, axios.getComments")
     console.log(userData)
     return axios.get("/api/parks/comments", userData);
+  },
+  // Get ride data based on Park code
+  getavgWait: function(userData) {
+    console.log("in API.js, axios.get avg wait")
+    console.log(userData)
+    return axios.get("/api/parks/avgwait", userData);
+  },
+  // Get ride data based on Park code
+  getavgRating: function(userData) {
+    console.log("in API.js, axios.get avg rating")
+    console.log(userData)
+    return axios.get("/api/parks/avgrating", userData);
+  },
+  // Get ride data based on Park code
+  getmaxWait: function(userData) {
+    console.log("in API.js, axios.get max wait")
+    console.log(userData)
+    return axios.get("/api/parks/maxwait", userData);
+  },
+  // Get ride data based on Park code
+  getminWait: function(userData) {
+    console.log("in API.js, axios.get min wait")
+    console.log(userData)
+    return axios.get("/api/parks/minwait", userData);
+  },
+  // Get ride data based on Park code
+  gettotalCount: function(userData) {
+    console.log("in API.js, axios.get total count")
+    console.log(userData)
+    return axios.get("/api/parks/totalcount", userData);
+  },
+  // Get ride data based on Park code
+  getdupCount: function(userData) {
+    console.log("in API.js, axios.get dup count")
+    console.log(userData)
+    return axios.get("/api/parks/dupcount", userData);
   }
 };

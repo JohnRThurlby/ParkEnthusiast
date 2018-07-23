@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import Logo from "../../components/Logo";
-//import { Link } from "react-router-dom";
 import Calendar from 'react-calendar'
 import StarRatingComponent from 'react-star-rating-component';
-import Container from "../../components/Container"
-import Row from "../../components/Row";
-import Col from "../../components/Col";
-import { MenuItem, DropdownButton } from 'react-bootstrap';
+//import { MenuItem, DropdownButton } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap'
 
 export default class RideNow extends Component {
 
@@ -29,126 +26,76 @@ export default class RideNow extends Component {
   render() {
 
     const { rating } = this.state;
+
     return (
-  <div>
-    <Logo backgroundImage="../../pages/theme.jpg'">
-      <Container>
-        
-        <div id="u47_text" className="text-center">
-           <h4>Revenge of the Mummy</h4>
-        </div>
-
-        <Row>
-          <div id="u47_text" className="text-center">
-            <Col size="sm-2"> </Col>
-            <Col size="sm-4">
-              <h6>Date of Ride</h6>
+      <div>
+        <Logo backgroundImage="../../pages/theme.jpg'">
+          <Row> 
+            <Col xs={12}>
+              <h4 style={{ textAlign: "center", color: "red" }}>Men in Black</h4>
             </Col>
-            <Col size="sm-3">
-            <Row>
-              <h6>Rating</h6>
-            </Row>  
+          </Row>
+          <Row>
+            <Col xs={3}></Col>
+            <Col xs={3}>
+              <h5 className="textColour">Date of Ride</h5>
             </Col>
-          </div>
-        </Row>
-        
-        <Row>
-          <div id="u45_text" className="text-center">
-            <Col size="sm-2"> </Col>
-            <div>
-              <Col size="sm-4"> 
-                <Calendar
-                  onChange={this.onChange}
+            <Col xs={2}> 
+              <h5 className="textColour">Rating</h5>
+            </Col>
+            <Col xs={2}> 
+              <h5 className="textColour">Wait Time</h5>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={2}></Col>
+            <Col xs={4}> 
+              <Calendar
+                onChange={this.onChange}
                   value={this.state.date}
+              />
+            </Col>
+            <Col xs={2}>
+              <div>
+                <StarRatingComponent 
+                  name="rate1" 
+                  starCount={5}
+                  value={rating}
+                  renderStarIcon={() => <span>★</span>}
+                  onStarClick={this.onStarClick.bind(this)}
+                  starColor={"#000"}
+                  emptyStarColor={"#fff"} 
                 />
+              </div>
+            </Col>
+            <Col xs={2}> 
+               <input className="textColour2" type="text" placeholder="Wait time"/>
+            </Col>
+            <Row>
+              <Col xs={4}></Col>
+              <Col xs={4}> 
+                <h5 className="textColour">Comment</h5>
               </Col>
-              <Col size="sm-3">
-                <Row>
-                  <div style={{fontSize: '100'}}>
-                    <StarRatingComponent 
-                      name="rate1" 
-                      starCount={5}
-                      value={rating}
-                      renderStarIcon={() => <span>★</span>}
-                      onStarClick={this.onStarClick.bind(this)}
-                      starColor={"#000"}
-                      emptyStarColor={"#fff"} 
-                    />
-                  </div>
-                </Row>
-                <Row>
-                  <Col size="sm-6"> 
-                     <h6 >Wait Time</h6>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col size="sm-5"> 
-                     <input type="text" placeholder="Wait time"/>
-                  </Col>
-                </Row>
-              </Col>
-            </div>
-          </div>
-        </Row>
-       
-        <Row>
-          <div id="u45_text" className="text-center">
-            <Col size="sm-5"> </Col>
-            <div>
-              <Col size="sm-2"> 
-              <h6>Comment</h6>
-              </Col>
-            </div>
-          </div>
-        </Row>
-
-        <Row>
-          <div id="u45_text" className="text-center">
-            <Col size="sm-2"> </Col>
-            <div>
-              <Col size="sm-7"> 
-                 <input type="textarea" placeholder="Comment"/>
-              </Col>
-            </div>
-          </div>
-        </Row>
-
-       
-  
-        <div className="text-center">
-          <button action="POST" className="btn btn-action">
-            
-            Add New Ride Info
-          </button>
-        </div>
-          
-      </Container>
-
-      <Container>
-        <div id="u47_text" className="text-center">
-           <h4>Prior Ride Visits</h4>
-        </div>
-
-        <div id="u47_text" className="text-center">
-           <h5>Select Date to see prior rating/comment</h5>
-        </div>
-
-        <div id="priorrides" className="text-center">
-          <DropdownButton
-            bsSize="medium"
-            title="Prior Rides"
-            id="dropdown-size-medium"
-            >
-            <MenuItem eventKey="1">5/24/2012</MenuItem>
-            
-
-          </DropdownButton>
-        </div>
-
-      </Container>
-    </Logo>
-  </div>
-);
+              <Row>
+                <Col xs={4}></Col>
+                <Col xs={4}> 
+                  <input className="textColour2" type="textarea" placeholder="Comment"/>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={5}></Col>
+                <Col xs={4}>
+                  <button className="btn btn-action button"
+                    onClick={this.onRideSelect}
+                    >
+                      Add Ride Data
+                  </button>
+                </Col>
+              </Row>
+            </Row>
+          </Row>
+        </Logo>
+      </div>
+    );
+  }
 }
-} 

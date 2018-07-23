@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
   parklevel:     DataTypes.STRING,
   parklength:    DataTypes.STRING,
   parktype:      DataTypes.STRING,
-  parkurl:       DataTypes.STRING
+  rideurl:       DataTypes.STRING
   });
   return Parkrides;
 };

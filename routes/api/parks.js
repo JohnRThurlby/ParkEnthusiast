@@ -11,8 +11,8 @@ router.route("/hours/:id")
 router.route("/tickets/:id")
   .get(parksController.findTicketsbyid)
 
-  // Matches with "/api/parks/rides/:id"
-router.route("/rides/:id")
+  // Matches with "/api/parks/allrides"
+router.route("/allrides")
   .get(parksController.findAllrides)
 
   // Matches with "/api/parks/rides"
@@ -22,6 +22,30 @@ router.route("/rideinfo/:id")
   // Matches with "/api/parks/rides"
 router.route("/comments")
 .get(parksController.findComments)
+
+// Matches with "/api/parks/avgwait"
+router.route("/avgwait")
+.get(parksController.findAvgwait)
+
+// Matches with "/api/parks/avgrating"
+router.route("/avgrating")
+.get(parksController.findAvgrating)
+
+// Matches with "/api/parks/maxnwait"
+router.route("/maxwait")
+.get(parksController.findMaxwait)
+
+// Matches with "/api/parks/minwait"
+router.route("/minwait")
+.get(parksController.findMinwait)
+
+// Matches with "/api/parks/totalcount"
+router.route("/totalcount")
+.get(parksController.findTotalcount)
+
+// Matches with "/api/parks/dupcount"
+router.route("/dupcount")
+.get(parksController.findDupcount)
 
 // Matches with "/api/parks"
 router.route("/")
