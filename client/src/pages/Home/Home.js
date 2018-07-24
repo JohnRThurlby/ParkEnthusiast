@@ -44,7 +44,7 @@ export default class Home extends Component {
           <Row>
             <Col size="sm-3"></Col>
             <Col size="sm-7">
-              <button className="btn btn-action signbutton" onClick={() => this._handleModal(true, 'REGISTRATION')}>
+              <button className="btn btn-action regisbutton" onClick={() => this._handleModal(true, 'REGISTRATION')}>
                 Sign up
               </button>
             </Col>

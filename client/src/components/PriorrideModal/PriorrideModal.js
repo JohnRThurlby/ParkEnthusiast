@@ -83,7 +83,7 @@ export default class PriorrideModal extends Component {
         <div>
           <Row> 
             <Col xs={4}>
-              <h4 style={{ textAlign: "center", color: "red" }}>{parkRidename}</h4>
+              <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
             </Col>
           </Row>
           <Row>
@@ -117,10 +117,8 @@ export default class PriorrideModal extends Component {
             </Col> 
             <Col xs={2}></Col>
             <Col xs={2}> 
-              <h6></h6>
             </Col>
             <Col xs={2}> 
-              <h6></h6>
             </Col>
           </Row>
           <Row>

@@ -126,7 +126,7 @@ export default class RideNow extends Component {
         <Logo backgroundImage="../../pages/theme.jpg'">
           <Row> 
             <Col xs={12}>
-              <h4 style={{ textAlign: "center", color: "red" }}>{parkRidename}</h4>
+              <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
             </Col>
           </Row>
           <form>

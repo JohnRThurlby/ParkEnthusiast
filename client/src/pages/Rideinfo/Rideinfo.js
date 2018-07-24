@@ -186,20 +186,16 @@ export default class Rideinfo extends Component {
 
       <div>
         <Tabs >
-          <TabList>
-            
-              <Tab><h5 style={{color: "black"}}>Ride Information</h5></Tab>
-             
-              <Tab><h5 style={{color: "black"}}>Ride Analysis</h5></Tab>
-
-              <Tab><h5 style={{color: "black"}}>Rider's Comments</h5></Tab>
-              
-          </TabList>
- 
+            <TabList>
+                <Col xs={3}></Col>
+                <Tab><h5 style={{color: "black"}}>Ride Information..  </h5></Tab>
+                <Tab><h5 style={{color: "black"}}>Ride Analysis..  </h5></Tab>
+                <Tab><h5 style={{color: "black"}}>Rider's Comments..</h5></Tab>
+            </TabList>
           <TabPanel>
             <Row> 
               <Col xs={12}>
-                <h4 style={{ textAlign: "center", color: "red" }}>{parkRidename}</h4>
+                <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
               </Col>
             </Row>
             <Row>
@@ -298,7 +294,7 @@ export default class Rideinfo extends Component {
           <TabPanel>
             <Row> 
               <Col xs={12}>
-                <h4 style={{ textAlign: "center", color: "red" }}>{parkRidename}</h4>
+                <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
               </Col>
             </Row>
             <Row>
@@ -374,26 +370,33 @@ export default class Rideinfo extends Component {
           </TabPanel>
           <TabPanel>
             <Row> 
-              <Col xs={12}>
-                <h4 style={{ textAlign: "center", color: "red" }}>{parkRidename}</h4>
+              <Col xs={2}></Col>
+              <Col xs={7}>
+                <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
               </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={8}> 
-                <h5 style={{textAlign: "center", color: "white"}}>Comments</h5>
-              </Col>
-              <Col xs={2}></Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={8}> 
-                <h6 className="textColour2">{ridercomments}</h6>
-              </Col>
-              <Col xs={2}></Col>
             </Row>
             <Row>
               <Col xs={5}></Col>
+              <Col xs={5}> 
+                <h5 style={{color: "white"}}>Comments</h5>
+              </Col>
+              <Col xs={2}></Col>
+            </Row>
+            <Row>
+              <Col xs={4}></Col>
+              <Col xs={5}> 
+                <ul style={{color: "white"}}>
+                  {ridercomments.map(function(ridercomment, index){
+                      return <li key={ index }>{ridercomment}</li>;
+                    })}
+                </ul>
+              </Col>
+              <Col xs={2}></Col>
+            </Row>
+            <Row>
+              <Col xs={3}></Col>
+
+              <Col xs={2}></Col>
               <Col xs={4}>
                 <button className="btn btn-action button"
                   onClick={this.onRideSelect}

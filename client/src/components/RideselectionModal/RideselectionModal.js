@@ -155,7 +155,7 @@ export default class RideselectionModal extends Component {
           <div>
             <Row> 
               <Col xs={12}>
-                <h5 style={{ textAlign: "center", color: "red" }}>{parkName}</h5>
+                <h5 style={{ textAlign: "center", color: "black" }}>{parkName}</h5>
               </Col>
             </Row>
             <Row>
@@ -196,7 +196,7 @@ export default class RideselectionModal extends Component {
                 <Row>
                   <Col xs={1}></Col>
                   <Col xs={9}>
-                    <h6 style={{ color: "red" }}>Select a ride from the list to see the ride information</h6>
+                    <h6 style={{ color: "black" }}>Select a ride from the list to see the ride information</h6>
                   </Col>
                 </Row>
                 <Row>
