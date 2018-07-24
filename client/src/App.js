@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 
 import Home          from "./pages/Home"
 import ParkSelection from "./pages/Parkselection"
-//import RideSelection from "./pages/Rideselection"
 import RideInfo      from "./pages/Rideinfo"
 import RideNow       from "./pages/Ridenow"
 import NoMatch       from "./pages/NoMatch"
