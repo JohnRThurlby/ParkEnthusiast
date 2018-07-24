@@ -30,10 +30,10 @@ export default class Footer extends Component {
             <Col xs={3}>
             </Col>
             <Col xs={2}>
-              <h6 style={{padding: 10}}><a href="#"onClick={() => this._handleModal(true, 'PRIVACY')}>Privacy</a></h6>
+              <h6 style={{padding: 10}}><a ref="#"onClick={() => this._handleModal(true, 'PRIVACY')}>Privacy</a></h6>
             </Col>
             <Col xs={3}>
-              <h6 style={{padding: 10}}><a href="#"onClick={() => this._handleModal(true, 'TERMS')}>Terms & Conditions</a></h6>
+              <h6 style={{padding: 10}}><a ref="#"onClick={() => this._handleModal(true, 'TERMS')}>Terms & Conditions</a></h6>
             </Col>
           </Row>
         </Navbar>

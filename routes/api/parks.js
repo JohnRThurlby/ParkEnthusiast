@@ -47,12 +47,37 @@ router.route("/totalcount")
 router.route("/dupcount")
 .get(parksController.findDupcount)
 
-// Matches with "/api/parks"
+// Matches with "/api/parks/dupcount"
+router.route("/state")
+.get(parksController.findState)
+
+
+
+  // Matches with "/api/parks/park"
+router.route("/park")
+.get(parksController.findOne)
+
+
+
+// Matches with "/api/parks/:id"
+router.route("/saveriderinfo")
+  .post(parksController.createRiderinfo);
+
+  // Matches with "/api/parks/:id"
+router.route("/saveridercmt")
+.post(parksController.createRidercmt);
+
+// Matches with "/api/parks/:id"
+router.route("/getuserdata")
+.get(parksController.getUserdata);
+
+  // Matches with "/api/parks"
 router.route("/")
-  .get(parksController.findAll)
+.get(parksController.findAll)
 
 // Matches with "/api/parks/:id"
 router.route("/:id")
   .get(parksController.findById)
+
 
 module.exports = router

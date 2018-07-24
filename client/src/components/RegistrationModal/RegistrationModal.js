@@ -12,8 +12,8 @@ const ValidatePassword = require('validate-password'),
       postcode         = require('postcode-validator'),
       validator        = require("email-validator");
 
-let userValid = true
-let error     = " "
+//let userValid = true
+//let error     = " "
 
 export default class RegistrationModal extends Component {
   constructor(props) {
@@ -29,8 +29,8 @@ export default class RegistrationModal extends Component {
     email: "",
     repemail: "",
     password: "",
-    reppassword: "",
-    userValid: true
+    reppassword: ""
+    //userValid: true
   }
   
   handleInputChange = event => {
@@ -48,28 +48,28 @@ export default class RegistrationModal extends Component {
     event.preventDefault();
 
     if (!validator.validate(this.state.email)) {
-      error = 'Invalid email, please enter a correcty formatted email'
-      userValid = false
+      //error = 'Invalid email, please enter a correcty formatted email'
+      //userValid = false
     } 
 
     let passwordData = validPass.checkPassword(this.state.password);
     if (!passwordData.isValid) {
-      error = passwordData.validationMessage
-      userValid = false
+      //error = passwordData.validationMessage
+      //userValid = false
     }
 
     if (!postcode.validate(this.state.zipcode, 'US')) {
-      error = 'Zip Code is invalid'
-      userValid = false 
+      //error = 'Zip Code is invalid'
+      //userValid = false 
 }
     
     if (this.state.nickname && this.state.email && this.state.password && this.state.zipcode) {
       console.log("in API call")
       
       API.saveUser({
-        nickname: this.state.nickname,
-        zipcode: this.state.zipcode, 
-        email: this.state.email,
+        nickname:     this.state.nickname,
+        zipcode:      this.state.zipcode, 
+        email:        this.state.email,
         userpassword: this.state.password
       })
         .then(()=> {window.location="/parkselection"})

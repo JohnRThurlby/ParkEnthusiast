@@ -46,7 +46,7 @@ export default class ModalConductor extends Component {
         return <RideselectionModal history={this.props.history} handleModal={this.props.handleModal}/>;
 
       case 'PRIORRIDE':
-        return <PriorRideModal/>;
+        return <PriorRideModal history={this.props.history} handleModal={this.props.handleModal}/>;
       
       default:
         return null

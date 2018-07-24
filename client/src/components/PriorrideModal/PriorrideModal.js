@@ -2,16 +2,16 @@ import React, { Component } from "react"
 
 import ModalConductor from "../ModalConductor"
 
-import { Row, Col } from 'react-bootstrap'
-
-import Container from "../Container"
-
-import Logo from "../Logo";
 import StarRatingComponent from 'react-star-rating-component';
 import ReactChartkick, { ColumnChart } from 'react-chartkick'
 import Chart from 'chart.js'
+import API from "../../utils/API";
+import { Row, Col } from 'react-bootstrap'
 
 ReactChartkick.addAdapter(Chart)
+
+let parkRidename  = " "
+let parkdatelist = {}
 
 export default class PriorrideModal extends Component {
   constructor(props) {
@@ -24,7 +24,13 @@ export default class PriorrideModal extends Component {
 
   state = { 
     modalStatus: false,
-    modalType: ""
+    modalType:   "",
+    park:        {},
+  }
+
+  componentDidMount() {
+    this.getRides();
+    this.loadRidedates();
   }
     
   _handleModal = (status, type) => {
@@ -33,6 +39,36 @@ export default class PriorrideModal extends Component {
       
   onStarClick(nextValue, prevValue, name) {
     this.setState({rating: nextValue});}
+
+  getRides = () => {
+    API.getRides( {parkid: 75, rideid: 8 }
+    )
+      .then(res => {
+        console.log("in get ride return")
+        console.log(res.data)
+        this.setState({ park: res.data });
+        parkRidename = res.data.parkridename  
+        console.log(parkRidename)
+      })
+      
+      .catch(err => console.log(err))
+  };
+
+  loadRidedates = () => {
+    API.getUserdata( 
+        )
+      .then(res => {
+        console.log("user park data")
+        console.log(res.data)
+        for (let i = 0; i < res.data.length; i++)
+          {
+          parkdatelist.date[i] = res.data[i].daterode
+          parkdatelist.wait[i] = res.data[i].waittime
+          };
+          
+      })
+      .catch(err => console.log(err))
+  };
   
   render() {
 
@@ -41,87 +77,62 @@ export default class PriorrideModal extends Component {
     return (
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
+        <button type="button" className="fontx close" onClick={() => this.closeModal()} aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         <div>
-          <Logo backgroundImage="../../pages/theme.jpg'">
-            <Container>
-              <div id="u47_text" className="text-center">
-                <h4>Revenge of the Mummy</h4>
+          <Row> 
+            <Col xs={4}>
+              <h4 style={{ textAlign: "center", color: "red" }}>{parkRidename}</h4>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={1}></Col>
+            <Col xs={2}>
+              <h6>Rating</h6>
+            </Col>
+            <Col xs={2}></Col>
+            <Col xs={2}> 
+              <h6 >Times Ridden</h6>
+            </Col>
+            <Col xs={2}></Col>
+            <Col xs={2}> 
+              <h6 >Comment</h6>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={1}></Col>
+            <Col xs={2}>
+              <div style={{fontSize: '100'}}>
+                <StarRatingComponent 
+                  name="rate1" 
+                  starCount={5}
+                  editing={false}
+                  value={rating}
+                  renderStarIcon={() => <span>★</span>}
+                  starColor={"#000"}
+                  emptyStarColor={"#fff"} 
+                />
               </div>
-
-              <div id="u47_text" className="text-center">
-                <h5>Date of Ride</h5>
-                <h6>1/4/2018</h6>
-              </div>
-          
-              <Row>
-                <div id="u47_text" className="text-center">
-                  <Col size="sm-4"> </Col>
-                  <Col size="sm-3">
-                  <Row>
-                    <h6>Rating</h6>
-                  </Row>  
-                  </Col>
-                </div>
-              </Row>
-          
-              <Row>
-                <div id="u45_text" className="text-center">
-                  <Col size="sm-4"> </Col>
-                  <Col size="sm-3">
-                      
-                    <div style={{fontSize: '100'}}>
-                      <StarRatingComponent 
-                        name="rate1" 
-                        starCount={5}
-                        editing={false}
-                        value={rating}
-                        renderStarIcon={() => <span>★</span>}
-                        starColor={"#000"}
-                        emptyStarColor={"#fff"} 
-                      />
-                    </div>
-                  </Col> 
-                </div>
-              </Row>
-
-              <Row>
-                <Col size="sm-6"> 
-                  <h6 >Times Ridden</h6>
-                </Col>
-                <Col size="sm-5"> 
-                  <input type="text" placeholder="Ridden"/>
-                </Col>
-              </Row>
-
-              <Row>
-                <div id="u45_text" className="text-center">
-                  <Col size="sm-5"> </Col>
-                  <div>
-                    <Col size="sm-2"> 
-                      <h6>Comment</h6>
-                    </Col>
-                  </div>
-                </div>
-              </Row>
-
-              <Row>
-                <div id="u45_text" className="text-center">
-                  <Col size="sm-2"> </Col>
-                </div>
-              </Row>
-              <Row>
-                <Col size="sm-6"> 
-                  <h6 >Wait Time</h6>
-                </Col>
-              </Row>
-              <Row>
-                <ColumnChart data={[["5/24/2012", 32], ["7/01/2014", 46], ["9/15/2015", 28], ["4/24/2017", 45], ["1/4/2018", 70]]} />
-              </Row>
-            </Container>
-          </Logo>
+            </Col> 
+            <Col xs={2}></Col>
+            <Col xs={2}> 
+              <h6></h6>
+            </Col>
+            <Col xs={2}> 
+              <h6></h6>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <h6 style={{ textAlign: "center", color: "red" }}>Wait Time</h6>
+            </Col>
+          </Row>
+          <Row>
+            <ColumnChart data={[["5/24/2012", 32], ["7/01/2014", 46], ["9/15/2015", 28], ["4/24/2017", 45], ["1/4/2018", 70]]} />
+          </Row>
           <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
         </div>
-        <p><button className="btn btn-action" onClick={() => this.closeModal()}>Close</button></p>
         </Modal>
       </div>
     )
@@ -145,10 +156,10 @@ class Modal extends React.Component {
       position: 'absolute',
       top: '50%',
       left: '50%',
-      width: '60%',
+      width: '80%',
       transform: 'translate(-50%, -50%)',
       zIndex: '9999',
-      background: 'rgba(255,255,255, 0.7)'
+      background: 'rgba(255,255,255, 1)'
     }
 
     if (this.props.width && this.props.height) {
@@ -172,7 +183,7 @@ class Modal extends React.Component {
       top: '0px',
       left: '0px',
       zIndex: '9998',
-      background: 'rgba(255, 255, 255, 0.5)'
+      background: 'rgba(255, 255, 255, 0.2)'
     }
 
     if (this.props.backdropStyle) {

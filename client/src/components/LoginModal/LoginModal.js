@@ -19,10 +19,12 @@ export default class LoginModal extends Component {
     modalStatus: false,
     modalType: "",
     email: "",
-    password: ""
+    password: "",
+    userdata: {}
   }
     
   _handleModal = (status, type) => {
+    this.closeModal()
     this.setState ({modalStatus: status, modalType: type})
   }
 
@@ -35,13 +37,14 @@ export default class LoginModal extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-   // if (this.state.email && this.state.password) {
       API.getUser({
         email: this.state.email,
         userpassword: this.state.password
       })
         .then(res => { 
-        localStorage.setItem('zipcode', '32835')
+        this.setState({ userdata: res.data });
+        console.log(res.data.zipcode)
+        localStorage.setItem('zipcode', res.data.zipcode)
         window.location="/parkselection"})
         .catch(err => console.log(err));
   };
@@ -122,10 +125,10 @@ export default class LoginModal extends Component {
                 <Row>
                   <Col xs={3}></Col>
                   <Col xs={4}>
-                    <p style={{margin: 0}}><a href="#" onClick={() => this._handleModal(true, 'FORGOT')}>Forgot Password?</a></p>
+                    <p style={{margin: 0}}><a ref="#" onClick={() => this._handleModal(true, 'FORGOT')}>Forgot Password?</a></p>
                   </Col> 
                   <Col xs={3}>
-                    <p><a href="#" onClick={() => this._handleModal(true, 'REGISTRATION')}>Not a User?</a></p>
+                    <p><a ref="#" onClick={() => this._handleModal(true, 'REGISTRATION')}>Not a User?</a></p>
                   </Col> 
                 </Row>  
                 <Row>

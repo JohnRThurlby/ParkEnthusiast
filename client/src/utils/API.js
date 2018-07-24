@@ -15,17 +15,17 @@ export default {
   },
 
   // Get park data based on State code
-  getParks: function(userData) {
-    console.log("in API.js, axios.getParks")
+  getParksbyState: function(userData) {
+    console.log("in API.js, axios.getParks by state")
     console.log(userData)
-    return axios.get("/api/parks", userData);
+    return axios.get("/api/parks/state");
   },
 
   // Get park data based on id
   getPark: function(userData) {
     console.log("in API.js, axios.getPark")
     console.log(userData)
-    return axios.get("/api/parks/" , userData);
+    return axios.get("/api/parks/park" , userData);
   },
 
   // Get park hours based on id
@@ -96,5 +96,20 @@ export default {
     console.log("in API.js, axios.get dup count")
     console.log(userData)
     return axios.get("/api/parks/dupcount", userData);
+  },
+  saveRideuserinfo: function(userData) {
+    console.log("in API.js, axios.saveRideuerinfo")
+    console.log(userData)
+    return axios.post("/api/parks/saveriderinfo", userData);
+  },
+  saveRideusercmt: function(userData) {
+    console.log("in API.js, axios.saveRideusercmt")
+    console.log(userData)
+    return axios.post("/api/parks/saveridercmt", userData);
+  },
+  getUserdata: function(userData) {
+    console.log("in API.js, axios.getUserdata")
+    console.log(userData)
+    return axios.get("/api/parks/getuserdata", userData);
   }
 };

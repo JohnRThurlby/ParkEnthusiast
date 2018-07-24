@@ -12,7 +12,7 @@ import 'react-dropdown/style.css'
 let parkName      = " " 
 let parkPhone     = " " 
 let parkAddr      = " " 
-let parkCtyst     = " " 
+let parkPic     = " " 
 
 let parkhours     = []
 let defaultHours  = "Select from list"
@@ -33,7 +33,8 @@ export default class RideselectionModal extends Component {
     park:   {},
     parks:  {},
     hours:  {},
-    prices: {}
+    prices: {},
+    parkid: " " 
     
   }
     
@@ -60,10 +61,10 @@ export default class RideselectionModal extends Component {
       .then(res => {
           console.log(res.data);
           this.setState({ park: res.data });
-          parkName  = res.data[0].parkname 
-          parkPhone = res.data[0].parkphone 
-          parkAddr  = res.data[0].parkaddress1 + ","
-          parkCtyst = res.data[0].parkcity + ", " + res.data[0].parkstate + ", " + res.data[0].parkzip
+          parkName  = res.data.parkname 
+          parkPhone = res.data.parkphone 
+          parkAddr  = " " + res.data.parkaddress1 + ", " + res.data.parkcity + ", " + res.data.parkstate + ", " + res.data.parkzip
+          parkPic   = res.data.parkpic
           this.getHours()
         }) 
       .catch(err => console.log(err))
@@ -113,9 +114,9 @@ export default class RideselectionModal extends Component {
   };
 
   getRides = () => {
-    API.getAllrides( {parkid: 75}
+    API.getAllrides( 
 
-    //  {parkid: this.state.parkid }
+      {parkid: this.state.parkid }
     )
     .then(res => {
       console.log(res.data);
@@ -123,6 +124,7 @@ export default class RideselectionModal extends Component {
       for (let i = 0; i < res.data.length; i++){
         parkrides[i] = res.data[i].parkridename
       }
+      defaultRides  = parkrides[0]
       console.log(parkrides);
     })
       .catch(err => console.log(err))
@@ -150,21 +152,20 @@ export default class RideselectionModal extends Component {
           <button type="button" className="fontx close" onClick={() => this.closeModal()} aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
-          <div className="container">
+          <div>
             <Row> 
-              <Col xs={4}> </Col>
-              <Col xs={4}>
-                <h4>{parkName}</h4>
+              <Col xs={12}>
+                <h5 style={{ textAlign: "center", color: "red" }}>{parkName}</h5>
               </Col>
             </Row>
             <Row>
+              <Col xs={1}></Col>
               <Col xs={1}>
                 <h6>Address:</h6>
               </Col>
-              <Col xs={6}>
+              <Col xs={5}>
                 <h6>{parkAddr}</h6>
               </Col>
-              <Col xs={1}></Col>
               <Col xs={1}>
                 <h6>Phone:</h6>
               </Col>
@@ -173,34 +174,42 @@ export default class RideselectionModal extends Component {
               </Col>
             </Row>
             <Row>
-              <Col xs={1}></Col>
-              <Col xs={6}>
-                <h6>{parkCtyst}</h6>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={1}>
-                  <h6>Park Hours</h6>
+              <Col xs={8}>
+                <Row>
+                  <Col xs={1}></Col>
+                  <Col xs={2}>
+                    <h6>  Park Hours    </h6>
+                  </Col>
+                  <Col xs={6}>
+                      <Dropdown options={parkhours} value={defaultHours} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={1}></Col>
+                  <Col xs={2}>
+                      <h6>  Ticket Prices</h6>
+                  </Col>
+                  <Col xs={6}>
+                    <Dropdown options={parkprices} value={defaultPrices} />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={1}></Col>
+                  <Col xs={9}>
+                    <h6 style={{ color: "red" }}>Select a ride from the list to see the ride information</h6>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={1}></Col>
+                  <Col xs={9}>                                  
+                    <Dropdown options={parkrides} onChange={() => this._onSelect(true)} value={defaultRides} />
+                  </Col>
+                </Row> 
               </Col>
               <Col xs={4}>
-                  <Dropdown options={parkhours} value={defaultHours} />
+                    <h5><img src={parkPic} alt="" width="200" height="200"/></h5>
               </Col>
-              <Col xs={2}> </Col>
-              <Col xs={1}>
-                  <h6>Ticket Prices</h6>
-              </Col>
-              <Col xs={4}>
-                <Dropdown options={parkprices} value={defaultPrices} />
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={3}>
-                <h6>Select a ride from the list</h6>
-              </Col>
-              <Col xs={9}>                                  
-                <Dropdown options={parkrides} onChange={() => this._onSelect(true)} value={defaultRides} />
-              </Col>
-            </Row> 
+            </Row>  
           </div>
           <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
         </Modal>

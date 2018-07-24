@@ -4,16 +4,24 @@ console.log("made it in here, parksController")
 module.exports = {
   findAll: function(req, res) {
     console.log("in findAll")
-    console.log(req.body)
+    console.log(req.query)
     db.Parks
       .findAll({ where: {parkstate: "FL"}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
-  findById: function(req, res) {
-    console.log("in findbyid " + req.params.id )
+  findState: function(req, res) {
+    console.log("in findState")
     db.Parks
-      .findById("75")
+      .findAll({ where: {parkstate: "FL"}})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findOne: function(req, res) {
+    console.log("in findOne")
+    console.log(req.body)
+    db.Parks
+      .findOne({ where: {id: "75"}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -56,25 +64,25 @@ module.exports = {
   },
   findAvgwait: function(req, res) {
     console.log("in findAvgwait ")
-    db.Rideuserinfo
-      .findOne({ where: {userid: "1", parkid: "75", id: "10"}}
+    db.Rideuserinfos
+     .findOne({ where: {userid: "1", parkid: "75", id: "10"}}
     
     )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findAvgrating: function(req, res) {
-    console.log("in findAvgwait ")
-    db.Rideuserinfo
-      .findOne({ where: {userid: "1", parkid: "75", id: "10"}}
+    console.log("in findAvgrating ")
+    db.Rideuserinfos
+      .findOne({ where: {parkid: "75", id: "10"}}
     )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findMaxwait: function(req, res) {
     console.log("in findMaxwait ")
-    db.Rideuserinfo
-      .findOne({ where: {parkid: "75", id: "10"}}
+    db.Rideuserinfos
+      .max("waittime", { where: {parkid: "75", id: "10"}}
     
     )
       .then(dbModel => res.json(dbModel))
@@ -82,8 +90,8 @@ module.exports = {
   },
   findMinwait: function(req, res) {
     console.log("in findMinxwait ")
-    db.Rideuserinfo
-      .findOne({ where: {parkid: "75", id: "10"}}
+    db.Rideuserinfos
+      .min("waittime", { where: {parkid: "75", id: "10"}}
     
     )
       .then(dbModel => res.json(dbModel))
@@ -91,7 +99,7 @@ module.exports = {
   },
   findTotalcount: function(req, res) {
     console.log("in findTotalcount ")
-    db.Rideuserinfo
+    db.Rideuserinfos
       .count({ where: {parkid: "75", rideid: "10"}}
     
     )
@@ -99,13 +107,42 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   findDupcount: function(req, res) {
-    console.log("in findTotalcount ")
-    db.Rideuserinfo
-      .count({ where: {parkid: "75", rideid: "10"}}
+    console.log("in findDupcount ")
+    db.Rideuserinfos
+      .count({ where: {parkid: "75", rideid: "10"}, distinct: true, col: 'userid'}
     
     )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
+  },
+  createRiderinfo: function(req, res) {
+    console.log("made it in here, db.Rideuserinfos, create")
+    console.log("req body " + req.body.date)
+    db.Rideuserinfos
+      .create(req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  createRidercmt: function(req, res) {
+    console.log("made it in here, db.Rideusercmt, create")
+    console.log("req body " + req.body.date)
+    db.Ridercomments
+      .create(req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  getUserdata: function(req, res) {
+    console.log("in getUserdata")
+    db.Rideuserinfos
+      .findAll({ where: {userid: "1", parkid: "75", rideid: "10"}})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findById: function(req, res) {
+    console.log("in findbyid " + req.params.id )
+    db.Parks
+      .findById("75")
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
   }
-  
 };

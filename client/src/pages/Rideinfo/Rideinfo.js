@@ -22,8 +22,12 @@ let parkLevel     = " "
 let parkLength    = " "
 let parkType      = " "
 let parkUrl       = " "
-let totalCount    = " "
-let dupCount      = " "
+let longWait      = " "
+let shortWait     = " " 
+let avgWait       = " " 
+let avgRating     = " "
+let totalCount    = 0
+let dupCount      = 0
 
 
 export default class Rideinfo extends Component {
@@ -33,13 +37,15 @@ export default class Rideinfo extends Component {
     comments: {},
     avgwait: {},
     totalcount: {},
-    dupcount: {}
+    dupcount: {},
+    longwait: {},
+    shortwait: {},
+    avgrating: {}
   }
 
   componentDidMount() {
 
     this.getRides();
-    
 
   }
 
@@ -106,6 +112,58 @@ export default class Rideinfo extends Component {
         this.setState({ dupcount: res.data });
         dupCount = res.data;
         console.log("dup count " + dupCount)
+        this.getmaxWait()
+      })
+      .catch(err => console.log(err))
+  };
+
+  getmaxWait = () => {
+    API.getmaxWait()
+      .then(res => {
+        console.log("in get max wait")
+        console.log(res.data)
+        this.setState({ longwait: res.data});
+        longWait = res.data;
+        console.log("long wait " + longWait)
+        this.getminWait()
+      })
+      .catch(err => console.log(err))
+  };
+
+  getminWait = () => {
+    API.getminWait()
+      .then(res => {
+        console.log("in get min wait")
+        console.log(res.data)
+        this.setState({ shortwait: res.data });
+        shortWait = res.data;
+        console.log("short wait " + shortWait)
+        this.getavgWait()
+      })
+      .catch(err => console.log(err))
+  };
+
+  getavgWait = () => {
+    API.getavgWait()
+      .then(res => {
+        console.log("in get avg wait")
+        console.log(res.data)
+        this.setState({ avgwait: res.data });
+        avgWait = res.data;
+        console.log("avg wait " + avgWait)
+        this.getavgRating()
+      })
+      .catch(err => console.log(err))
+  };
+
+  getavgRating = () => {
+    API.getavgRating()
+      .then(res => {
+        console.log("in get avg rating")
+        console.log(res.data)
+        this.setState({ avgrating: res.data });
+        avgRating = res.data;
+        console.log("avg rating " + avgRating)
       })
       .catch(err => console.log(err))
   };
@@ -176,10 +234,10 @@ export default class Rideinfo extends Component {
                     <h6 className="textColour2">{parkMaxhgt}</h6>
                   </Col>
                   <Col xs={2}> 
-                    <p className="textColour2">{parkSpeed}</p>
+                    <h6 className="textColour2">{parkSpeed}</h6>
                   </Col>
                   <Col xs={2}>
-                    <p className="textColour2">{parkOpened}</p>
+                    <h6 className="textColour2">{parkOpened}</h6>
                   </Col>
                 </Row>
                 <Row>
@@ -200,16 +258,16 @@ export default class Rideinfo extends Component {
                 <Row>
                   <Col xs={2}></Col>
                   <Col xs={2}>
-                    <p className="textColour2">{parkLevel}</p>
+                    <h6 className="textColour2">{parkLevel}</h6>
                   </Col>
                   <Col xs={2}>
-                    <p className="textColour2">{parkLength}</p>
+                    <h6 className="textColour2">{parkLength}</h6>
                   </Col>
                   <Col xs={2}>
-                    <p className="textColour2">{parkType}</p>
+                    <h6 className="textColour2">{parkType}</h6>
                   </Col>
                   <Col xs={3}>
-                    <p className="textColour2">{parkHgtreq}</p>
+                    <h6 className="textColour2">{parkHgtreq}</h6>
                   </Col>
                 </Row>
               </Col>
@@ -261,16 +319,16 @@ export default class Rideinfo extends Component {
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <p className="textColour2">{parkLevel}</p>
+                <h6 className="textColour2">{parkAvgwait}</h6>
               </Col>
               <Col xs={2}>
-                <p className="textColour2">{parkLength}</p>
+                <h6 className="textColour2">{parkAvgwait}</h6>
               </Col>
               <Col xs={2}>
-                <p className="textColour2">{totalCount}</p>
+                <h6 className="textColour2">{totalCount}</h6>
               </Col>
               <Col xs={2}>
-                <p className="textColour2">{dupCount}</p>
+                <h6 className="textColour2">{dupCount}</h6>
               </Col>
             </Row>
             <Row>
@@ -291,16 +349,16 @@ export default class Rideinfo extends Component {
             <Row>
               <Col xs={2}></Col>
               <Col xs={2}>
-                <p className="textColour2">{parkLevel}</p>
+                <h6 className="textColour2">{longWait}</h6>
               </Col>
               <Col xs={2}>
-                <p className="textColour2">{parkLength}</p>
+                <h6 className="textColour2">{parkLength}</h6>
               </Col>
               <Col xs={2}>
-                <p className="textColour2">{parkType}</p>
+                <h6 className="textColour2">{shortWait}</h6>
               </Col>
               <Col xs={2}>
-                <p className="textColour2">{parkType}</p>
+                <h6 className="textColour2">{parkType}</h6>
               </Col>
             </Row>
             <Row>
@@ -330,7 +388,7 @@ export default class Rideinfo extends Component {
             <Row>
               <Col xs={2}></Col>
               <Col xs={8}> 
-                <p className="textColour2">{ridercomments}</p>
+                <h6 className="textColour2">{ridercomments}</h6>
               </Col>
               <Col xs={2}></Col>
             </Row>

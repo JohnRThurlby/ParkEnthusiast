@@ -6,8 +6,11 @@ module.exports = {
   findById: function(req, res) {
     console.log("in findById")
     console.log("req body " + req.params.id)
-    let useremail = 'johnrthurlby@gmail.com'
-    let userpass = 'Robt01'
+    let i = req.params.id.indexOf(".com")
+    let useremail = req.params.id.substr(0, i + 4)
+    let userpass = req.params.id.substr(i + 4)
+    console.log(useremail)
+    console.log(userpass)
     db.User
       .findOne({ where: {email: useremail, userpassword: userpass}} )
       .then(dbModel => res.json(dbModel))
@@ -21,21 +24,5 @@ module.exports = {
       .create(req.body)
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
-  },
-
-  update: function(req, res) {
-    db.User
-      .findOneAndUpdate({ _id: req.params.id }, req.body)
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
-  },
-
-  remove: function(req, res) {
-    db.User
-      .findById({ _id: req.params.id })
-      .then(dbModel => dbModel.remove())
-      .then(dbModel => res.json(dbModel))
-      .catch(err => res.status(422).json(err));
   }
-
 };

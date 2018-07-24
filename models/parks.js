@@ -11,7 +11,8 @@ module.exports = function(sequelize, DataTypes) {
   parkwikilink: DataTypes.STRING,
   parkurl:      DataTypes.STRING,
   parklat:      DataTypes.STRING,
-  parklon:      DataTypes.STRING
+  parklon:      DataTypes.STRING,
+  parkpic:      DataTypes.STRING
   });
   return Parks;
 };

@@ -22,13 +22,14 @@ let markerLen = " "
 let googlemarkerData = " "
 let parkslist = []
 let defaultParks = "Select from list"
-let selectValue = false
+//let selectValue = false
 
 export default class Parkselection extends Component {
 
   state = { 
-    selectValue: false,
+ //   selectValue: false,
     modalStatus: false,
+    userState: " ",
     modalType: ""
   }
 
@@ -39,24 +40,21 @@ export default class Parkselection extends Component {
   componentDidMount() {
 
     let userzipStor = localStorage.getItem('zipcode');
-
     let userZip = zipcodes.lookup(userzipStor)
 
-    console.log("userZip " + userZip)
     userLat = parseFloat(userZip.latitude)
     userLon = parseFloat(userZip.longitude)
     userState = userZip.state
-
     
     this.setState({userLat: userLat, userLon: userLon})
+    this.setState({parkstate: userState})
     this.loadParks();
   }
 
   loadParks = () => {
-    API.getParks(
-      {state: userState}
-    )
-
+    API.getParksbyState( 
+       {parkstate: this.state.userState}
+       )
       .then(res => {
         console.log(res.data)
         for (let i = 0; i < res.data.length; i++)
@@ -73,13 +71,13 @@ export default class Parkselection extends Component {
       .catch(err => console.log(err))
   };
 
-  _onSelect = (selectValue) => {
-    console.log("in onselect")
-    console.log(selectValue)
-    if (selectValue) {
-      console.log("default " + parkslist)
-     // window.location="/rideselection"
-    }};
+  //_onSelect = (selectValue) => {
+  //  console.log("in onselect")
+  //  console.log(selectValue)
+  //  if (selectValue) {
+  //    console.log("default " + parkslist)
+   //  // window.location="/rideselection"
+  //  }};
 
   render() {
 
@@ -90,7 +88,7 @@ export default class Parkselection extends Component {
             <Col xs={4}>
                 <Row>
                   <Col xs={12}>
-                    <h5 style={{color: "white" }}>Select a park from the list</h5>
+                    <h5 className="textColour">Select a park from the list</h5>
                   </Col>
                 </Row>  
                 <Row>
