@@ -124,12 +124,16 @@ export default class PriorrideModal extends Component {
             </Col>
           </Row>
           <Row>
-            <Col xs={12}>
+            <Col xs={4}></Col>
+            <Col xs={4}>
               <h6 style={{ textAlign: "center", color: "red" }}>Wait Time</h6>
             </Col>
           </Row>
           <Row>
-            <ColumnChart data={[["5/24/2012", 32], ["7/01/2014", 46], ["9/15/2015", 28], ["4/24/2017", 45], ["1/4/2018", 70]]} />
+            <Col xs={4}></Col>
+            <Col xs={4}>
+              <ColumnChart data={[["5/24/2012", 32], ["7/01/2014", 46], ["9/15/2015", 28], ["4/24/2017", 45], ["1/4/2018", 70]]} />
+            </Col>
           </Row>
           <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
         </div>
