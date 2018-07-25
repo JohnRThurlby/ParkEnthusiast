@@ -50,7 +50,7 @@ export default class Rideinfo extends Component {
   }
 
   getRides = () => {
-    API.getRides( {parkid: 75, rideid: 8 }
+    API.getRides( {parkid: 75, rideid: 10 }
 
     //  {parkid: this.state.parkid, rideid: this.state.rideid }
     )

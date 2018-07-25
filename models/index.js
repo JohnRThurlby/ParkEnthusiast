@@ -8,16 +8,13 @@ var env = process.env.NODE_ENV || "development";
 var config = require(__dirname + "/../config/config.js")[env];
 var db = {};
 
-console.log("this is the env in " + env)
 
 if (env === "production") {
-  console.log("in process env if for JAWS")
   var sequelize = new Sequelize(process.env.JAWSDB_URL);
 } else {
   var sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
-console.log("this is var sequelize " + process.env.JAWSDB_URL)
 fs
   .readdirSync(__dirname)
   .filter(function(file) {
