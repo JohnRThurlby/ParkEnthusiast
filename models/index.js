@@ -10,7 +10,7 @@ var db = {};
 
 console.log("this is the env in " + env)
 
-if (env === "'production") {
+if (env === "production") {
   console.log("in process env if for JAWS")
   var sequelize = new Sequelize(process.env.JAWSDB_URL);
 } else {
