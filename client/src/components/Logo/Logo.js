@@ -8,7 +8,7 @@ import Background from '../../pages/rides.jpg';
 
 const Logo = props => {
   
-  return (<div className="logo" style={{opacity: 0.9,  backgroundImage: `url(${Background})` }}>
+  return (<div className="logo" style={{opacity: 1.0,  backgroundImage: `url(${Background})` }}>
     {props.children}
   </div>)
 };

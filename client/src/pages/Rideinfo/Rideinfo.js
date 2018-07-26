@@ -9,6 +9,12 @@ import API from "../../utils/API";
 
 import { Row, Col } from 'react-bootstrap'
 
+import ReactChartkick, { ColumnChart } from 'react-chartkick'
+import Chart from 'chart.js'
+
+ReactChartkick.addAdapter(Chart)
+
+
 let ridercomments = []
 let parkRidename  = " "
 let parkArea      = " "
@@ -28,6 +34,9 @@ let avgWait       = " "
 let avgRating     = " "
 let totalCount    = 0
 let dupCount      = 0
+
+let ratings=[["1", 1], ["2", 3], ["3", 5], ["4", 4], ["5", 2]]
+let waittimes=[["7/01/2014", 15], ["Average", 32], ["5/24/2012", 100]]
 
 
 export default class Rideinfo extends Component {
@@ -297,69 +306,41 @@ export default class Rideinfo extends Component {
                 <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
               </Col>
             </Row>
-            <Row>
+            <Row style={{ padding: 0, margin: 0 }}>
               <Col xs={2}></Col>
-              <Col xs={2}>
-                <h5 className="textColour">Average Wait Time</h5>
+              <Col xs={4}>
+                <h6 style={{ textAlign: "center", color: "yellow" }}>Wait Times</h6>
               </Col>
-              <Col xs={2}> 
-                <h5 className="textColour">Average rating</h5>
-              </Col>
-              <Col xs={2}>
-                <h5 className="textColour">Times ridden by users</h5>
-              </Col>
-              <Col xs={2}>
-                <h5 className="textColour">Number of repeat riders</h5>
+              <Col xs={2}></Col>
+              <Col xs={4}>
+                <h6 style={{ textAlign: "center", color: "yellow" }}>Ratings</h6>
               </Col>
             </Row>
-            <Row>
+            <Row style={{ padding: 0, margin: 0 }}>
               <Col xs={2}></Col>
-              <Col xs={2}>
-                <h6 className="textColour2">{parkAvgwait}</h6>
+              <Col xs={4}>
+                <ColumnChart colors={["#fff"]} xtitle="Date" ytitle="Wait Time" data={waittimes} />
               </Col>
+              <Col xs={2}></Col>
+              <Col xs={4}>
+                <ColumnChart colors={["#fff"]} xtitle="Date" ytitle="Ratings" data={ratings} />
+              </Col>
+            </Row>
+            <Row style={{ padding: 0, margin: 0 }}>
+              <Col xs={1}></Col>
               <Col xs={2}>
-                <h6 className="textColour2">{parkAvgwait}</h6>
+                <h6 className="textColour">Times ridden by users</h6>
               </Col>
               <Col xs={2}>
                 <h6 className="textColour2">{totalCount}</h6>
               </Col>
               <Col xs={2}>
+                <h6 className="textColour">Number of repeat riders</h6>
+              </Col>
+              <Col xs={2}>
                 <h6 className="textColour2">{dupCount}</h6>
               </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={2}>
-                 <h5 className="textColour">Longest known wait</h5>
-              </Col>
-              <Col xs={2}>
-                 <h5 className="textColour">Date of longest wait</h5>
-              </Col>
-              <Col xs={2}>
-                  <h5 className="textColour">Shortest known wait</h5>
-              </Col>
-              <Col xs={2}>
-                 <h5 className="textColour">Date of shortest wait</h5>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={2}></Col>
-              <Col xs={2}>
-                <h6 className="textColour2">{longWait}</h6>
-              </Col>
-              <Col xs={2}>
-                <h6 className="textColour2">{parkLength}</h6>
-              </Col>
-              <Col xs={2}>
-                <h6 className="textColour2">{shortWait}</h6>
-              </Col>
-              <Col xs={2}>
-                <h6 className="textColour2">{parkType}</h6>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={5}></Col>
-              <Col xs={4}>
+              <Col xs={3}>
                 <button className="btn btn-action button"
                   onClick={this._onRideSelect}
                   >
@@ -387,7 +368,7 @@ export default class Rideinfo extends Component {
               <Col xs={5}> 
                 <ul style={{color: "white"}}>
                   {ridercomments.map(function(ridercomment, index){
-                      return <li key={ index }>{ridercomment}</li>;
+                      return <h6 key={ index }>{ridercomment}</h6>;
                     })}
                 </ul>
               </Col>
