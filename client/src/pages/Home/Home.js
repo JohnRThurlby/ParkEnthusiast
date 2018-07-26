@@ -35,7 +35,8 @@ export default class Home extends Component {
               <h5 className="textColour">
                 Welcome to the Park Enthusiast. Keep track of your park visits, what rides you have been on and when. 
                 Make comments and rate your experiece. Track the actual time you waited in line. 
-                As you gather more data, see what your prior wait times have been like.  
+                As more data is gathered, see what wait times, ratings, and comments have been like. 
+                Compete with friends to get the most park visits and rides!  
               </h5>
               <h4 className="textColour">Now it is time to sign up and get riding!</h4>
 
