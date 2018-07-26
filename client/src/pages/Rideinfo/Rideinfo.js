@@ -12,6 +12,9 @@ import { Row, Col } from 'react-bootstrap'
 import ReactChartkick, { ColumnChart } from 'react-chartkick'
 import Chart from 'chart.js'
 
+var moment = require('moment');
+moment().format();
+
 ReactChartkick.addAdapter(Chart)
 
 
@@ -28,28 +31,47 @@ let parkLevel     = " "
 let parkLength    = " "
 let parkType      = " "
 let parkUrl       = " "
-let longWait      = " "
-let shortWait     = " " 
-let avgWait       = " " 
+let longWait      = "0"
+let longWaitdate  = " "
+let shortWait     = "9999"
+let shortWaitdate = " "  
+let avgWait       = "0" 
+let waitShort     = " "
 let avgRating     = " "
 let totalCount    = 0
 let dupCount      = 0
+let avgCount      = 0
+let count         = 0
+//let oneRate       = 0
+//let twoRate       = 0
+//let threeRate     = 0
+//let fourRate      = 0
+//let fiveRate      = 0
 
-let ratings=[["1", 1], ["2", 3], ["3", 5], ["4", 4], ["5", 2]]
-let waittimes=[["7/01/2014", 15], ["Average", 32], ["5/24/2012", 100]]
+let ratings=[]
+let waittimes=[]
 
 
 export default class Rideinfo extends Component {
   
   state = { 
-    park: {},
-    comments: {},
-    avgwait: {},
-    totalcount: {},
-    dupcount: {},
-    longwait: {},
-    shortwait: {},
-    avgrating: {}
+    park:          {},
+    comments:      {},
+    waittimes:     {},
+    totalcount:    " ",
+    dupcount:      " ",
+    longWait:      " ",
+    shortWait:     " ",
+    avgrating:     " ",
+    longWaitdate:  " ",
+    shortWaitdate: " ", 
+    waitShort:     " "
+    //avgWait:       " " 
+    //oneRate:       " ",
+    //twoRate:       " ",
+    //threeRate:     " ",
+    //fourRate:      " ",
+    //fiveRate:      " "
   }
 
   componentDidMount() {
@@ -121,58 +143,40 @@ export default class Rideinfo extends Component {
         this.setState({ dupcount: res.data });
         dupCount = res.data;
         console.log("dup count " + dupCount)
-        this.getmaxWait()
+        this.getUserdata()
       })
       .catch(err => console.log(err))
   };
 
-  getmaxWait = () => {
-    API.getmaxWait()
+  getUserdata = () => {
+    API.getUserdata()
       .then(res => {
-        console.log("in get max wait")
+        console.log("in get user data")
         console.log(res.data)
-        this.setState({ longwait: res.data});
-        longWait = res.data;
-        console.log("long wait " + longWait)
-        this.getminWait()
-      })
-      .catch(err => console.log(err))
-  };
+        this.setState({ waittimes: res.data});
+        count = res.data.length
+        for (let i = 0; i < res.data.length; i++){
+          if (longWait < res.data[i].waittime)
+          {
+            longWait      = res.data[i].waittime
+            longWaitdate  = moment(res.data[i].daterode, "YYYY-MM-DD")
+          }
+          if (shortWait > res.data[i].waittime)
+          {
+            shortWait      = res.data[i].waittime 
+            shortWaitdate  = res.data[i].daterode
+          }
+          avgCount += res.data[i].waittime 
+        }
+        avgWait = avgCount / count
+        waitShort = "25"
+        console.log(waitShort)
 
-  getminWait = () => {
-    API.getminWait()
-      .then(res => {
-        console.log("in get min wait")
-        console.log(res.data)
-        this.setState({ shortwait: res.data });
-        shortWait = res.data;
-        console.log("short wait " + shortWait)
-        this.getavgWait()
-      })
-      .catch(err => console.log(err))
-  };
+        waittimes=[[shortWaitdate, shortWait], ["Average", waitShort], [longWaitdate, longWait]]
+        console.log("waittimes array " + waittimes)
+        ratings=[["1", 0], ["2", 1], ["3", 2], ["4", 3], ["5", 4]]
 
-  getavgWait = () => {
-    API.getavgWait()
-      .then(res => {
-        console.log("in get avg wait")
-        console.log(res.data)
-        this.setState({ avgwait: res.data });
-        avgWait = res.data;
-        console.log("avg wait " + avgWait)
-        this.getavgRating()
-      })
-      .catch(err => console.log(err))
-  };
 
-  getavgRating = () => {
-    API.getavgRating()
-      .then(res => {
-        console.log("in get avg rating")
-        console.log(res.data)
-        this.setState({ avgrating: res.data });
-        avgRating = res.data;
-        console.log("avg rating " + avgRating)
       })
       .catch(err => console.log(err))
   };
@@ -307,7 +311,7 @@ export default class Rideinfo extends Component {
               </Col>
             </Row>
             <Row style={{ padding: 0, margin: 0 }}>
-              <Col xs={2}></Col>
+              <Col xs={1}></Col>
               <Col xs={4}>
                 <h6 style={{ textAlign: "center", color: "yellow" }}>Wait Times</h6>
               </Col>
@@ -317,13 +321,13 @@ export default class Rideinfo extends Component {
               </Col>
             </Row>
             <Row style={{ padding: 0, margin: 0 }}>
-              <Col xs={2}></Col>
+              <Col xs={1}></Col>
               <Col xs={4}>
-                <ColumnChart colors={["#fff"]} xtitle="Date" ytitle="Wait Time" data={waittimes} />
+                <ColumnChart colors={["#fff", "#fff"]} xtitle="Date" ytitle="Wait Time" data={[["7/21/2017", 10],["Average", 25],["6/21/2018", 60]]} />
               </Col>
               <Col xs={2}></Col>
               <Col xs={4}>
-                <ColumnChart colors={["#fff"]} xtitle="Date" ytitle="Ratings" data={ratings} />
+                <ColumnChart colors={["#fff"]} xtitle="Date" ytitle="Ratings" data={[["1", 0], ["2", 1], ["3", 2], ["4", 3], ["5", 4]]} />
               </Col>
             </Row>
             <Row style={{ padding: 0, margin: 0 }}>

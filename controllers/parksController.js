@@ -58,14 +58,14 @@ module.exports = {
   findComments: function(req, res) {
     console.log("in findComments ")
     db.Ridercomments
-      .findAll()
+      .findAll({ where: {parkid: "75", rideid: "10"}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findAvgwait: function(req, res) {
     console.log("in findAvgwait ")
     db.Rideuserinfos
-     .findOne({ where: {userid: "1", parkid: "75", id: "10"}}
+     .findOne({ where: {userid: "1", parkid: "75", rideid: "10"}}
     
     )
       .then(dbModel => res.json(dbModel))
@@ -74,7 +74,7 @@ module.exports = {
   findAvgrating: function(req, res) {
     console.log("in findAvgrating ")
     db.Rideuserinfos
-      .findOne({ where: {parkid: "75", id: "10"}}
+      .findOne({ where: {parkid: "75", rideid: "10"}}
     )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -82,7 +82,7 @@ module.exports = {
   findMaxwait: function(req, res) {
     console.log("in findMaxwait ")
     db.Rideuserinfos
-      .max("waittime", { where: {parkid: "75", id: "10"}}
+      .max("waittime", { where: {parkid: "75", rideid: "10"}}
     
     )
       .then(dbModel => res.json(dbModel))
@@ -91,7 +91,7 @@ module.exports = {
   findMinwait: function(req, res) {
     console.log("in findMinxwait ")
     db.Rideuserinfos
-      .min("waittime", { where: {parkid: "75", id: "10"}}
+      .min("waittime", { where: {parkid: "75", rideid: "10"}}
     
     )
       .then(dbModel => res.json(dbModel))
@@ -134,7 +134,7 @@ module.exports = {
   getUserdata: function(req, res) {
     console.log("in getUserdata")
     db.Rideuserinfos
-      .findAll({ where: {userid: "1", parkid: "75", rideid: "10"}})
+      .findAll({ where: {parkid: "75", rideid: "10"}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

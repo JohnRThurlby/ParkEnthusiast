@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Logo from "../../components/Logo";
 import ModalConductor from "../../components/ModalConductor";
 
-import Calendar from 'react-calendar'
+import DateTimePicker from 'react-datetime-picker';
 import { Row, Col } from 'react-bootstrap'
 import API from "../../utils/API";
 import { TextArea } from "../../components/Form";
@@ -28,10 +28,11 @@ export default class RideNow extends Component {
     super();
  
     this.state = {
-      rating: 1
-     
+      rating: 1,
+      date: new Date(),
     };
   }
+ 
   state = {
     date:        new Date(),
     park:        {},
@@ -55,6 +56,8 @@ export default class RideNow extends Component {
     this.getRides();
     this.loadRidedates();
   }
+
+  onChange = date => this.setState({ date })
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -135,12 +138,13 @@ export default class RideNow extends Component {
                 <Tab><h5 style={{color: "black"}}>Leader Boards!</h5></Tab>
               </TabList>
               <TabPanel>
+              
+                <div>
                 <Row> 
                   <Col xs={7}>
                     <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
                   </Col>
                 </Row>
-                <form>
                   <Row>
                     <Col xs={3}></Col>
                     <Col xs={3}>
@@ -156,13 +160,16 @@ export default class RideNow extends Component {
                       <h5 className="textColour">Comment</h5>
                     </Col>
                   </Row>
+                  <form>
                   <Row>
                       <Col xs={2}></Col>
                       <Col xs={4}> 
-                        <Calendar
-                          onChange={this.onChange}
+                        <div className="textColour">
+                          <DateTimePicker
+                            onChange={this.onChange}
                             value={this.state.date}
-                        />
+                          />
+                        </div>
                       </Col>
                         <Col xs={2}>
                           <div>
@@ -206,7 +213,9 @@ export default class RideNow extends Component {
                         </Col>
                       </Row>
                     </Row> 
-                </form>
+                    </form>
+
+                    </div>
               </TabPanel>
               <TabPanel>
                 <Row> 
@@ -248,17 +257,32 @@ export default class RideNow extends Component {
               </TabPanel>
               <TabPanel>
                 <Row>
-                  <Col xs={1}></Col>
-                  <Col xs={3}>
-                    <h5 className="textColour">On All Parks</h5>
+                  <Col xs={2}></Col>
+                  <Col xs={2}>
+                    <h5 className="textColour">All Parks</h5>
+                    <ul style={{ textAlign: "left", color: "yellow" }}>
+                      <h5>Guest</h5>
+                      <h6>RobT</h6>
+                      <h6>Danny</h6>
+                      <h6>Amelia</h6>
+                    </ul>
+                  </Col>
+                  <Col xs={3}> 
+                    <h5 className="textColour">Universal Studios Orlando</h5>
+                    <ul style={{ textAlign: "center", color: "yellow" }}>
+                      <h5>RobT</h5>
+                      <h6>Guest</h6>
+                      <h6>Amelia</h6>
+                    </ul>
                   </Col>
                   <Col xs={1}></Col>
                   <Col xs={3}> 
-                    <h5 className="textColour">At this park</h5>
-                  </Col>
-                  <Col xs={1}></Col>
-                  <Col xs={3}> 
-                    <h5 className="textColour">On this ride</h5>
+                    <h5 className="textColour">Men in Black: Alien Attack</h5>
+                    <ul style={{ textAlign: "center", color: "yellow" }}>
+                      <h5>Guest</h5>
+                      <h6>RobT</h6>
+                      <h6>Amelia</h6>
+                    </ul>
                   </Col>
                 </Row>
               </TabPanel>
