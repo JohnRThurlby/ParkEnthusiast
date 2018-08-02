@@ -24,7 +24,6 @@ export default class LoginModal extends Component {
   }
     
   _handleModal = (status, type) => {
-    this.closeModal()
     this.setState ({modalStatus: status, modalType: type})
   }
 
@@ -42,10 +41,9 @@ export default class LoginModal extends Component {
         userpassword: this.state.password
       })
         .then(res => { 
-        this.setState({ userdata: res.data });
-        console.log(res.data.zipcode)
-        localStorage.setItem('zipcode', res.data.zipcode)
-        window.location="/parkselection"})
+          console.log(res.data.id)
+          console.log(res.data.zipcode)
+        window.location="/parkselection?" + res.data.id + "&" + res.data.zipcode  })
         .catch(err => console.log(err));
   };
   

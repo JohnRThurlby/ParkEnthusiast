@@ -4,7 +4,9 @@ console.log("made it in here, parksController")
 module.exports = {
   findAll: function(req, res) {
     console.log("in findAll")
-    console.log(req.query)
+    console.log("body " + req.body)
+
+    console.log("query " + req.query)
     db.Parks
       .findAll({ where: {parkstate: "FL"}})
       .then(dbModel => res.json(dbModel))
@@ -12,53 +14,55 @@ module.exports = {
   },
   findState: function(req, res) {
     console.log("in findState")
+    console.log(req.params.id)
+    console.log("body " + req.body)
+    console.log("query " + req.query)
+
     db.Parks
-      .findAll({ where: {parkstate: "FL"}})
+      .findAll({ where: {parkstate: req.params.id}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findOne: function(req, res) {
-    console.log("in findOne")
-    console.log(req.body)
     db.Parks
-      .findOne({ where: {id: "75"}})
+      .findOne({ where: {id: + req.params.id }})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findHoursbyid: function(req, res) {
-    console.log("in findHoursbyid " + req.params.id )
     db.Parkhours
-      .findOne({where: {parkid: "75"}})
+      .findOne({where: {parkid: req.params.id}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findTicketsbyid: function(req, res) {
-    console.log("in findTicketsbyid " + req.params.id )
     db.Parktickets
-      .findOne({ where: {parkid: "75"}})
+      .findOne({ where: {parkid: req.params.id}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findAllrides: function(req, res) {
-    console.log("in findAllrides ")
-
+    console.log("in findAllrides " + req.params.id)
     db.Parkrides
-      .findAll({ where: {parkid: "75"}})
+      .findAll({ where: {parkid: req.params.id}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findRides: function(req, res) {
     console.log("in findRides " + req.params.id )
-
+    let parkid = req.params.id.substr(0, 2)
+    let rideid = req.params.id.substr(2, 2)
     db.Parkrides
-      .findOne({ where: {parkid: "75", id: "10"}})
+      .findOne({ where: {parkid: parkid, id: rideid}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findComments: function(req, res) {
     console.log("in findComments ")
+    let parkid = req.params.id.substr(0, 2)
+    let rideid = req.params.id.substr(2, 2)
     db.Ridercomments
-      .findAll({ where: {parkid: "75", rideid: "10"}})
+      .findAll({ where: {parkid: parkid, rideid: rideid}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
@@ -99,18 +103,19 @@ module.exports = {
   },
   findTotalcount: function(req, res) {
     console.log("in findTotalcount ")
+    let parkid = req.params.id.substr(0, 2)
+    let rideid = req.params.id.substr(2, 2)
     db.Rideuserinfos
-      .count({ where: {parkid: "75", rideid: "10"}}
-    
-    )
+      .count({where: {parkid: parkid, rideid: rideid}})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findDupcount: function(req, res) {
     console.log("in findDupcount ")
+    let parkid = req.params.id.substr(0, 2)
+    let rideid = req.params.id.substr(2, 2)
     db.Rideuserinfos
-      .count({ where: {parkid: "75", rideid: "10"}, distinct: true, col: 'userid'}
-    
+      .count({ where: {parkid: parkid, rideid: rideid}, distinct: true, col: 'userid'}
     )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
@@ -133,15 +138,55 @@ module.exports = {
   },
   getUserdata: function(req, res) {
     console.log("in getUserdata")
+    let parkid = req.params.id.substr(0, 2)
+    let rideid = req.params.id.substr(2, 2)
     db.Rideuserinfos
-      .findAll({ where: {parkid: "75", rideid: "10"}})
+      .findAll({ where: {parkid: parkid, rideid: rideid}})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  getUserbyiddata: function(req, res) {
+    console.log("in getUserbyiddata")
+    let i      = req.params.id.indexOf("?")
+    let userid = req.params.id.substr(0, )
+    let parkid = req.params.id.substr(0 + 1, 2)
+    let rideid = req.params.id.substr(0 + 3, 2)
+    db.Rideuserinfos
+      .findAll({ where: {userid: userid, parkid: parkid, rideid: rideid}})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  getUserdatabyuser: function(req, res) {
+    console.log("in getUserdatabyuser")
+    db.Rideuserinfos
+      .findAll()
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  getUserdatabypark: function(req, res) {
+    console.log("in getUserdatabypark")
+    let userid = "1"
+    let parkid = "75"
+    db.Rideuserinfos
+      .findAll({ where: {userid: userid, parkid: parkid} , distinct: true, col: 'userid'})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  getUserdatabyride: function(req, res) {
+    console.log("in getUserdatabyride")
+    let i      = req.params.id.indexOf("?")
+    let userid = req.params.id.substr(0, 1)
+    let parkid = req.params.id.substr(0 + 1, 2)
+    let rideid = req.params.id.substr(0 + 3, 2)
+    db.Rideuserinfos
+      .findAll({ where: {userid: userid, parkid: parkid, rideid: rideid} , distinct: true, col: 'userid'})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
     console.log("in findbyid " + req.params.id )
     db.Parks
-      .findById("75")
+      .findById("74")
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }

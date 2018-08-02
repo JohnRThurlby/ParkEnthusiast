@@ -6,8 +6,8 @@ import { Input } from "../../components/Form";
 import ModalConductor from "../ModalConductor"
 
 require("dotenv").config()
-var ses = require('node-ses')
-  , client = ses.createClient({ key: "AKIAJY3KUB5OAVIHPW3Q", secret: "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" });
+//var ses = require('node-ses')
+//  , client = ses.createClient({ key: "AKIAJY3KUB5OAVIHPW3Q", secret: "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" });
 
 export default class ForgotpasswordModal extends Component {
 
@@ -31,13 +31,13 @@ export default class ForgotpasswordModal extends Component {
     event.preventDefault();
     if (this.state.email) {
       console.log("in email")
-      client.sendEmail({
-        to: "johnrthurlby@gmail.com"
-        , from: "enthusiastpark@gmail.com"
-        , altText: "Forgot password"
-      }, function (err, data, res) {
-        console.log("in function")
-      });
+      //client.sendEmail({
+      //  to: "johnrthurlby@gmail.com"
+      //  , from: "enthusiastpark@gmail.com"
+      //  , altText: "Forgot password"
+      //}, function (err, data, res) {
+      //  console.log("in function")
+      //});
     }
   };
 
@@ -53,7 +53,7 @@ export default class ForgotpasswordModal extends Component {
             
             <Row>
               <Col xs={2}></Col>
-              <Col xs={8}>
+              <Col xs={9}>
                 
                 <h3 className="darken-4 text-center">Forgot Password</h3>
 
@@ -62,7 +62,7 @@ export default class ForgotpasswordModal extends Component {
             <form>
               <Row>
                 <Col xs={2}></Col>
-                <Col xs={6}>
+                <Col xs={9}>
                   <h5 className="darken-4 text-center">Enter email address to get password</h5>
                 </Col>
               </Row>
@@ -112,9 +112,9 @@ class Modal extends React.Component {
 
     let modalStyle = {
       position: 'absolute',
-      top: '50%',
+      top: '47%',
       left: '50%',
-      width: '50%',
+      width: '60%',
       transform: 'translate(-50%, -50%)',
       zIndex: '9999',
       background: 'rgba(255,255,255, 1)'

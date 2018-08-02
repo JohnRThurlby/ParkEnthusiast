@@ -12,8 +12,8 @@ const ValidatePassword = require('validate-password'),
       postcode         = require('postcode-validator'),
       validator        = require("email-validator");
 
-//let userValid = true
-//let error     = " "
+let userValid = true
+let error     = " "
 
 export default class RegistrationModal extends Component {
   constructor(props) {
@@ -29,8 +29,9 @@ export default class RegistrationModal extends Component {
     email: "",
     repemail: "",
     password: "",
-    reppassword: ""
-    //userValid: true
+    reppassword: "",
+    error: "",
+    userValid: true
   }
   
   handleInputChange = event => {
@@ -47,23 +48,23 @@ export default class RegistrationModal extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
 
-    if (!validator.validate(this.state.email)) {
-      //error = 'Invalid email, please enter a correcty formatted email'
-      //userValid = false
+    if (!validator.validate(this.state.email) || this.state.email !== this.state.repemail    ) {
+      error = 'Invalid email, please enter a correcty formatted email'
+      userValid = false
     } 
 
     let passwordData = validPass.checkPassword(this.state.password);
-    if (!passwordData.isValid) {
-      //error = passwordData.validationMessage
-      //userValid = false
+    if (!passwordData.isValid || this.state.password !== this.state.reppassword) {
+      error = passwordData.validationMessage
+      userValid = false
     }
 
     if (!postcode.validate(this.state.zipcode, 'US')) {
-      //error = 'Zip Code is invalid'
-      //userValid = false 
+      error = 'Zip Code is invalid'
+      userValid = false 
 }
     
-    if (this.state.nickname && this.state.email && this.state.password && this.state.zipcode) {
+    if (userValid) {
       console.log("in API call")
       
       API.saveUser({
@@ -101,12 +102,12 @@ export default class RegistrationModal extends Component {
                     name="nickname"
                     placeholder="Nick Name"
                   />
+
                 </Col>
               </Row>
               <Row>
               <Col xs={2}></Col>
                 <Col xs={8}>
-
                   <Input
                     autoComplete='zipcode' 
                     value={this.state.zipcode}
@@ -115,11 +116,11 @@ export default class RegistrationModal extends Component {
                     placeholder="Zipcode"
                   />
                 </Col>
+                <h6>{error}</h6>
               </Row>
               <Row>
                 <Col xs={2}></Col>
                 <Col xs={8}>
-
                   <Input
                     type='email'
                     autoComplete='email' 
@@ -133,7 +134,6 @@ export default class RegistrationModal extends Component {
               <Row>
                 <Col xs={2}></Col>
                 <Col xs={8}>
-
                   <Input
                     type='email'
                     autoComplete='email' 
@@ -147,7 +147,6 @@ export default class RegistrationModal extends Component {
               <Row>
                 <Col xs={2}></Col>
                 <Col xs={8}>
-
                   <Input
                     type='password'
                     value={this.state.password}
@@ -160,7 +159,6 @@ export default class RegistrationModal extends Component {
               <Row>
                 <Col xs={2}></Col>
                 <Col xs={8}>
-
                   <Input
                     type='password'
                     value={this.state.reppassword}

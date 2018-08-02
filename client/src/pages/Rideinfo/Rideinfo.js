@@ -9,48 +9,70 @@ import API from "../../utils/API";
 
 import { Row, Col } from 'react-bootstrap'
 
-import ReactChartkick, { ColumnChart } from 'react-chartkick'
-import Chart from 'chart.js'
-
-var moment = require('moment');
-moment().format();
-
-ReactChartkick.addAdapter(Chart)
-
+import Chart from "react-google-charts";
 
 let ridercomments = []
 let parkRidename  = " "
 let parkArea      = " "
+let userid        = " "
+let parkid        = " "
+let rideid        = " "
 let parkHgtreq    = " "
 let parkDuration  = " " 
 let parkMaxhgt    = " "
 let parkOpened    = " "
-let parkAvgwait   = " "
 let parkSpeed     = " "
 let parkLevel     = " "
 let parkLength    = " "
 let parkType      = " "
 let parkUrl       = " "
-let longWait      = "0"
-let longWaitdate  = " "
-let shortWait     = "9999"
-let shortWaitdate = " "  
-let avgWait       = "0" 
-let waitShort     = " "
-let avgRating     = " "
-let totalCount    = 0
-let dupCount      = 0
+let longWait      = 45
+let longWaitdate  = "12/21/2017"
+let shortWait     = 10
+let shortWaitdate = "05/21/2018"  
+let avgWait       = "Average" 
+let waitShort     = 25
+//let totalCount    = 0
+//let dupCount      = 0
 let avgCount      = 0
 let count         = 0
-//let oneRate       = 0
-//let twoRate       = 0
-//let threeRate     = 0
-//let fourRate      = 0
-//let fiveRate      = 0
+let rateOne       = 1
+let rateTwo       = 3
+let rateThree     = 2
+let rateFour      = 3
+let rateFive      = 3
+let maxWait       = 45
 
-let ratings=[]
-let waittimes=[]
+let ratingData = [
+  ["Rating", "Number", { role: "style" }],
+  ["1", rateOne, "color: gray"],
+  ["2", rateTwo, "color: #76A7FA"],
+  ["3", rateThree, "color: blue"],
+  ["4", rateFour, "stroke-color: #703593; stroke-width: 4; fill-color: #C5A5CF"],
+  ["5", rateFive, "stroke-color: #871B47; stroke-opacity: 0.6; stroke-width: 8; fill-color: #BC5679; fill-opacity: 0.2"
+  ]
+];
 
+const waitData = [
+  ["Days", "Time", { role: "style" }],
+  [shortWaitdate, shortWait, "color: gray"],
+  [avgWait, waitShort, "color: #76A7FA"],
+  [longWaitdate, longWait, "color: blue"],
+];
+
+const ratingOptions = {
+  title: "Rating vs. Number of Ratings",
+  hAxis: { title: "Rating", viewWindow: { min: 0, max: 5 } },
+  vAxis: { title: "Number", viewWindow: { min: 0, max: 5 } },
+  legend: "none"
+};
+
+const waitOptions = {
+  title: "Wait times",
+  hAxis: { title: "Days", viewWindow: { min: 0, max: 3 } },
+  vAxis: { title: "Time", viewWindow: { min: 0, max: maxWait } },
+  legend: "none"
+};
 
 export default class Rideinfo extends Component {
   
@@ -66,28 +88,28 @@ export default class Rideinfo extends Component {
     longWaitdate:  " ",
     shortWaitdate: " ", 
     waitShort:     " "
-    //avgWait:       " " 
-    //oneRate:       " ",
-    //twoRate:       " ",
-    //threeRate:     " ",
-    //fourRate:      " ",
-    //fiveRate:      " "
+   
   }
 
   componentDidMount() {
 
+    let userinfo = window.location.search;
+    let i = userinfo.indexOf("&")
+    userid = userinfo.substr(1, i - 1)
+    parkid = userinfo.substr(i + 1, 2)
+    rideid = userinfo.substr(i + 4, 2)
+    console.log("userid " + userid)
+    console.log("parkid " + parkid)
+    console.log("rideid " + rideid)
     this.getRides();
-
   }
 
   getRides = () => {
-    API.getRides( {parkid: 75, rideid: 10 }
-
-    //  {parkid: this.state.parkid, rideid: this.state.rideid }
+    API.getRides( 
+      {parkid: parkid, 
+       rideid: rideid }
     )
-
       .then(res => {
-        console.log("in get ride return")
         console.log(res.data)
         this.setState({ park: res.data });
         parkRidename = res.data.parkridename 
@@ -96,7 +118,6 @@ export default class Rideinfo extends Component {
         parkDuration = res.data.parkduration
         parkMaxhgt   = res.data.parkmaxhgt
         parkOpened   = res.data.parkopened
-        parkAvgwait  = res.data.parkavgwait
         parkSpeed    = res.data.parkspeed
         parkLevel    = res.data.parklevel 
         parkLength   = res.data.parklength
@@ -109,9 +130,11 @@ export default class Rideinfo extends Component {
   };
 
   getComments = () => {
-    API.getComments()
+    API.getComments(
+      {parkid: parkid, 
+        rideid: rideid }
+    )
       .then(res => {
-        console.log("in get comments return")
         console.log(res.data)
         this.setState({ comments: res.data });
         for (let i = 0; i < res.data.length; i++){
@@ -123,43 +146,44 @@ export default class Rideinfo extends Component {
   };
   
   getRideanalysis = () => {
-    API.gettotalCount()
+    API.gettotalCount(
+      {parkid: parkid, 
+        rideid: rideid }
+    )
       .then(res => {
-        console.log("in get total count")
-        console.log(res.data)
         this.setState({ totalcount: res.data });
-        totalCount = res.data;
-        console.log("total count" + totalCount)
+        //totalCount = res.data;
         this.getDupcount()
       })
       .catch(err => console.log(err))
   };
 
   getDupcount = () => {
-    API.getdupCount()
+    API.getdupCount(
+      {parkid: parkid, 
+        rideid: rideid }
+    )
       .then(res => {
-        console.log("in get dup count")
-        console.log(res.data)
         this.setState({ dupcount: res.data });
-        dupCount = res.data;
-        console.log("dup count " + dupCount)
+        //dupCount = res.data;
         this.getUserdata()
       })
       .catch(err => console.log(err))
   };
 
   getUserdata = () => {
-    API.getUserdata()
+    API.getUserdata(
+      {parkid: parkid, 
+        rideid: rideid }
+    )
       .then(res => {
-        console.log("in get user data")
-        console.log(res.data)
         this.setState({ waittimes: res.data});
         count = res.data.length
         for (let i = 0; i < res.data.length; i++){
           if (longWait < res.data[i].waittime)
           {
             longWait      = res.data[i].waittime
-            longWaitdate  = moment(res.data[i].daterode, "YYYY-MM-DD")
+            longWaitdate  = res.data[i].daterode
           }
           if (shortWait > res.data[i].waittime)
           {
@@ -167,16 +191,29 @@ export default class Rideinfo extends Component {
             shortWaitdate  = res.data[i].daterode
           }
           avgCount += res.data[i].waittime 
+          switch(res.data[i].rating) {
+            case "1":
+              rateOne = 1
+              break;
+            case "2":
+              rateTwo = 3
+              break;
+            case "3":
+              rateThree = 2
+              break;
+            case "4":
+              rateFour = 4
+              break;
+            case "5":
+              rateFive = 1
+              break;
+            default:
+              break;
+          }
         }
+      
         avgWait = avgCount / count
         waitShort = "25"
-        console.log(waitShort)
-
-        waittimes=[[shortWaitdate, shortWait], ["Average", waitShort], [longWaitdate, longWait]]
-        console.log("waittimes array " + waittimes)
-        ratings=[["1", 0], ["2", 1], ["3", 2], ["4", 3], ["5", 4]]
-
-
       })
       .catch(err => console.log(err))
   };
@@ -188,12 +225,13 @@ export default class Rideinfo extends Component {
     });
   };
 
-  _onRideSelect = event => {
+  onRideSelect = event => {
     event.preventDefault();
-    window.location="/ridenow"
+    window.location="/ridenow?" + userid + "&" + parkid + "&" + rideid
   };
   
   render() {
+    
     return (
       <Logo backgroundImage="../../pages/theme.jpg">
 
@@ -207,7 +245,14 @@ export default class Rideinfo extends Component {
             </TabList>
           <TabPanel>
             <Row> 
-              <Col xs={12}>
+              <Col xs={2}>
+                <button style={{ margin: 20}} className="btn btn-action button"
+                  onClick={this.onRideSelect}
+                  >
+                    Select this ride?
+                </button>
+              </Col>
+              <Col xs={7}>
                 <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
               </Col>
             </Row>
@@ -288,74 +333,60 @@ export default class Rideinfo extends Component {
                 </Row>
                 <Row>
                   <Col xs={12}>
-                    <h5><img src={parkUrl} alt="" width="200" height="200"/></h5>
+                    <h5><img src={parkUrl} alt="" width="300" height="200"/></h5>
                   </Col>
                 </Row>
               </Col>
             </Row>
-            <Row>
-              <Col xs={5}></Col>
-              <Col xs={4}>
-                <button className="btn btn-action button"
+            
+          </TabPanel>
+          <TabPanel>
+            <Row> 
+              <Col xs={2}>
+                <button style={{ margin: 20}} className="btn btn-action button"
                   onClick={this.onRideSelect}
                   >
                     Select this ride?
                 </button>
               </Col>
-            </Row>
-          </TabPanel>
-          <TabPanel>
-            <Row> 
-              <Col xs={12}>
+              <Col xs={7}>
                 <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
               </Col>
             </Row>
             <Row style={{ padding: 0, margin: 0 }}>
               <Col xs={1}></Col>
               <Col xs={4}>
-                <h6 style={{ textAlign: "center", color: "yellow" }}>Wait Times</h6>
-              </Col>
-              <Col xs={2}></Col>
-              <Col xs={4}>
                 <h6 style={{ textAlign: "center", color: "yellow" }}>Ratings</h6>
               </Col>
+              <Col xs={2}></Col>
+              <Col xs={4}>
+                <h6 style={{ textAlign: "center", color: "yellow" }}>Short/Average/Long Wait Times</h6>
+              </Col>
             </Row>
             <Row style={{ padding: 0, margin: 0 }}>
               <Col xs={1}></Col>
               <Col xs={4}>
-                <ColumnChart colors={["#fff", "#fff"]} xtitle="Date" ytitle="Wait Time" data={[["7/21/2017", 10],["Average", 25],["6/21/2018", 60]]} />
+                <div className="App">
+                  <Chart chartType="ColumnChart" width="100%" height="300px" data={ratingData} options={ratingOptions} legendToggle />
+                </div>
               </Col>
               <Col xs={2}></Col>
               <Col xs={4}>
-                <ColumnChart colors={["#fff"]} xtitle="Date" ytitle="Ratings" data={[["1", 0], ["2", 1], ["3", 2], ["4", 3], ["5", 4]]} />
-              </Col>
-            </Row>
-            <Row style={{ padding: 0, margin: 0 }}>
-              <Col xs={1}></Col>
-              <Col xs={2}>
-                <h6 className="textColour">Times ridden by users</h6>
-              </Col>
-              <Col xs={2}>
-                <h6 className="textColour2">{totalCount}</h6>
-              </Col>
-              <Col xs={2}>
-                <h6 className="textColour">Number of repeat riders</h6>
-              </Col>
-              <Col xs={2}>
-                <h6 className="textColour2">{dupCount}</h6>
-              </Col>
-              <Col xs={3}>
-                <button className="btn btn-action button"
-                  onClick={this._onRideSelect}
-                  >
-                    Select this ride?
-                </button>
+                <div className="App">
+                  <Chart chartType="ColumnChart" width="100%" height="300px" data={waitData} options={waitOptions} legendToggle />
+                </div>
               </Col>
             </Row>
           </TabPanel>
           <TabPanel>
             <Row> 
-              <Col xs={2}></Col>
+              <Col xs={2}>
+                <button style={{ margin: 20}} className="btn btn-action button"
+                  onClick={this.onRideSelect}
+                  >
+                    Select this ride?
+                </button>
+              </Col>
               <Col xs={7}>
                 <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
               </Col>
@@ -377,18 +408,6 @@ export default class Rideinfo extends Component {
                 </ul>
               </Col>
               <Col xs={2}></Col>
-            </Row>
-            <Row>
-              <Col xs={3}></Col>
-
-              <Col xs={2}></Col>
-              <Col xs={4}>
-                <button className="btn btn-action button"
-                  onClick={this.onRideSelect}
-                  >
-                    Select this ride?
-                </button>
-              </Col>
             </Row>
           </TabPanel>
         </Tabs>

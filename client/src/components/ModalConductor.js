@@ -43,7 +43,7 @@ export default class ModalConductor extends Component {
         return <RegistrationModal history={this.props.history} handleModal={this.props.handleModal}/>;
 
       case 'RIDESELECTION':
-        return <RideselectionModal history={this.props.history} handleModal={this.props.handleModal}/>;
+        return <RideselectionModal history={this.props.history} handleModal={this.props.handleModal} userid={this.props.modalUserid} parkid={this.props.modalParkid}/>;
 
       case 'PRIORRIDE':
         return <PriorRideModal history={this.props.history} handleModal={this.props.handleModal}/>;

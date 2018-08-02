@@ -6,25 +6,25 @@ import API from "../../utils/API";
 
 import { Row, Col } from 'react-bootstrap'
 
-import Dropdown from 'react-dropdown'
-import 'react-dropdown/style.css'
+import ComboSelect from 'react-combo-select';
+require('../../style.css');
 
 let parkName      = " " 
 let parkPhone     = " " 
 let parkAddr      = " " 
-let parkPic     = " " 
+let parkPic       = " " 
+let parkid        = "75" 
 
 let parkhours     = []
-let defaultHours  = "Select from list"
 let parkprices    = []
-let defaultPrices = "Select from list"
 let parkrides     = []
-let defaultRides  = "Select from list"
+let modalUserid   = "1"
+let modalParkid   = "75"
 
 export default class RideselectionModal extends Component {
   constructor(props) {
     super(props)
-    this.state = { isModalOpen: true }
+    this.state = { isModalOpen: true, modalUserid: this.props.userid, modalParkid: "74"  }
   }
 
   state = { 
@@ -34,7 +34,10 @@ export default class RideselectionModal extends Component {
     parks:  {},
     hours:  {},
     prices: {},
-    parkid: " " 
+    rides: {},
+    parkid: "",
+    options: [],
+    selectedOption: null
     
   }
     
@@ -42,22 +45,12 @@ export default class RideselectionModal extends Component {
     this.setState ({modalStatus: status, modalType: type})
   }
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
-
   componentDidMount() {
-
     this.getPark()
-
   }
 
   getPark = () => {
-    API.getPark({id: 75})
-
+    API.getPark({id: parkid})
       .then(res => {
           console.log(res.data);
           this.setState({ park: res.data });
@@ -65,20 +58,17 @@ export default class RideselectionModal extends Component {
           parkPhone = res.data.parkphone 
           parkAddr  = " " + res.data.parkaddress1 + ", " + res.data.parkcity + ", " + res.data.parkstate + ", " + res.data.parkzip
           parkPic   = res.data.parkpic
-          this.getHours()
+          this.getRides()
         }) 
       .catch(err => console.log(err))
   };
 
   getHours = () => {
-    API.getHours( {parkid: 75}
-
+    API.getHours( {parkid: parkid}
     )
-
     .then(res => {
       console.log(res.data);
       this.setState({ hours: res.data });
-      defaultHours = "Monday " + res.data.parkmon
       parkhours[0] = "Monday " + res.data.parkmon
       parkhours[1] = "Tuesday " + res.data.parktue
       parkhours[2] = "Wednesday " + res.data.parkwed
@@ -86,17 +76,18 @@ export default class RideselectionModal extends Component {
       parkhours[4] = "Friday " + res.data.parkfri
       parkhours[5] = "Saturday " + res.data.parksat
       parkhours[6] = "Sunday " + res.data.parksun
+      //hourOptions = parkhours
       this.getTickets()
       console.log(parkhours);
-
     })
       .catch(err => console.log(err))
   };
 
   getTickets = () => {
-    API.getTickets( {parkid: 75}
+    console.log(parkrides);
 
-    //  {parkid: this.state.parkid }
+    API.getTickets(
+       {parkid: parkid}
     )
     .then(res => {
       console.log(res.data);
@@ -106,36 +97,44 @@ export default class RideselectionModal extends Component {
       parkprices[2] = res.data.parkline3
       parkprices[3] = res.data.parkline4
       parkprices[4] = res.data.parkline5
-      defaultPrices = res.data.parkline1
       console.log(parkprices);
-      this.getRides()
+      this.getNothing()
     })
+      .catch(err => console.log(err))
+  };
+
+  getNothing = () => {
+    console.log(parkprices);
+    API.getPark({id: parkid})
+      .then(res => {
+        }) 
       .catch(err => console.log(err))
   };
 
   getRides = () => {
     API.getAllrides( 
-
-      {parkid: this.state.parkid }
+      {parkid: parkid}
     )
     .then(res => {
       console.log(res.data);
-      this.setState({ parks: res.data });
+      this.setState({ rides: res.data });
       for (let i = 0; i < res.data.length; i++){
-        parkrides[i] = res.data[i].parkridename
+        let optionsObj   = {}
+        optionsObj.value = res.data[i].id
+        optionsObj.text  = res.data[i].parkridename
+        parkrides.push(optionsObj)
+        //parkrides[i] = res.data[i].parkridename
       }
-      defaultRides  = parkrides[0]
       console.log(parkrides);
+      this.getHours()
     })
       .catch(err => console.log(err))
   };
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value
-    });
-  };
+  fakeFunction(value, text) {
+    console.log(value, text);
+    window.location="/rideinfo?" + modalUserid + "&" + modalParkid + "&" + value
+}
 
   _onSelect = (selectValue) => {
     console.log("in onselect")
@@ -146,6 +145,7 @@ export default class RideselectionModal extends Component {
     }};
    
   render() {
+
     return (
       <div>
         <Modal isOpen={this.state.isModalOpen} onClose={() => this.closeModal()}>
@@ -181,7 +181,9 @@ export default class RideselectionModal extends Component {
                     <h6>  Park Hours    </h6>
                   </Col>
                   <Col xs={6}>
-                      <Dropdown options={parkhours} value={defaultHours} />
+                    <div className="fontdrop">
+                     <ComboSelect data={parkhours} sort="number"  />
+                    </div>
                   </Col>
                 </Row>
                 <Row>
@@ -190,7 +192,9 @@ export default class RideselectionModal extends Component {
                       <h6>  Ticket Prices</h6>
                   </Col>
                   <Col xs={6}>
-                    <Dropdown options={parkprices} value={defaultPrices} />
+                    <div className="fontdrop">
+                      <ComboSelect data={parkprices} sort="number" />
+                    </div>
                   </Col>
                 </Row>
                 <Row>
@@ -201,9 +205,9 @@ export default class RideselectionModal extends Component {
                 </Row>
                 <Row>
                   <Col xs={1}></Col>
-                  <Col xs={9}>                                  
-                    <Dropdown options={parkrides} onChange={() => this._onSelect(true)} value={defaultRides} />
-                  </Col>
+                  <div className="fontdrop">
+                    <ComboSelect data={parkrides} sort="number" type="select" onChange={this.fakeFunction}/>
+                  </div>
                 </Row> 
               </Col>
               <Col xs={4}>

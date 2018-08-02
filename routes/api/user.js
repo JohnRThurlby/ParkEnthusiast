@@ -5,6 +5,10 @@ console.log("in usercontroller")
 router.route("/")
   .post(userController.create);
 
+  // Matches with "/api/users/:id"
+router.route("/find/:id")
+.get(userController.findUsernick);
+
 // Matches with "/api/users/:id"
 router.route("/:id")
   .get(userController.findById);
