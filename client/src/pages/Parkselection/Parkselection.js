@@ -21,6 +21,7 @@ let userLat     = " "
 let userLon     = " "
 let userState   = " "
 let useridStor  = " " 
+let userid      = " "
 
 let options      = [{value: "59", label: "Big Kahuna's"},
       {value: "60", label: "Busch Gardens Tampa"},
@@ -105,6 +106,7 @@ export default class Parkselection extends Component {
     modalStatus: false,
     modalType: "",
     modalUserid: "",
+    userid: "",
     modalParkid: "",
     selectedOption: null
   }
@@ -113,14 +115,12 @@ export default class Parkselection extends Component {
 
   _handleModal = (status, type, userid, parkid) => {
     this.setState ({modalStatus: status, modalType: type, modalUserid: userid, modalParkid: parkid})
-    console.log("modal status " + status )
-    console.log("modal userid " + userid )
+
   }
 
   handleChange = (selectedOption) => {
     this.setState({ selectedOption });
-    console.log(`Option selected:`, selectedOption);
-    this._handleModal(true, 'RIDESELECTION') 
+    this._handleModal(true, 'RIDESELECTION', userid, selectedOption.value) 
   }
 
   componentDidMount() {
@@ -136,6 +136,7 @@ export default class Parkselection extends Component {
     userState = userZip.state
 
     this.setState({modalUserid: useridStor})
+    userid = useridStor
     
     this.setState({userLat: userLat, userLon: userLon})
     this.setState({parkstate: userState})
@@ -152,9 +153,7 @@ export default class Parkselection extends Component {
             let optionsObj   = {}
             optionsObj.value = res.data[i].id.toString()
             optionsObj.label = res.data[i].parkname
-           // options.push(optionsObj)
           };
-        console.log(options)
       })
       .catch(err => console.log(err))
   };

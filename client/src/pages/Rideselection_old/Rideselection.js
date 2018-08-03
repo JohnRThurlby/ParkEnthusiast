@@ -41,12 +41,9 @@ export default class Rideselection extends Component {
     API.getPark({id: 59})
 
       .then(res => {
-          console.log(res.data);
           this.setState({ park: res.data });
           userLat = parseFloat(this.state.park.parklat)
           userLon = parseFloat(this.state.park.parklon)
-          console.log(userLat);
-          console.log(userLon);
         }) 
       .catch(err => console.log(err))
   };
@@ -57,7 +54,6 @@ export default class Rideselection extends Component {
     )
 
     .then(res => {
-      console.log(res.data);
       this.setState({ hours: res.data });
       parkhours[0] = "Monday" + res.data.parkmon
       parkhours[1] = "tuesday " + res.data.parktue
@@ -66,8 +62,6 @@ export default class Rideselection extends Component {
       parkhours[4] = "Friday " + res.data.parkfri
       parkhours[5] = "Saturday " + res.data.parksat
       parkhours[6] = "Sunday " + res.data.parksun
-      
-      console.log(parkhours);
 
     })
       .catch(err => console.log(err))
@@ -76,7 +70,6 @@ export default class Rideselection extends Component {
   getTickets = () => {
     API.getTickets( {parkid: 61}
 
-    //  {parkid: this.state.parkid }
     )
     .then(res => {
       console.log(res.data);
@@ -84,12 +77,10 @@ export default class Rideselection extends Component {
       parkprices[0] = res.data.parkline1
       parkprices[1] = res.data.parkline2
             
-      console.log(parkprices);
 
     })
       .catch(err => console.log(err))
   };
-  
 
   handleInputChange = event => {
     const { name, value } = event.target;

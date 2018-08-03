@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const userController = require("../../controllers/userController");
-console.log("in usercontroller")
+
 // Matches with "/api/user"
 router.route("/")
   .post(userController.create);

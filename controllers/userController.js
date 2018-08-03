@@ -5,8 +5,6 @@ const db = require("../models");
 module.exports = {
 
   findUsernick: function(req, res) {
-    console.log("findusernick")
-    console.log(req.params.id)
     db.User
       .findAll({ where: {id: req.params.id}} )
       .then(dbModel => res.json(dbModel))
@@ -14,7 +12,6 @@ module.exports = {
   }, 
 
   findById: function(req, res) {
-    console.log("finduser")
     let i = req.params.id.indexOf(".com")
     let useremail = req.params.id.substr(0, i + 4)
     let userpass = req.params.id.substr(i + 4)

@@ -10,10 +10,7 @@ import PrivacyModal from './PrivacyModal'
 import TermCondModal from './TermCondModal'
 import RegistrationModal from './RegistrationModal'
 import ForgotpasswordModal from './ForgotpasswordModal'
-import PriorRideModal from './PriorrideModal'
 import RideselectionModal from './RideselectionModal'
-
-
 
 export default class ModalConductor extends Component {
   renderSwitch () {
@@ -43,10 +40,7 @@ export default class ModalConductor extends Component {
         return <RegistrationModal history={this.props.history} handleModal={this.props.handleModal}/>;
 
       case 'RIDESELECTION':
-        return <RideselectionModal history={this.props.history} handleModal={this.props.handleModal} userid={this.props.modalUserid} parkid={this.props.modalParkid}/>;
-
-      case 'PRIORRIDE':
-        return <PriorRideModal history={this.props.history} handleModal={this.props.handleModal}/>;
+        return <RideselectionModal history={this.props.history} handleModal={this.props.handleModal} userid={this.props.userid} parkid={this.props.parkid}/>;
       
       default:
         return null

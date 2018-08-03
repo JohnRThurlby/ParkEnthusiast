@@ -1,8 +1,6 @@
 const router = require("express").Router()
 const parksController = require("../../controllers/parksController")
 
-console.log("in parkcontroller")
-
   // Matches with "/api/parks/hours/:id"
 router.route("/hours/:id")
 .get(parksController.findHoursbyid)
