@@ -6,15 +6,18 @@ import { Tabs, Tab, Row, Col } from 'react-bootstrap'
 import API from "../../utils/API";
 import Chart from "react-google-charts";
 
-import Select from 'react-select';
-
 import DateTimePicker from 'react-datetime-picker'
+
+import ComboSelect from 'react-combo-select';
+
+require('../../style.css');
 
 let parkRidename  = " "
 let ridercomments = []
 let parkid        = " "
 let rideid        = " "
 let userid        = " "
+let rating        = " " 
 let overallLeader = []
 let overallNick   = []
 let parkLeader    = []
@@ -63,12 +66,12 @@ const waitOptions = {
   legend: "none"
 };
 
-const options = [
-  { value: 'one', label: 'One' },
-  { value: 'two', label: 'Two' },
-  { value: 'three', label: 'Three' },
-  { value: 'four', label: 'Four' },
-  { value: 'five', label: 'Five' }
+const ratingList = [
+  { value: '1', text: 'One' },
+  { value: '2', text: 'Two' },
+  { value: '3', text: 'Three' },
+  { value: '4', text: 'Four' },
+  { value: '5', text: 'Five' }
 ]
 
 export default class RideNow extends Component {
@@ -119,14 +122,17 @@ export default class RideNow extends Component {
 
   onChange = date => this.setState({ date })
 
+  fakeFunction(value, text) {
+    console.log("supposed rating value " + value)
+    rating = value
+}
+
   handleChange = (selectedOption) => {
     this.setState({ selectedOption });
   }
 
   _handleModal = (status, type, userid, parkid) => {
     this.setState ({modalStatus: status, modalType: type, modalUserid: userid, modalParkid: parkid})
-    console.log("modal status " + status )
-    console.log("modal userid " + userid )
   }
 
   getRides = () => {
@@ -168,8 +174,10 @@ export default class RideNow extends Component {
         parkid:   parkid, 
         rideid:   rideid,
         daterode: this.state.date,
-        rating:   this.state.rating,
-        waittime: this.state.waittime
+        rating:   rating,
+        waittime: this.state.waittime,
+        fastpass: false,
+        singlerider: false
       })
         .then(()=> 
           API.saveRideusercmt({
@@ -177,7 +185,7 @@ export default class RideNow extends Component {
             parkid:    parkid, 
             rideid:    rideid,
             comment:   this.state.ridecomment,
-            dateadded: new Date()
+            dateadded: this.state.date
           })
           .then(()=>
             this._handleModal(true, 'RIDESELECTION', userid, parkid) )
@@ -249,9 +257,9 @@ export default class RideNow extends Component {
       .catch(err => console.log(err))
   };
 
-  render() {
+  
 
-    const { selectedOption } = this.state;
+  render() {
 
     return (
       <div>
@@ -267,7 +275,7 @@ export default class RideNow extends Component {
               <Tabs style={{color: "white"}} defaultActiveKey={3} id="uncontrolled-tab-example">
                 <Tab eventKey={1} style={{color: "white"}} title="Update Ride">
                   <Row>
-                    <Col xs={2}></Col>
+                    <Col xs={1}></Col>
                     <Col xs={3}>
                       <h5 className="textColour">Date of Ride</h5>
                     </Col>
@@ -278,10 +286,13 @@ export default class RideNow extends Component {
                     <Col xs={2}> 
                       <h5 style={{ textAlign: "center", color: "white" }}>Wait Time(mins)</h5>
                     </Col>
+                    <Col xs={3}> 
+                        <h5 style={{ textAlign: "center", color: "white" }}>Comment</h5>
+                      </Col>
                   </Row>
                   <form>
                     <Row>
-                      <Col xs={2}></Col>
+                      <Col xs={1}></Col>
                       <Col xs={3}> 
                         <div style={{ textAlign: "left", color: "black" }}>
                           <DateTimePicker
@@ -292,39 +303,53 @@ export default class RideNow extends Component {
                       </Col>
                       <Col xs={2}>
                         <div style={{ margin: 0, color: "black" }}>
-                          <Select
-                            value={selectedOption}
-                            onChange={this.handleChange}
-                            options={options}
+                           <ComboSelect data={ratingList} sort="number" type="select" onChange={this.fakeFunction}
                           />
                         </div>
                       </Col>
                       <Col xs={1}></Col>
                       <Col xs={2}> 
-                        <div style={{ padding: 0, color: "white" }}>
-                          <h5><input type="text" id="waittime" name="waittime" maxLength="5" placeholder="Wait Time"/></h5>
+                        <div style={{ border: 0, color: "white" }}>
+                          <h5><input onChange={this.handleInputChange} value={this.state.waittime} type="text" id="waittime" name="waittime" maxLength="5" placeholder="Wait Time"/></h5>
+                        </div>
+                      </Col>
+                      <Col xs={1}></Col>
+                      <Col xs={2}>
+                          <div style={{ color: "white" }}>
+                            <textarea onChange={this.handleInputChange} value={this.state.ridecomment} id="ridecomment" name="ridecomment" maxLength="200" placeholder="Comment"/>
+                          </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs={7}></Col>
+                      <Col xs={2}> 
+                        <h5 style={{ textAlign: "center", color: "white" }}>Fast Pass?</h5>
+                      </Col>
+                      <Col xs={1}></Col>
+
+                      <Col xs={2}> 
+                        <h5 style={{ textAlign: "center", color: "white" }}>Single Rider?</h5>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col xs={6}></Col>
+                      <Col xs={2}>
+                        <div>
+                          
+                        </div>
+                      </Col>
+                      <Col xs={1}></Col>
+                      <Col xs={2}>
+                        <div>
+                          
                         </div>
                       </Col>
                     </Row>
-                    <Row>
-                      <Col xs={4}></Col>
-                      <Col xs={4}> 
-                        <h5 style={{ textAlign: "center", color: "white" }}>Comment</h5>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col xs={5}></Col>
-                      <Col xs={2}>
-                          <div style={{ color: "white" }}>
-                            <textarea id="ridecomment" name="ridecomment" maxLength="200" placeholder="Comment"/>
-                          </div>
-                        </Col>
-                    </Row>
                   </form>
                   <Row>
-                    <Col xs={5}></Col>
-                    <Col xs={3}>
-                      <div style={{ textAlign: "left"}}>
+                    <Col xs={7}></Col>
+                    <Col xs={4}>
+                      <div style={{ textAlign: "center"}}>
                         <button  className="btn btn-action button"
                           onClick={this.handleFormSubmit}
                         >
@@ -365,14 +390,6 @@ export default class RideNow extends Component {
                           })}
                       </ul>
                     </Col>
-                  </Row>
-                  <Row>
-                    <Col xs={1}></Col>
-                    <Col xs={2}></Col>
-                    <Col xs={2}> 
-                      <h6 style={{ textAlign: "center", color: "yellow" }}>Times Ridden</h6>
-                    </Col>
-                    
                   </Row>
                 </Tab>
                 <Tab eventKey={3} style={{color: "white"}} title="Leader Boards!">

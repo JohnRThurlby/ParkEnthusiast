@@ -329,6 +329,12 @@ babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
+babel-runtime@^5.8.38:
+  version "5.8.38"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-5.8.38.tgz#1c0b02eb63312f5f087ff20450827b425c9d4c19"
+  dependencies:
+    core-js "^1.0.0"
+
 babel-runtime@^6.22.0, babel-runtime@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
@@ -1365,6 +1371,10 @@ http-signature@~1.2.0:
     assert-plus "^1.0.0"
     jsprim "^1.2.2"
     sshpk "^1.7.0"
+
+icheck@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/icheck/-/icheck-1.0.2.tgz#06d08da3d47ae448c153b2639b86e9ad7fdf7128"
 
 iconv-lite@0.4.19:
   version "0.4.19"
@@ -2541,6 +2551,15 @@ react-google-map@^3.1.1:
   resolved "https://registry.yarnpkg.com/react-google-map/-/react-google-map-3.1.1.tgz#e47e42287ef6bc7510422fbfd5014ab2b4a0d1b4"
   dependencies:
     prop-types "^15.6.0"
+
+react-icheck@^0.3.8:
+  version "0.3.8"
+  resolved "https://registry.yarnpkg.com/react-icheck/-/react-icheck-0.3.8.tgz#b66fe95b3376b99490408052851414a60dcf52ff"
+  dependencies:
+    babel-runtime "^5.8.38"
+    classnames "^2.2.3"
+    icheck "^1.0.2"
+    prop-types "^15.5.8"
 
 react-input-autosize@^2.2.1:
   version "2.2.1"
