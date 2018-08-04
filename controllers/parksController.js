@@ -124,10 +124,10 @@ module.exports = {
       .catch(err => res.status(422).json(err));
   },
   getUserbyiddata: function(req, res) {
-    let i      = req.params.id.indexOf("?")
-    let userid = req.params.id.substr(0, )
-    let parkid = req.params.id.substr(0 + 1, 2)
-    let rideid = req.params.id.substr(0 + 3, 2)
+    let i      = req.params.id.indexOf(".com")
+    let userid = req.params.id.substr(0, i)
+    let parkid = req.params.id.substr(i + 4, 2)
+    let rideid = req.params.id.substr(i + 6)
     db.Rideuserinfos
       .findAll({ where: {userid: userid, parkid: parkid, rideid: rideid}})
       .then(dbModel => res.json(dbModel))

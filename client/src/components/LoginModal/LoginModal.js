@@ -9,6 +9,8 @@ import { Input } from "../../components/Form";
 
 import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 
+let error = " "
+
 export default class LoginModal extends Component {
   constructor(props) {
     super(props)
@@ -41,9 +43,12 @@ export default class LoginModal extends Component {
         userpassword: this.state.password
       })
         .then(res => { 
-          console.log(res.data.id)
-          console.log(res.data.zipcode)
-        window.location="/parkselection?" + res.data.id + "&" + res.data.zipcode  })
+          if (res.data.length === 0) {
+            error = "User does not exist"
+          }
+          else {
+            window.location="/parkselection?" + res.data.id + "&" + res.data.zipcode  
+          }})
         .catch(err => console.log(err));
   };
   

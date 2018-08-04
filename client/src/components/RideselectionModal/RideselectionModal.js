@@ -116,7 +116,25 @@ export default class RideselectionModal extends Component {
         let optionsObj   = {}
         optionsObj.value = res.data[i].id
         optionsObj.text  = res.data[i].parkridename
-        parkrides.push(optionsObj)
+
+        API.getUserbyiddata( 
+          { userid: userid + ".com",
+            parkid: parkid, 
+            rideid: optionsObj.value }
+        )
+          .then(res => {
+            this.setState({ park: res.data });
+            if (res.data.length === 0) {
+              unrides.push(optionsObj)
+            }
+            else {
+              parkrides.push(optionsObj)
+            }
+          })
+          .catch(
+            err => console.log(err)
+          )
+
       }
       this.getHours()
     })
@@ -126,12 +144,6 @@ export default class RideselectionModal extends Component {
   fakeFunction(value, text) {
     window.location="/rideinfo?" + userid + "&" + parkid + "&" + value
 }
-
-  _onSelect = (selectValue) => {
-    if (selectValue) {
-      
-      window.location="/rideinfo"
-    }};
    
   render() {
 

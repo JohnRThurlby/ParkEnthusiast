@@ -180,8 +180,7 @@ export default class RideNow extends Component {
             dateadded: new Date()
           })
           .then(()=>
-            this._handleModal(true, 'RIDESELECTION') )
-            //window.location="/rideinfo?" + userid + "&" + parkid + "&" + rideid)
+            this._handleModal(true, 'RIDESELECTION', userid, parkid) )
           .catch(err => console.log(err))
         )
         .catch(err => console.log(err))
@@ -421,8 +420,8 @@ export default class RideNow extends Component {
             </Row>
            
           </div>
-        </Logo>
-        <ModalConductor history={this.props.history} handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
+        </Logo>       
+         <ModalConductor history={this.props.history} handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType} userid={this.state.modalUserid} parkid={this.state.modalParkid}/>
       </div>
     );
   }
