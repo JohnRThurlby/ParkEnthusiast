@@ -12,17 +12,21 @@ import ComboSelect from 'react-combo-select';
 
 require('../../style.css');
 
+let parkName      = " " 
 let parkRidename  = " "
 let ridercomments = []
 let parkid        = " "
 let rideid        = " "
 let userid        = " "
 let rating        = " " 
-let overallLeader = []
+let overallLeader = [0,0,0,0,0,0,0,0,0,0]
+let overallOrder  = [0,0,0,0,0,0,0,0,0,0]
 let overallNick   = []
-let parkLeader    = []
+let parkLeader    = [0,0,0,0,0,0,0,0,0,0]
+let overallPark   = [0,0,0,0,0,0,0,0,0,0]
 let parkNick      = []
-let rideLeader    = []
+let rideLeader    = [0,0,0,0,0,0,0,0,0,0]
+let overallRide   = [0,0,0,0,0,0,0,0,0,0]
 let rideNick      = []
 let rateOne       = 1
 let rateTwo       = 3
@@ -110,6 +114,7 @@ export default class RideNow extends Component {
     userid = userinfo.substr(1, i - 1)
     parkid = userinfo.substr(i + 1, 2)
     rideid = userinfo.substr(i + 4, 2)
+    this.getPark()
     this.getRides();
   }
 
@@ -134,6 +139,16 @@ export default class RideNow extends Component {
   _handleModal = (status, type, userid, parkid) => {
     this.setState ({modalStatus: status, modalType: type, modalUserid: userid, modalParkid: parkid})
   }
+
+  getPark = () => {
+
+    API.getPark({id: parkid})
+      .then(res => {
+          this.setState({ park: res.data });
+          parkName  = res.data.parkname 
+        }) 
+      .catch(err => console.log(err))
+  };
 
   getRides = () => {
     API.getRides( 
@@ -211,53 +226,90 @@ export default class RideNow extends Component {
       .then(res => {
         this.setState({ overall: res.data });
         for (let i = 0; i < res.data.length; i++){
-          let j = parseInt(res.data[i].userid, 10)
-          overallLeader[j] = res.data[i].userid 
+          
+          overallLeader[parseInt(res.data[i].userid, 10)] = overallLeader[parseInt(res.data[i].userid, 10)] + 1 
+
           if (parkid === res.data[i].parkid ) 
           {
-            parkLeader[j] = res.data[i].userid
+            parkLeader[parseInt(res.data[i].userid, 10)] = parkLeader[parseInt(res.data[i].userid, 10)] + 1
+
           }
 
           if (parkid === res.data[i].parkid && rideid === res.data[i].rideid ) 
           {
-            rideLeader[j] = res.data[i].userid
+            rideLeader[parseInt(res.data[i].userid, 10)] = rideLeader[parseInt(res.data[i].userid, 10)] + 1
           }
         }
-        for (let k = 0; k < overallLeader.length; k++){
-              API.getUsernick({
-                id: overallLeader[k]
-              })
+        let i = 0
+        while (i < 11) 
+        {
+          let j = Math.max.apply(Math,overallLeader);
+          let x = overallLeader.indexOf(j);
+          overallOrder[i] = x
+          overallLeader[x] = 0
+          i++
+        }
+
+       for (let k = 0; k < overallOrder.length; k++){
+          if (overallOrder[k] !== 0) {
+            API.getUsernick({
+              id: overallOrder[k]
+            })
+            .then(res => { 
+              this.setState({ overall: res.data });
+              overallNick[k] =  res.data[0].nickname
+            })
+            .catch(err => console.log(err));
+          }
+        }
+        let y = 0
+        while (y < 11) 
+        {
+          let j = Math.max.apply(Math,parkLeader);
+          let x = parkLeader.indexOf(j);
+          overallPark[y] = x
+          parkLeader[x] = 0
+          y++
+        }
+        for (let l = 0; l < overallPark.length; l++){
+          if (overallPark[l] !== 0) {
+            API.getUsernick({
+              id: overallPark[l]
+            })
+            .then(res => { 
+              this.setState({ parkride: res.data });
+              parkNick[l] =  res.data[0].nickname
+            })
+            .catch(err => console.log(err));
+          }
+        }
+        let w = 0
+        while (w < 11) 
+        {
+          let j = Math.max.apply(Math,rideLeader);
+          let x = rideLeader.indexOf(j);
+          overallRide[w] = x
+          rideLeader[x] = 0
+          w++
+        }
+
+        for (let m = 0; m < overallRide.length; m++){
+          if (overallRide[m] !== 0) {
+            API.getUsernick({
+              id: overallRide[m]
+            })
               .then(res => { 
-                this.setState({ overall: res.data });
-                overallNick[k] =  res.data[0].nickname
+                this.setState({ ridepark: res.data });
+                rideNick[m] =  res.data[0].nickname
+
               })
               .catch(err => console.log(err));
+          }
         }
-        for (let l = 0; l < parkLeader.length; l++){
-          API.getUsernick({
-            id: parkLeader[l]
-          })
-          .then(res => { 
-            this.setState({ parkride: res.data });
-            parkNick[l] =  res.data[0].nickname
-          })
-          .catch(err => console.log(err));
-        }
-        for (let m = 0; m < rideLeader.length; m++){
-          API.getUsernick({
-            id: rideLeader[m]
-          })
-          .then(res => { 
-            this.setState({ ridenick: res.data });
-            rideNick[m] =  res.data[0].nickname
-          })
-          .catch(err => console.log(err));
-        }
+
       })
       .catch(err => console.log(err))
   };
-
-  
 
   render() {
 
@@ -400,7 +452,7 @@ export default class RideNow extends Component {
                       
                     </Col>
                     <Col xs={4}> 
-                      <h5 style={{ textAlign: "center", color: "yellow" }}>Universal Studios Orlando</h5>
+                    <h5 style={{ textAlign: "center", color: "yellow" }}>{parkName}</h5>
                       
                     </Col>
                     <Col xs={3}> 
