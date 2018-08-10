@@ -88,7 +88,7 @@ export default class ContactModal extends Component {
                   <TextArea
                     value={this.state.comment}
                     onChange={this.handleInputChange}
-                      name="comment"
+                    name="comment"
                     placeholder="Comment"
                   />
                 </Col>

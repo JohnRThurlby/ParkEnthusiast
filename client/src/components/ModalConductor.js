@@ -4,7 +4,6 @@ import './ModalConductor.css'
 
 import AboutModal from './AboutModal'
 import LoginModal from './LoginModal'
-import HelpModal from './HelpModal'
 import ContactModal from './ContactModal'
 import PrivacyModal from './PrivacyModal'
 import TermCondModal from './TermCondModal'
@@ -20,9 +19,6 @@ export default class ModalConductor extends Component {
 
       case 'LOGIN':
         return <LoginModal history={this.props.history} handleModal={this.props.handleModal}/>;
-
-      case 'HELP':
-        return <HelpModal/>;
 
       case 'CONTACT':
         return <ContactModal/>;

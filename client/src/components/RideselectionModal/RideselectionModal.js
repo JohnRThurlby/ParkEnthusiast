@@ -24,10 +24,8 @@ export default class RideselectionModal extends Component {
   constructor(props) {
     super(props)
     this.state = { isModalOpen: true, userid: this.props.userid, parkid: this.props.parkid }
-
     userid = this.props.userid
     parkid = this.props.parkid
-
   }
 
   state = { 
@@ -39,16 +37,18 @@ export default class RideselectionModal extends Component {
     prices: {},
     rides: {},
     options: [],
+    parkprices: [],
     selectedOption: null
-    
   }
     
   _handleModal = (status, type) => {
     this.setState ({modalStatus: status, modalType: type})
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getPark()
+    this.getHours()
+
   }
 
   getPark = () => {
@@ -61,47 +61,6 @@ export default class RideselectionModal extends Component {
           parkAddr  = " " + res.data.parkaddress1 + ", " + res.data.parkcity + ", " + res.data.parkstate + ", " + res.data.parkzip
           parkPic   = res.data.parkpic
           this.getRides()
-        }) 
-      .catch(err => console.log(err))
-  };
-
-  getHours = () => {
-    API.getHours( {parkid: parkid}
-    )
-    .then(res => {
-      this.setState({ hours: res.data });
-      parkhours[0] = "Monday " + res.data.parkmon
-      parkhours[1] = "Tuesday " + res.data.parktue
-      parkhours[2] = "Wednesday " + res.data.parkwed
-      parkhours[3] = "Thursday " + res.data.parkthu
-      parkhours[4] = "Friday " + res.data.parkfri
-      parkhours[5] = "Saturday " + res.data.parksat
-      parkhours[6] = "Sunday " + res.data.parksun
-      this.getTickets()
-    })
-      .catch(err => console.log(err))
-  };
-
-  getTickets = () => {
-
-    API.getTickets(
-       {parkid: parkid}
-    )
-    .then(res => {
-      this.setState({ prices: res.data });
-      parkprices[0] = res.data.parkline1
-      parkprices[1] = res.data.parkline2
-      parkprices[2] = res.data.parkline3
-      parkprices[3] = res.data.parkline4
-      parkprices[4] = res.data.parkline5
-      this.getNothing()
-    })
-      .catch(err => console.log(err))
-  };
-
-  getNothing = () => {
-    API.getPark({id: parkid})
-      .then(res => {
         }) 
       .catch(err => console.log(err))
   };
@@ -136,14 +95,47 @@ export default class RideselectionModal extends Component {
           )
 
       }
-      this.getHours()
+      this.getTickets()
+
+    })
+      .catch(err => console.log(err))
+  };
+
+  getHours = () => {
+    API.getHours( {parkid: parkid}
+    )
+    .then(res => {
+      this.setState({ hours: res.data });
+      parkhours[0] = "Monday " + res.data.parkmon
+      parkhours[1] = "Tuesday " + res.data.parktue
+      parkhours[2] = "Wednesday " + res.data.parkwed
+      parkhours[3] = "Thursday " + res.data.parkthu
+      parkhours[4] = "Friday " + res.data.parkfri
+      parkhours[5] = "Saturday " + res.data.parksat
+      parkhours[6] = "Sunday " + res.data.parksun
+    })
+      .catch(err => console.log(err))
+  };
+
+  getTickets = () => {
+
+    API.getTickets(
+       {parkid: parkid}
+    )
+    .then(res => {
+      this.setState({ prices: res.data });
+      parkprices[0] = res.data.parkline1
+      parkprices[1] = res.data.parkline2
+      parkprices[2] = res.data.parkline3
+      parkprices[3] = res.data.parkline4
+      parkprices[4] = res.data.parkline5
     })
       .catch(err => console.log(err))
   };
 
   fakeFunction(value, text) {
     window.location="/rideinfo?" + userid + "&" + parkid + "&" + value
-}
+  }
    
   render() {
 
@@ -194,7 +186,7 @@ export default class RideselectionModal extends Component {
                   </Col>
                   <Col xs={6}>
                     <div className="fontdrop">
-                      <ComboSelect data={parkprices} sort="number" />
+                      <ComboSelect data={parkprices} />
                     </div>
                   </Col>
                 </Row>

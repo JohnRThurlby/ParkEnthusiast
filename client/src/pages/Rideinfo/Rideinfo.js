@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 
 import Logo from "../../components/Logo";
+import Chart from "../../components/Chart";
+import WaitChart from "../../components/Waitchart";
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -9,7 +11,7 @@ import API from "../../utils/API";
 
 import { Row, Col } from 'react-bootstrap'
 
-import Chart from "react-google-charts";
+import Moment from 'moment';
 
 let ridercomments = []
 let parkRidename  = " "
@@ -26,82 +28,57 @@ let parkLevel     = " "
 let parkLength    = " "
 let parkType      = " "
 let parkUrl       = " "
-let longWait      = 45
-let longWaitdate  = "12/21/2017"
-let shortWait     = 10
-let shortWaitdate = "05/21/2018"  
-let avgWait       = "Average" 
-let waitShort     = 25
-//let totalCount    = 0
-//let dupCount      = 0
+let longWait      = 0
+let longWaitdate  = " "
+let shortWait     = 10000
+let shortWaitdate = " "  
+let avgDate       = "Average" 
+let waitShort     = 0
 let avgCount      = 0
+let avgWait       = 0
 let count         = 0
-let rateOne       = 1
-let rateTwo       = 3
-let rateThree     = 2
-let rateFour      = 3
-let rateFive      = 3
-let maxWait       = 45
-
-let ratingData = [
-  ["Rating", "Number", { role: "style" }],
-  ["1", rateOne, "color: gray"],
-  ["2", rateTwo, "color: #76A7FA"],
-  ["3", rateThree, "color: blue"],
-  ["4", rateFour, "stroke-color: #703593; stroke-width: 4; fill-color: #C5A5CF"],
-  ["5", rateFive, "stroke-color: #871B47; stroke-opacity: 0.6; stroke-width: 8; fill-color: #BC5679; fill-opacity: 0.2"
-  ]
-];
-
-const waitData = [
-  ["Days", "Time", { role: "style" }],
-  [shortWaitdate, shortWait, "color: gray"],
-  [avgWait, waitShort, "color: #76A7FA"],
-  [longWaitdate, longWait, "color: blue"],
-];
-
-const ratingOptions = {
-  title: "Rating vs. Number of Ratings",
-  hAxis: { title: "Rating", viewWindow: { min: 0, max: 5 } },
-  vAxis: { title: "Number", viewWindow: { min: 0, max: 5 } },
-  legend: "none"
-};
-
-const waitOptions = {
-  title: "Wait times",
-  hAxis: { title: "Days", viewWindow: { min: 0, max: 3 } },
-  vAxis: { title: "Time", viewWindow: { min: 0, max: maxWait } },
-  legend: "none"
-};
+let rateOne       = 0
+let rateTwo       = 0
+let rateThree     = 0
+let rateFour      = 0
+let rateFive      = 0
 
 export default class Rideinfo extends Component {
-  
+  constructor(){
+    super();
+    this.state = {
+      chartData:{},
+      waitData:{}
+    }
+  }
+
   state = { 
     park:          {},
     comments:      {},
     waittimes:     {},
     totalcount:    " ",
     dupcount:      " ",
-    longWait:      " ",
-    shortWait:     " ",
-    avgrating:     " ",
     longWaitdate:  " ",
     shortWaitdate: " ", 
-    waitShort:     " "
+    waitShort:     " ",
+    rateOne:       0,
+    rateTwo:       0,
+    rateThree:     0,   
+    rateFour:      0,
+    rateFive:      0
    
   }
 
-  componentDidMount() {
+  componentWillMount() {
 
     let userinfo = window.location.search;
     let i = userinfo.indexOf("&")
     userid = userinfo.substr(1, i - 1)
     parkid = userinfo.substr(i + 1, 2)
     rideid = userinfo.substr(i + 4, 2)
-    console.log("userid " + userid)
-    console.log("parkid " + parkid)
-    console.log("rideid " + rideid)
+    this.getUserdata()
     this.getRides();
+
   }
 
   getRides = () => {
@@ -110,7 +87,6 @@ export default class Rideinfo extends Component {
        rideid: rideid }
     )
       .then(res => {
-        console.log(res.data)
         this.setState({ park: res.data });
         parkRidename = res.data.parkridename 
         parkArea     = res.data.parkarea
@@ -135,11 +111,11 @@ export default class Rideinfo extends Component {
         rideid: rideid }
     )
       .then(res => {
-        console.log(res.data)
         this.setState({ comments: res.data });
         for (let i = 0; i < res.data.length; i++){
           ridercomments[i] = res.data[i].comment 
         }
+
         this.getRideanalysis()
       })
       .catch(err => console.log(err))
@@ -152,7 +128,6 @@ export default class Rideinfo extends Component {
     )
       .then(res => {
         this.setState({ totalcount: res.data });
-        //totalCount = res.data;
         this.getDupcount()
       })
       .catch(err => console.log(err))
@@ -165,13 +140,15 @@ export default class Rideinfo extends Component {
     )
       .then(res => {
         this.setState({ dupcount: res.data });
-        //dupCount = res.data;
-        this.getUserdata()
+        this.getChartData();
+        this.getWaitData();
+
       })
       .catch(err => console.log(err))
   };
 
   getUserdata = () => {
+
     API.getUserdata(
       {parkid: parkid, 
         rideid: rideid }
@@ -179,44 +156,80 @@ export default class Rideinfo extends Component {
       .then(res => {
         this.setState({ waittimes: res.data});
         count = res.data.length
+
         for (let i = 0; i < res.data.length; i++){
-          if (longWait < res.data[i].waittime)
+          if (longWait < parseInt(res.data[i].waittime, 10) )
           {
-            longWait      = res.data[i].waittime
-            longWaitdate  = res.data[i].daterode
+            longWaitdate = Moment(res.data[i].daterode).format("MMM Do YYYY"); 
+            longWait     = res.data[i].waittime
           }
-          if (shortWait > res.data[i].waittime)
+          if (shortWait > parseInt(res.data[i].waittime, 10))
           {
             shortWait      = res.data[i].waittime 
-            shortWaitdate  = res.data[i].daterode
+            shortWaitdate = Moment(res.data[i].daterode).format("MMM Do YYYY"); 
+
           }
-          avgCount += res.data[i].waittime 
+
+          avgCount += parseInt(res.data[i].waittime, 10) 
           switch(res.data[i].rating) {
             case "1":
-              rateOne = 1
+              rateOne += 1
               break;
             case "2":
-              rateTwo = 3
+              rateTwo += 1
               break;
             case "3":
-              rateThree = 2
+              rateThree += 1
               break;
             case "4":
-              rateFour = 4
+              rateFour += 1
               break;
             case "5":
-              rateFive = 1
+              rateFive += 1
               break;
             default:
               break;
           }
+
         }
-      
         avgWait = avgCount / count
-        waitShort = "25"
+        if (shortWait === 10000) {
+          shortWait = 0
+        }
+
+        waitShort = Math.trunc(avgWait)
       })
       .catch(err => console.log(err))
+
   };
+
+  getChartData = () => {
+    console.log("in call chart from rideinfo")
+    this.setState({
+      chartData: {
+        labels: ['1', '2', '3' ,'4', '5'],
+        datasets: [{
+          label: 'Ratings',
+          fontColor: 'white',
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"], 
+          data:[rateOne, rateTwo, rateThree, rateFour, rateFive]
+        }]  
+      }  
+    })
+  }
+
+  getWaitData = () => {
+    this.setState({
+      waitData: {
+        labels: [shortWaitdate, avgDate, longWaitdate],
+        datasets: [{
+          label: 'Wait Times', 
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"], 
+          data:[shortWait, waitShort, longWait]
+        }]  
+      }  
+    })
+  }
   
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -243,7 +256,7 @@ export default class Rideinfo extends Component {
                 <Tab><h5 style={{color: "black"}}>Ride Analysis..  </h5></Tab>
                 <Tab><h5 style={{color: "black"}}>Rider's Comments..</h5></Tab>
             </TabList>
-          <TabPanel>
+          <TabPanel >
             <Row> 
               <Col xs={2}>
                 <button style={{ margin: 20}} className="btn btn-action button"
@@ -353,27 +366,17 @@ export default class Rideinfo extends Component {
                 <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
               </Col>
             </Row>
-            <Row style={{ padding: 0, margin: 0 }}>
+            <Row style={{ color: "black" }}>
               <Col xs={1}></Col>
               <Col xs={4}>
-                <h6 style={{ textAlign: "center", color: "yellow" }}>Ratings</h6>
-              </Col>
-              <Col xs={2}></Col>
-              <Col xs={4}>
-                <h6 style={{ textAlign: "center", color: "yellow" }}>Short/Average/Long Wait Times</h6>
-              </Col>
-            </Row>
-            <Row style={{ padding: 0, margin: 0 }}>
-              <Col xs={1}></Col>
-              <Col xs={4}>
-                <div className="App">
-                  <Chart chartType="ColumnChart" width="100%" height="300px" data={ratingData} options={ratingOptions} legendToggle />
+                <div>
+                  <Chart chartData={this.state.chartData} />
                 </div>
               </Col>
               <Col xs={2}></Col>
               <Col xs={4}>
-                <div className="App">
-                  <Chart chartType="ColumnChart" width="100%" height="300px" data={waitData} options={waitOptions} legendToggle />
+                <div>
+                  <WaitChart waitData={this.state.waitData} />
                 </div>
               </Col>
             </Row>
@@ -412,7 +415,7 @@ export default class Rideinfo extends Component {
           </TabPanel>
         </Tabs>
       </div>
-      </Logo>
+     </Logo>
 
     )
   }

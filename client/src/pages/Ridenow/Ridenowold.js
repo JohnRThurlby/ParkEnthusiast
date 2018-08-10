@@ -1,17 +1,11 @@
 import React, { Component } from 'react';
-
 import API from "../../utils/API";
-import Chart from "../../components/Chart";
-import WaitChart from "../../components/Waitchart";
-import Logo from "../../components/Logo";
-
 import ComboSelect from 'react-combo-select';
 import DateTimePicker from 'react-datetime-picker'
+import Logo from "../../components/Logo";
 import ModalConductor from "../../components/ModalConductor";
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-import { Row, Col } from 'react-bootstrap'
-import Moment from 'moment';
+
+import { Tabs, Tab, Row, Col } from 'react-bootstrap'
 import "./Ridenow.css";
 
 require('../../style.css');
@@ -32,13 +26,6 @@ let parkNick      = []
 let rideLeader    = [0,0,0,0,0,0,0,0,0,0]
 let overallRide   = [0,0,0,0,0,0,0,0,0,0]
 let rideNick      = []
-let dayWait       = []
-let times         = []
-let rateOne       = 0
-let rateTwo       = 0
-let rateThree     = 0
-let rateFour      = 0
-let rateFive      = 0
 
 const ratingList = [
   { value: '1', text: 'One' },
@@ -50,12 +37,10 @@ const ratingList = [
 
 export default class RideNow extends Component {
   
-  constructor(){
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      chartData:{},
-      waitData:{},
-      date: new Date()
+      
     }
   }
  
@@ -194,36 +179,7 @@ export default class RideNow extends Component {
         rideid: rideid }
        )
       .then(res => {
-        console.log(res.data.length)
-        this.setState({ comments: res.data });
-        let count = 0
-        for (let i = 0; i < res.data.length; i++){
-          if (count < 5)
-          {
-            dayWait[count]  = Moment(res.data[i].daterode).format("MM/DD/YY HH:mm"); 
-            times[count] = res.data[i].waittime; 
-            count++
-          }
-          switch(res.data[i].rating) {
-            case "1":
-              rateOne += 1
-              break;
-            case "2":
-              rateTwo += 1
-              break;
-            case "3":
-              rateThree += 1
-              break;
-            case "4":
-              rateFour += 1
-              break;
-            case "5":
-              rateFive += 1
-              break;
-            default:
-              break;
-          }
-        }
+        
         this.loadLeaderall();
       })
       .catch(err => console.log(err))
@@ -234,12 +190,15 @@ export default class RideNow extends Component {
       .then(res => {
         this.setState({ overall: res.data });
         for (let i = 0; i < res.data.length; i++){
+          
+          
 
           overallLeader[parseInt(res.data[i].userid, 10)] = overallLeader[parseInt(res.data[i].userid, 10)] + 1 
 
           if (parkid === res.data[i].parkid ) 
           {
             parkLeader[parseInt(res.data[i].userid, 10)] = parkLeader[parseInt(res.data[i].userid, 10)] + 1
+
           }
 
           if (parkid === res.data[i].parkid && rideid === res.data[i].rideid ) 
@@ -316,37 +275,8 @@ export default class RideNow extends Component {
 
       })
       .catch(err => console.log(err))
-      this.getChartData();
-      this.getWaitData();
 
   };
-
-  getChartData = () => {
-    this.setState({
-      chartData: {
-        labels: ['1', '2', '3' ,'4', '5'],
-        datasets: [{
-          label: 'Ratings',
-          fontColor: 'white',
-          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"], 
-          data:[rateOne, rateTwo, rateThree, rateFour, rateFive]
-        }]  
-      }  
-    })
-  }
-
-  getWaitData = () => {
-    this.setState({
-      waitData: {
-        labels: [dayWait[0], dayWait[1], dayWait[2], dayWait[3], dayWait[4]],
-        datasets: [{
-          label: 'Wait Times', 
-          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"], 
-          data:[times[0], times[1], times[2], times[3], times[4]]
-        }]  
-      }  
-    })
-  }
 
   render() {
 
@@ -354,36 +284,31 @@ export default class RideNow extends Component {
       <div>
         <Logo backgroundImage="../../pages/theme.jpg'">
           <div>
-            <Tabs >
-              <TabList>
-                  <Col xs={3}></Col>
-                  <Tab><h5 style={{color: "black"}}>Update Ride..  </h5></Tab>
-                  <Tab><h5 style={{color: "black"}}>Your Analysis..  </h5></Tab>
-                  <Tab><h5 style={{color: "black"}}>Leader Boards!</h5></Tab>
-              </TabList>
-              <TabPanel >
-                <Row> 
-                   <Col xs={2}></Col>
-                   <Col xs={7}>
-                     <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={1}></Col>
-                  <Col xs={3}>
-                    <h5 className="textColour">Date of Ride</h5>
-                  </Col>
-                  <Col xs={2}> 
-                    <h5 style={{ textAlign: "center", color: "white" }}>Rating</h5>
-                  </Col>
-                  <Col xs={1}></Col>
-                  <Col xs={2}> 
-                    <h5 style={{ textAlign: "center", color: "white" }}>Wait Time(mins)</h5>
-                  </Col>
-                  <Col xs={3}> 
-                    <h5 style={{ textAlign: "center", color: "white" }}>Comment</h5>
-                  </Col>
-                </Row>
+            <Row> 
+              <Col xs={12}>
+                <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={5}></Col>
+              <Tabs style={{color: "white"}} defaultActiveKey={3} id="uncontrolled-tab-example">
+                <Tab eventKey={1} style={{color: "white"}} title="Update Ride">
+                  <Row>
+                    <Col xs={1}></Col>
+                    <Col xs={3}>
+                      <h5 className="textColour">Date of Ride</h5>
+                    </Col>
+                    <Col xs={2}> 
+                      <h5 style={{ textAlign: "center", color: "white" }}>Rating</h5>
+                    </Col>
+                    <Col xs={1}></Col>
+                    <Col xs={2}> 
+                      <h5 style={{ textAlign: "center", color: "white" }}>Wait Time(mins)</h5>
+                    </Col>
+                    <Col xs={3}> 
+                        <h5 style={{ textAlign: "center", color: "white" }}>Comment</h5>
+                      </Col>
+                  </Row>
                   <form>
                     <Row>
                       <Col xs={1}></Col>
@@ -426,7 +351,7 @@ export default class RideNow extends Component {
                       </Col>
                     </Row>
                   </form>
-                <Row>
+                  <Row>
                     <Col xs={7}></Col>
                     <Col xs={4}>
                       <div style={{ textAlign: "center"}}>
@@ -438,82 +363,73 @@ export default class RideNow extends Component {
                       </div>
                     </Col>
                   </Row> 
-              </TabPanel>
-              <TabPanel>
-                <Row> 
-                  <Col xs={2}></Col>
-                  <Col xs={7}>
-                    <h4 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h4>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={8}></Col>
-                  <Col xs={4}> 
-                    <h5 style={{ textAlign: "center", color: "yellow" }}>Comment</h5>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={4}>
-                    <div>
-                      <Chart chartData={this.state.chartData} />
-                    </div>
-                  </Col>
-                  <Col xs={4}>
-                    <div>
-                      <WaitChart waitData={this.state.waitData} />
-                    </div>
-                  </Col>
-                  <Col xs={4}> 
-                    <ul style={{color: "white"}}>
-                      {ridercomments.map(function(ridercomment, index){
-                          return <h6 key={ index }>{ridercomment}</h6>;
-                      })}
-                    </ul>
-                  </Col>
-                </Row>
-              </TabPanel>
-              <TabPanel>
-                <Row>
-                  <Col xs={2}></Col>
-                  <Col xs={2}>
-                    <h5 style={{ textAlign: "center", color: "yellow" }}>All Parks</h5>
+                </Tab>
+                <Tab eventKey={2} style={{color: "white"}} title="Your Analysis">
+                   
+                  <Row>
+                    <Col xs={8}></Col>
+                    <Col xs={4}> 
+                      <h5 style={{ textAlign: "center", color: "yellow" }}>Comment</h5>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={4}>
+                    </Col>
+                    <Col xs={4}>
+                    </Col>
+                    <Col xs={4}> 
+                      <ul style={{color: "white"}}>
+                        {ridercomments.map(function(ridercomment, index){
+                            return <h6 key={ index }>{ridercomment}</h6>;
+                          })}
+                      </ul>
+                    </Col>
+                  </Row>
+                </Tab>
+                <Tab eventKey={3} style={{color: "white"}} title="Leader Boards!">
+                  <Row>
+                    <Col xs={2}></Col>
+                    <Col xs={2}>
+                      <h5 style={{ textAlign: "center", color: "yellow" }}>All Parks</h5>
                       
-                  </Col>
-                  <Col xs={4}> 
+                    </Col>
+                    <Col xs={4}> 
                     <h5 style={{ textAlign: "center", color: "yellow" }}>{parkName}</h5>
                       
-                  </Col>
-                  <Col xs={3}> 
-                    <h5 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h5>
+                    </Col>
+                    <Col xs={3}> 
+                      <h5 style={{ textAlign: "center", color: "yellow" }}>{parkRidename}</h5>
                       
-                  </Col>
-                </Row>
-                <Row>
-                  <Col xs={2}></Col>
-                  <Col xs={2}>
-                    <ul style={{textAlign: "center", color: "white"}}>
-                      {overallNick.map(function(overallNick, index){
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col xs={2}></Col>
+                    <Col xs={2}>
+                      <ul style={{textAlign: "center", color: "white"}}>
+                        {overallNick.map(function(overallNick, index){
                         return <h6 key={ index }>{overallNick}</h6>;
-                      })}
-                    </ul>
-                  </Col>
-                  <Col xs={4}> 
-                    <ul style={{textAlign: "center", color: "white"}}>
-                      {parkNick.map(function(parkNick, index){
+                         })}
+                       </ul>
+                    </Col>
+                    <Col xs={4}> 
+                      <ul style={{textAlign: "center", color: "white"}}>
+                        {parkNick.map(function(parkNick, index){
                         return <h6 key={ index }>{parkNick}</h6>;
-                      })}
-                    </ul>
-                  </Col>
-                  <Col xs={3}> 
-                    <ul style={{textAlign: "center", color: "white"}}>
-                      {rideNick.map(function(rideNick, index){
+                         })}
+                       </ul>
+                    </Col>
+                    <Col xs={3}> 
+                      <ul style={{textAlign: "center", color: "white"}}>
+                        {rideNick.map(function(rideNick, index){
                         return <h6 key={ index }>{rideNick}</h6>;
-                      })}
-                    </ul>
-                  </Col>
-                </Row>
-              </TabPanel>
-            </Tabs>
+                         })}
+                       </ul>
+                    </Col>
+                  </Row>
+                </Tab>
+              </Tabs>;
+            </Row>
+           
           </div>
         </Logo>       
         <ModalConductor history={this.props.history} handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType} userid={this.state.modalUserid} parkid={this.state.modalParkid}/>

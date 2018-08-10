@@ -551,6 +551,26 @@ chalk@^2.0.1, chalk@^2.4.1:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
+chart.js@^2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/chart.js/-/chart.js-2.7.2.tgz#3c9fde4dc5b95608211bdefeda7e5d33dffa5714"
+  dependencies:
+    chartjs-color "^2.1.0"
+    moment "^2.10.2"
+
+chartjs-color-string@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/chartjs-color-string/-/chartjs-color-string-0.5.0.tgz#8d3752d8581d86687c35bfe2cb80ac5213ceb8c1"
+  dependencies:
+    color-name "^1.0.0"
+
+chartjs-color@^2.1.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/chartjs-color/-/chartjs-color-2.2.0.tgz#84a2fb755787ed85c39dd6dd8c7b1d88429baeae"
+  dependencies:
+    chartjs-color-string "^0.5.0"
+    color-convert "^0.5.3"
+
 chokidar@^2.0.2:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.4.tgz#356ff4e2b0e8e43e322d18a372460bbcf3accd26"
@@ -617,6 +637,10 @@ collection-visit@^1.0.0:
     map-visit "^1.0.0"
     object-visit "^1.0.0"
 
+color-convert@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-0.5.3.tgz#bdb6c69ce660fadffe0b0007cc447e1b9f7282bd"
+
 color-convert@^1.9.0:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.2.tgz#49881b8fba67df12a96bdf3f56c0aab9e7913147"
@@ -626,6 +650,10 @@ color-convert@^1.9.0:
 color-name@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.1.tgz#4b1415304cf50028ea81643643bd82ea05803689"
+
+color-name@^1.0.0:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
 
 combined-stream@1.0.6, combined-stream@~1.0.5:
   version "1.0.6"
@@ -1969,7 +1997,7 @@ moment-timezone@^0.5.14:
   dependencies:
     moment ">= 2.9.0"
 
-"moment@>= 2.9.0", moment@^2.20.0, moment@^2.22.2:
+"moment@>= 2.9.0", moment@^2.10.2, moment@^2.20.0, moment@^2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
@@ -2453,6 +2481,13 @@ react-calendar@^2.16.1:
     prop-types "^15.6.0"
     react-lifecycles-compat "^3.0.4"
 
+react-chartjs-2@^2.7.4:
+  version "2.7.4"
+  resolved "https://registry.yarnpkg.com/react-chartjs-2/-/react-chartjs-2-2.7.4.tgz#e41ea4e81491dc78347111126a48e96ee57db1a6"
+  dependencies:
+    lodash "^4.17.4"
+    prop-types "^15.5.8"
+
 react-clock@^2.2.1:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/react-clock/-/react-clock-2.3.0.tgz#de5c328c7bdcec58348da5c2ccd8d8ca4fc10b76"
@@ -2460,9 +2495,9 @@ react-clock@^2.2.1:
     merge-class-names "^1.1.1"
     prop-types "^15.6.0"
 
-react-combo-select@^1.3.18:
-  version "1.3.18"
-  resolved "https://registry.yarnpkg.com/react-combo-select/-/react-combo-select-1.3.18.tgz#374c2a5fd2e76e99fffbe79007a6904de10f3fee"
+react-combo-select@^1.3.21:
+  version "1.3.21"
+  resolved "https://registry.yarnpkg.com/react-combo-select/-/react-combo-select-1.3.21.tgz#92e660fab189b29d70c3e0c4ef7f21c990980ef7"
   dependencies:
     prop-types "^15.6.0"
     react "^16.4.0"
@@ -2488,9 +2523,9 @@ react-datepicker@^1.5.0:
     react-onclickoutside "^6.7.1"
     react-popper "^0.9.1"
 
-react-datetime-picker@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/react-datetime-picker/-/react-datetime-picker-1.4.1.tgz#ea4a9f817b23c8f72aac49aa325b82d5737d9994"
+react-datetime-picker@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/react-datetime-picker/-/react-datetime-picker-1.4.2.tgz#fa2989b40ce415f5dff5368d0d6b77c573576d6b"
   dependencies:
     detect-element-overflow "^1.1.1"
     lodash.once "^4.1.1"
