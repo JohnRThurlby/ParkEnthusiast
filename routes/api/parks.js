@@ -57,9 +57,17 @@ router.route("/park/:id")
 router.route("/saveriderinfo")
   .post(parksController.createRiderinfo);
 
-  // Matches with "/api/parks/:id"
+  // Matches with "/api/parks/"
 router.route("/saveridercmt")
 .post(parksController.createRidercmt);
+
+// Matches with "/api/parks/"
+router.route("/addride")
+.post(parksController.createRide);
+
+// Matches with "/api/parks/"
+router.route("/updatepark")
+.post(parksController.updatePark);
 
 // Matches with "/api/parks/:id"
 router.route("/getuserdata/:id")

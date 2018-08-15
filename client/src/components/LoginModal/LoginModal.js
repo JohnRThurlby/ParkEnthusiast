@@ -9,6 +9,8 @@ import { Input } from "../../components/Form";
 
 import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from "react-social-login-buttons";
 
+const bcrypt = require('bcryptjs')
+
 let error = " "
 
 export default class LoginModal extends Component {
@@ -20,9 +22,10 @@ export default class LoginModal extends Component {
   state = { 
     modalStatus: false,
     modalType: "",
-    email: "",
-    password: "",
-    userdata: {}
+    email:     "",
+    password:  "",
+    error:     "",
+    userdata:  {}
   }
     
   _handleModal = (status, type) => {
@@ -39,15 +42,22 @@ export default class LoginModal extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
       API.getUser({
-        email: this.state.email,
-        userpassword: this.state.password
+        email: this.state.email
       })
         .then(res => { 
-          if (res.data.length === 0) {
-            error = "User does not exist"
+          if (res.data != null ) {
+            let hash = res.data.userpassword
+            if (bcrypt.compareSync(this.state.password, hash)) {
+              window.location="/parkselection?" + res.data.id + "&" + res.data.zipcode  
+             } 
+             else {
+              error = "Incorrect password, please re-enter"
+              this.forceUpdate();
+             }
           }
           else {
-            window.location="/parkselection?" + res.data.id + "&" + res.data.zipcode  
+            error = "User does not exist, please re-enter"
+            this.forceUpdate();
           }})
         .catch(err => console.log(err));
   };
@@ -124,7 +134,12 @@ export default class LoginModal extends Component {
                       />
                     </div>
                   </Col> 
-                </Row>  
+                </Row> 
+                <Row>
+                  <Col xs={12}>
+                    <h6 style={{ textAlign: "center", padding: 0 }}>{error}</h6>
+                  </Col> 
+                </Row> 
                 <Row>
                   <Col xs={3}></Col>
                   <Col xs={4}>
@@ -133,7 +148,7 @@ export default class LoginModal extends Component {
                   <Col xs={3}>
                     <p><a ref="#" onClick={() => this._handleModal(true, 'REGISTRATION')}>Not a User?</a></p>
                   </Col> 
-                </Row>  
+                </Row> 
                 <Row>
                   <Col xs={5}></Col>
                   <Col xs={5}>

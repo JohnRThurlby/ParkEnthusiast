@@ -4,7 +4,7 @@ const express = require("express"),
       bodyParser = require("body-parser"),
       routes = require('./routes'),
       cookieParser = require('cookie-parser'),
-      bcrypt = require('bcrypt'),
+      // bcrypt = require('bcrypt'),
       jwt = require('jsonwebtoken');
       exjwt = require('express-jwt');
 

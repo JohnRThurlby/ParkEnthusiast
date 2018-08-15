@@ -14,9 +14,8 @@ module.exports = {
   findById: function(req, res) {
     let i = req.params.id.indexOf(".com")
     let useremail = req.params.id.substr(0, i + 4)
-    let userpass = req.params.id.substr(i + 4)
     db.User
-      .findOne({ where: {email: useremail, userpassword: userpass}} )
+      .findOne({ where: {email: useremail}} )
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }, 

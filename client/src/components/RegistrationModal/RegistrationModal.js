@@ -10,10 +10,12 @@ import { Input } from "../../components/Form";
 const ValidatePassword = require('validate-password'),
       validPass        = new ValidatePassword(),
       postcode         = require('postcode-validator'),
+      bcrypt           = require('bcryptjs'),
       validator        = require("email-validator");
 
 let userValid = true
 let error     = " "
+let passHash  = " "
 
 export default class RegistrationModal extends Component {
   constructor(props) {
@@ -48,33 +50,76 @@ export default class RegistrationModal extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
 
-    if (!validator.validate(this.state.email) || this.state.email !== this.state.repemail    ) {
-      error = 'Invalid email, please enter a correcty formatted email'
-      userValid = false
-    } 
-
-    let passwordData = validPass.checkPassword(this.state.password);
-    if (!passwordData.isValid || this.state.password !== this.state.reppassword) {
-      error = passwordData.validationMessage
-      userValid = false
-    }
+    userValid = true
 
     if (!postcode.validate(this.state.zipcode, 'US')) {
       error = 'Zip Code is invalid'
       userValid = false 
-}
+    }
+
+    if (!validator.validate(this.state.email) ) {
+      error = 'Invalid email, please enter a correcty formatted email'
+      userValid = false
+    } 
+
+    if (this.state.email !== this.state.repemail    ) {
+      error = 'Emails do not match, please re-enter'
+      userValid = false
+    } 
+
+    let passwordData = validPass.checkPassword(this.state.password);
+    if (!passwordData.isValid) {
+      error = passwordData.validationMessage
+      userValid = false
+    }
+    else {
+      let password = this.state.password
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(password, salt, function(err, hash) {
+            console.log("hash "+ hash)
+            passHash = hash
+        });
+       });
+    }
+
+    if (this.state.password !== this.state.reppassword) {
+      error = "Passwords do not match"
+      userValid = false
+    }
     
     if (userValid) {
-      console.log("in API call")
-      
-      API.saveUser({
-        nickname:     this.state.nickname,
-        zipcode:      this.state.zipcode, 
-        email:        this.state.email,
+      API.getUser({
+        email: this.state.email,
         userpassword: this.state.password
       })
-        .then(()=> {window.location="/parkselection"})
-        .catch(err => console.log(err));
+      .then(res => { 
+        if (res){ 
+          API.saveUser({
+            nickname:     this.state.nickname,
+            zipcode:      this.state.zipcode, 
+            email:        this.state.email,
+            userpassword: passHash
+          })
+           .then(()=> 
+               API.getUser({
+                email: this.state.email
+               })
+               .then(res => { 
+                  window.location="/parkselection?" + res.data.id + "&" + res.data.zipcode  
+                  } 
+               )
+              .catch(err => console.log(err))
+             .catch(err => console.log(err))
+            )
+          if (res.data.email === this.state.email) {
+            error = "User already exist"
+            this.forceUpdate();
+          }
+        }})
+      .catch(err => {console.log(err)});
+    }
+    else {
+      this.forceUpdate();
     }
   };
   
@@ -116,7 +161,6 @@ export default class RegistrationModal extends Component {
                     placeholder="Zipcode"
                   />
                 </Col>
-                <h6>{error}</h6>
               </Row>
               <Row>
                 <Col xs={2}></Col>
@@ -168,6 +212,11 @@ export default class RegistrationModal extends Component {
                   />
                 </Col>
               </Row>
+              <Row>
+                  <Col xs={12}>
+                    <h6 style={{ textAlign: "center", padding: 0 }}>{error}</h6>
+                  </Col> 
+              </Row> 
               <Row>
                 <Col xs={4}></Col>
                 <Col xs={5}>

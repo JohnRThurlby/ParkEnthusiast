@@ -115,6 +115,18 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  createRide: function(req, res) {
+    db.Parkrides
+      .create(req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  updatePark: function(req, res) {
+    db.Parks
+      .update(req.body)
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   getUserdata: function(req, res) {
     let parkid = req.params.id.substr(0, 2)
     let rideid = req.params.id.substr(2, 2)

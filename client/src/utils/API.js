@@ -7,7 +7,7 @@ export default {
 
   // Gets the user with a given email
   getUser: function(userData) {
-    return axios.get("/api/user/" + userData.email + userData.userpassword );
+    return axios.get("/api/user/" + userData.email);
   },
   // Saves a user to the database
   saveUser: function(userData) {
@@ -91,5 +91,11 @@ export default {
   },
   getUserdatabyride: function(userData) {
     return axios.get("/api/parks/getuserdatabyride/" + userData.userid + userData.parkid + userData.rideid);
+  },
+  updatePark: function(userData) {
+    return axios.post("/api/parks/updatepark", userData);
+  },
+  addRide: function(userData) {
+    return axios.post("/api/parks/addride", userData);
   }
 };

@@ -30,9 +30,8 @@ export default class ContactModal extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     if (this.state.name && this.state.email && this.state.comment) {
-      console.log("in email")
-      
-    }
+           
+      }
   };
 
   render() {
@@ -53,7 +52,7 @@ export default class ContactModal extends Component {
 
               </Col>
             </Row>
-            <form>
+            <form method="POST" action="/api/contact">
               <Row>
                 <Col xs={2}></Col>
                 <Col xs={8}>
@@ -96,10 +95,8 @@ export default class ContactModal extends Component {
               <Row>
                 <Col xs={5}></Col>
                 <Col xs={5}>
-                  <button className="btn btn-action button"
-                      onClick={this.handleFormSubmit}
-                    >
-                    Contact Us
+                  <button className="btn btn-action button" type="submit">
+                     Contact Us
                   </button>
                 </Col>
               </Row>

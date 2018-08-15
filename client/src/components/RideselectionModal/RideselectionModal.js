@@ -7,6 +7,7 @@ import API from "../../utils/API";
 import { Row, Col } from 'react-bootstrap'
 
 import ComboSelect from 'react-combo-select';
+
 require('../../style.css');
 
 let parkName      = " " 
@@ -47,6 +48,7 @@ export default class RideselectionModal extends Component {
 
   componentWillMount() {
     this.getPark()
+    this.getTickets()
     this.getHours()
 
   }
@@ -75,7 +77,6 @@ export default class RideselectionModal extends Component {
         let optionsObj   = {}
         optionsObj.value = res.data[i].id
         optionsObj.text  = res.data[i].parkridename
-
         API.getUserbyiddata( 
           { userid: userid + ".com",
             parkid: parkid, 
@@ -95,7 +96,6 @@ export default class RideselectionModal extends Component {
           )
 
       }
-      this.getTickets()
 
     })
       .catch(err => console.log(err))
@@ -199,7 +199,7 @@ export default class RideselectionModal extends Component {
                 <Row>
                   <Col xs={1}></Col>
                   <div className="fontdrop">
-                    <ComboSelect data={parkrides} sort="number" type="select" onChange={this.fakeFunction}/>
+                    <ComboSelect data={parkrides} type="select" onChange={this.fakeFunction}/>
                   </div>
                 </Row> 
                 <Row>
@@ -211,7 +211,7 @@ export default class RideselectionModal extends Component {
                 <Row>
                   <Col xs={1}></Col>
                   <div className="fontdrop">
-                    <ComboSelect data={unrides} sort="number" type="select" onChange={this.fakeFunction}/>
+                    <ComboSelect data={unrides} type="select" onChange={this.fakeFunction}/>
                   </div>
                 </Row> 
               </Col>
