@@ -7,7 +7,13 @@ import API from "../../utils/API";
 import { Form, Row, Col } from 'react-bootstrap'
 import { Input } from "../../components/Form";
 
-import { FacebookLoginButton, TwitterLoginButton, GoogleLoginButton } from "react-social-login-buttons";
+import Facebook from "../../components/Facebook";
+import Google   from "../../components/Google";
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+
+library.add(fab)
 
 const bcrypt = require('bcryptjs')
 
@@ -31,7 +37,7 @@ export default class LoginModal extends Component {
   _handleModal = (status, type) => {
     this.setState ({modalStatus: status, modalType: type})
   }
-
+  
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
@@ -71,34 +77,25 @@ export default class LoginModal extends Component {
           </button>
           <div>
             <div className="container">
-              <Form action="Post">
-                <Row>
-                  <Col xs={1}></Col>
-                  <Col xs={11}>
-                    <h4 style={{ textAlign: "center" }}>Login with Social Media or Manually</h4>
-                  </Col>
-                </Row>
-                <Row>
+              <Row>
                 <Col xs={1}></Col>
-
-                  <Col xs={3}>
-                    <FacebookLoginButton onClick={() => alert("Hello")}>
-                      <span>Login</span>
-                    </FacebookLoginButton>
-                  </Col>
-                  <Col xs={1}></Col>
-                  <Col xs={3}>
-                    <TwitterLoginButton onClick={() => alert("Hello")}>
-                      <span>Login</span>
-                    </TwitterLoginButton>
-                  </Col>
-                  <Col xs={1}></Col>
-                  <Col xs={3}>
-                    <GoogleLoginButton onClick={() => alert("Hello")}>
-                      <span>Login</span>
-                    </GoogleLoginButton>
-                  </Col>
-                </Row>
+                <Col xs={11}>
+                  <h5 style={{ textAlign: "center" }}>Login with Social Media or Manually</h5>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs={1}></Col>
+                <Col xs={3}>
+                  <Facebook />
+                </Col>
+                <Col xs={1}></Col>
+                <Col xs={3}>
+                </Col>
+                <Col xs={1}></Col>
+                <Col xs={3}>
+                  <Google />
+                </Col>
+              </Row>
                 <Row>
                   <Col xs={12}> 
                     <hr className="someClass"/>
@@ -112,6 +109,7 @@ export default class LoginModal extends Component {
                     </div>
                   </Col>
                 </Row>
+              <Form action="GET">
                 <Row>
                   <Col xs={3}></Col>
                   <Col xs={6}>

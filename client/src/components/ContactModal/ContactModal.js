@@ -7,6 +7,8 @@ import ModalConductor from "../ModalConductor"
 
 require("dotenv").config()
 
+let msgSent = " "
+
 export default class ContactModal extends Component {
 
   constructor(props) {
@@ -15,9 +17,10 @@ export default class ContactModal extends Component {
   }
 
   state = {
-    name: "",
-    email: "",
-    comment: ""
+    name:    "",
+    email:   "",
+    comment: "",
+    msgSent: "",
   };
 
   handleInputChange = event => {
@@ -30,7 +33,8 @@ export default class ContactModal extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     if (this.state.name && this.state.email && this.state.comment) {
-           
+      msgSent = "Message sent"
+      this.forceUpdate();
       }
   };
 
@@ -100,6 +104,11 @@ export default class ContactModal extends Component {
                   </button>
                 </Col>
               </Row>
+              <Row>
+                <Col xs={12}>
+                  <h6 style={{ textAlign: "center", padding: 0 }}>{msgSent}</h6>
+                </Col> 
+              </Row> 
             </form>
 
             <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>

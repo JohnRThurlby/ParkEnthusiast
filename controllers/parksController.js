@@ -55,6 +55,16 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+  findCommentsbyUser: function(req, res) {
+    let i      = req.params.id.indexOf(".com")
+    let userid = req.params.id.substr(0, i)
+    let parkid = req.params.id.substr(i + 4, 2)
+    let rideid = req.params.id.substr(i + 6)
+    db.Ridercomments
+      .findAll({ where: {userid: userid, parkid: parkid, rideid: rideid}})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
   findAvgwait: function(req, res) {
     db.Rideuserinfos
      .findOne({ where: {userid: "1", parkid: "75", rideid: "10"}}
@@ -147,7 +157,7 @@ module.exports = {
   },
   getUserdatabyuser: function(req, res) {
     db.Rideuserinfos
-      .findAll()
+      .findAll({ group: 'userid'})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

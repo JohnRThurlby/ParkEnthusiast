@@ -117,7 +117,7 @@ export default class Parkadmin extends Component {
               <h5 className="textColour">Park Name</h5>
             </Col>
             <Col xs={3}>
-              <h5><input className="textColour2" onChange={this.handleInputChange} value={parkName} type="text" id="parkName" name="parkName" maxLength="50"/></h5>
+              <h5><input className="textColour2" onChange={this.handleInputChange} value={this.parkName} type="text" id="parkName" name="parkName" maxLength="50"/></h5>
             </Col>
           </Row>
           <Row>

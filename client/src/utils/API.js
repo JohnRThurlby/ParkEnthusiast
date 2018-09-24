@@ -48,6 +48,10 @@ export default {
     return axios.get("/api/parks/comments/" + userData.parkid + userData.rideid);
   },
   // Get ride data based on Park code
+  getCommentsuser: function(userData) {
+    return axios.get("/api/parks/commentsuser/" + userData.userid + userData.parkid + userData.rideid);
+  },
+  // Get ride data based on Park code
   getavgWait: function(userData) {
     return axios.get("/api/parks/avgwait", userData);
   },

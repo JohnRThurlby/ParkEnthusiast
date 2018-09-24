@@ -42,6 +42,8 @@ let rateTwo       = 0
 let rateThree     = 0
 let rateFour      = 0
 let rateFive      = 0
+let parkPic     = "https://nearfox.com/wp-content/uploads/2016/11/imageferris_wheel_20160301065106331548.jpg" 
+
 
 export default class Rideinfo extends Component {
   constructor(){
@@ -246,7 +248,7 @@ export default class Rideinfo extends Component {
   render() {
     
     return (
-      <Logo backgroundImage="../../pages/theme.jpg">
+      <Logo backgroundImage={parkPic}>
 
       <div>
         <Tabs >

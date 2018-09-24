@@ -6,8 +6,6 @@ import API from "../../utils/API";
 
 import { Row, Col } from 'react-bootstrap'
 
-import Moment from 'moment';
-
 export default class Rideadmin extends Component {
   constructor(){
     super();

@@ -5,7 +5,7 @@ const userController = require("../../controllers/userController");
 router.route("/")
   .post(userController.create);
 
-  // Matches with "/api/users/:id"
+// Matches with "/api/users/:id"
 router.route("/find/:id")
 .get(userController.findUsernick);
 

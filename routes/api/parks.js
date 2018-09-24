@@ -21,6 +21,10 @@ router.route("/rideinfo/:id")
 router.route("/comments/:id")
 .get(parksController.findComments)
 
+  // Matches with "/api/parks/rides"
+  router.route("/commentsuser/:id")
+  .get(parksController.findCommentsbyUser)
+
 // Matches with "/api/parks/avgwait"
 router.route("/avgwait")
 .get(parksController.findAvgwait)

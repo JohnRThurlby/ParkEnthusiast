@@ -6,8 +6,9 @@ import { Input } from "../../components/Form";
 import ModalConductor from "../ModalConductor"
 
 require("dotenv").config()
-//var ses = require('node-ses')
-//  , client = ses.createClient({ key: "AKIAJY3KUB5OAVIHPW3Q", secret: "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" });
+
+let msgSent = " "
+
 
 export default class ForgotpasswordModal extends Component {
 
@@ -17,7 +18,9 @@ export default class ForgotpasswordModal extends Component {
   }
 
   state = {
-    email: "",
+    email:   "",
+    msgSent: ""
+
   };
 
   handleInputChange = event => {
@@ -30,14 +33,8 @@ export default class ForgotpasswordModal extends Component {
   handleFormSubmit = event => {
     event.preventDefault();
     if (this.state.email) {
-      console.log("in email")
-      //client.sendEmail({
-      //  to: "johnrthurlby@gmail.com"
-      //  , from: "enthusiastpark@gmail.com"
-      //  , altText: "Forgot password"
-      //}, function (err, data, res) {
-      //  console.log("in function")
-      //});
+      msgSent = "Message sent"
+      this.forceUpdate();
     }
   };
 
@@ -59,7 +56,7 @@ export default class ForgotpasswordModal extends Component {
 
               </Col>
             </Row>
-            <form>
+            <form method="POST" action="/api/contact/forgot">
               <Row>
                 <Col xs={2}></Col>
                 <Col xs={9}>
@@ -82,13 +79,16 @@ export default class ForgotpasswordModal extends Component {
               <Row>
                 <Col xs={5}></Col>
                 <Col xs={5}>
-                  <button className="btn btn-action button"
-                    onClick={this.handleFormSubmit}
-                  >
+                  <button className="btn btn-action button" type="submit">
                     Submit
                   </button>
                 </Col>
               </Row>
+              <Row>
+                <Col xs={12}>
+                  <h6 style={{ textAlign: "center", padding: 0 }}>{msgSent}</h6>
+                </Col> 
+              </Row> 
             </form>
             <ModalConductor handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
           </div>

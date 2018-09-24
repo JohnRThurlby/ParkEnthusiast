@@ -19,9 +19,15 @@
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
     
+    <!--Import Google Map files-->
+
+    <script src="https://npmcdn.com/react@0.14.2/dist/react.min.js"></script>
+    <script src="https://npmcdn.com/react-dom@0.14.2/dist/react-dom.min.js"></script>
+    <script src="https://npmcdn.com/google-map-react@1.0.1/dist/GoogleMapReact.js"></script>
+    
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Park Entusiast</title>
 
     <style>
@@ -78,22 +84,57 @@
       }
 
       .textColour {
-        color: white;
+        color: rgb(255, 255, 255);
+        z-index: 9999;
       }
 
       .App {
         color: white;
+        font-weight: bold;
       }
 
       .textColour2 {
-        color: rgb(228, 203, 64);
+        color: rgb(43, 16, 196);
         margin: 0;
         padding: 0;
       }
 
       .textColour3 {
-        color: rgb(228, 203, 64);
+        color: rgb(255, 255, 255);
         
+      }
+
+      .place{  
+        width: 40px;
+        padding: 20px;
+        border: 1px solid blue;
+        background: red;
+        color: yellow; 
+      }
+
+      @media only screen 
+        and (min-device-width: 375px) 
+        and (max-device-width: 667px) 
+        and (-webkit-min-device-pixel-ratio: 2) { 
+
+      }
+
+      /* Portrait */
+      @media only screen 
+        and (min-device-width: 375px) 
+        and (max-device-width: 667px) 
+        and (-webkit-min-device-pixel-ratio: 2)
+        and (orientation: portrait) { 
+
+      }
+
+      /* Landscape */
+      @media only screen 
+        and (min-device-width: 375px) 
+        and (max-device-width: 667px) 
+        and (-webkit-min-device-pixel-ratio: 2)
+        and (orientation: landscape) { 
+
       }
       
   </style>

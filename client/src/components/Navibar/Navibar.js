@@ -16,6 +16,11 @@ export default class Navibar extends Component {
   this.setState ({modalStatus: status, modalType: type})
   }
 
+  _handleContact = event => {
+    event.preventDefault();
+    window.location="/contact"  
+  }
+
   render () {
 
     return (
@@ -33,13 +38,10 @@ export default class Navibar extends Component {
               </button>
             </Col>
             <Col xs={2}>
-              <button className="btn btn-action button" onClick={() => this._handleModal(true, 'CONTACT')}>
-                Contact
-              </button>
             </Col>
             <Col xs={1}>
-              <button className="btn btn-action button" onClick={() => this._handleModal(true, 'LOGIN')}>
-                Login
+              <button className="btn btn-action button" onClick={this._handleContact}>
+                Contact
               </button>
             </Col>
           </Row>

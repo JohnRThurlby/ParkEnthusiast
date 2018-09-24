@@ -1,27 +1,24 @@
 import React, {Component} from "react";
 import Logo from "../../components/Logo";
 
-import ModalConductor from "../../components/ModalConductor";
-
 import Row from "../../components/Row";
 import Col from "../../components/Col";
 
+let parkPic       = "https://nearfox.com/wp-content/uploads/2016/11/imageferris_wheel_20160301065106331548.jpg" 
+
+
 export default class Home extends Component {
 
-  state = { 
-       modalStatus: false,
-       modalType: ""
-  }
-
-  _handleModal = (status, type) => {
-    this.setState ({modalStatus: status, modalType: type})
+  _handleLogin = event => {
+    event.preventDefault();
+    window.location="/login"  
   }
 
   render() {
 
     return (
       <div>
-        <Logo backgroundImage="../../pages/theme.jpg">
+        <Logo backgroundImage={parkPic}>
           <Row></Row>
           <Row>  
             <Col size="sm-3"></Col>
@@ -38,20 +35,19 @@ export default class Home extends Component {
                 As more data is gathered, see what wait times, ratings, and comments have been like. 
                 Compete with friends to get the most park visits and rides!  
               </h5>
-              <h4 className="textColour">Now it is time to sign up and get riding!</h4>
+              <h4 className="textColour">Now it is time to log in and get riding!</h4>
 
             </Col>
           </Row>
           <Row>
             <Col size="sm-3"></Col>
             <Col size="sm-7">
-              <button className="btn btn-action regisbutton" onClick={() => this._handleModal(true, 'REGISTRATION')}>
-                Sign up
+              <button className="btn btn-action regisbutton" onClick={this._handleLogin}>
+                Login
               </button>
             </Col>
           </Row>
         </Logo>
-        <ModalConductor history={this.props.history} handleModal={this._handleModal} status={this.state.modalStatus} type={this.state.modalType}/>
       </div>
     )
   }

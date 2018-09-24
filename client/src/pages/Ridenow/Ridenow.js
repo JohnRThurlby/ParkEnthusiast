@@ -17,6 +17,7 @@ import "./Ridenow.css";
 require('../../style.css');
 
 let parkName      = " " 
+let parkUrl       = " "
 let parkRidename  = " "
 let ridercomments = []
 let parkid        = " "
@@ -32,13 +33,15 @@ let parkNick      = []
 let rideLeader    = [0,0,0,0,0,0,0,0,0,0]
 let overallRide   = [0,0,0,0,0,0,0,0,0,0]
 let rideNick      = []
-let dayWait       = []
-let times         = []
+let dayWait       = ['01/01/2018 12:00','01/01/2018 12:00','01/01/2018 12:00','01/01/2018 12:00','01/01/2018 12:00']
+let times         = [0,0,0,0,0]
 let rateOne       = 0
 let rateTwo       = 0
 let rateThree     = 0
 let rateFour      = 0
 let rateFive      = 0
+let parkPic     = "https://nearfox.com/wp-content/uploads/2016/11/imageferris_wheel_20160301065106331548.jpg" 
+
 
 const ratingList = [
   { value: '1', text: 'One' },
@@ -73,6 +76,7 @@ export default class RideNow extends Component {
     daterode:    "",
     ridecomment: "",
     dateadded:   "",
+    
     selectedOption: null,
     rateOne:       0,
     rateTwo:       0,
@@ -125,6 +129,7 @@ export default class RideNow extends Component {
       .then(res => {
           this.setState({ park: res.data });
           parkName  = res.data.parkname 
+
         }) 
       .catch(err => console.log(err))
   };
@@ -137,6 +142,8 @@ export default class RideNow extends Component {
       .then(res => {
         this.setState({ park: res.data });
         parkRidename = res.data.parkridename 
+        //parkUrl      = res.data.rideurl
+
         this.getComments();
 
       })
@@ -145,8 +152,9 @@ export default class RideNow extends Component {
   };
 
   getComments = () => {
-    API.getComments(
-      {parkid: parkid, 
+    API.getCommentsuser(
+      { userid: userid + ".com",
+        parkid: parkid, 
         rideid: rideid }
     )
       .then(res => {
@@ -233,6 +241,7 @@ export default class RideNow extends Component {
     API.getUserdatabyuser()
       .then(res => {
         this.setState({ overall: res.data });
+        console.log(res.data)
         for (let i = 0; i < res.data.length; i++){
 
           overallLeader[parseInt(res.data[i].userid, 10)] = overallLeader[parseInt(res.data[i].userid, 10)] + 1 
@@ -247,6 +256,7 @@ export default class RideNow extends Component {
             rideLeader[parseInt(res.data[i].userid, 10)] = rideLeader[parseInt(res.data[i].userid, 10)] + 1
           }
         }
+
         let i = 0
         while (i < 11) 
         {
@@ -256,7 +266,6 @@ export default class RideNow extends Component {
           overallLeader[x] = 0
           i++
         }
-
        for (let k = 0; k < overallOrder.length; k++){
           if (overallOrder[k] !== 0) {
             API.getUsernick({
@@ -352,7 +361,7 @@ export default class RideNow extends Component {
 
     return (
       <div>
-        <Logo backgroundImage="../../pages/theme.jpg'">
+        <Logo backgroundImage={parkPic}>
           <div>
             <Tabs >
               <TabList>
@@ -463,7 +472,7 @@ export default class RideNow extends Component {
                       <WaitChart waitData={this.state.waitData} />
                     </div>
                   </Col>
-                  <Col xs={4}> 
+                  <Col xs={3}> 
                     <ul style={{color: "white"}}>
                       {ridercomments.map(function(ridercomment, index){
                           return <h6 key={ index }>{ridercomment}</h6>;
